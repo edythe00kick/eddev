@@ -336,13 +336,16 @@ public with sharing class OSCPQ_ContractTriggerGateway {
     ** @Desc Flagging Roll Up Update Needed in GTM Accounts during new contract creation
      */
     public static void updateRollUpNeededFieldInGTMAccountForNewContract(Set<Id> masterAcctIds) {
+        System.debug('ed check RecursionHandler.IsGTMAccUpdateRollUpExecuted ' + RecursionHandler.IsGTMAccUpdateRollUpExecuted);
+
+        RecursionHandler.IsGTMAccUpdateRollUpExecuted = true;
 
         System.debug('inside updateRollUpNeededFieldInGTMAccountForNewContract = ' + masterAcctIds);
 
         List<Account> updateAccountsList = new List<Account>();
         Map<Id, Account> accsToUpdate = new Map<Id, Account>();
         Map<Id, Account> accIdToAccMap = new Map<Id, Account>([SELECT Id,Go_To_Market_Account__c,Ultimate_Parent_Account__c FROM Account WHERE Id IN :masterAcctIds
-                                                                AND Go_To_Market_Account__c != null
+                                                                AND (Go_To_Market_Account__c != null OR Ultimate_Parent_Account__c != null)
                                                                 AND Go_To_Market_Account__r.Roll_Up_Update_Needed__c = false]);
 
         if(accIdToAccMap != null) {

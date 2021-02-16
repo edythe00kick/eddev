@@ -188,7 +188,9 @@ public class OSCPQ_ContractTriggerHandler {
             }
         }
 
-        if(gtmAccountIdSet != null) {
+        System.debug('ed check RecursionHandler.IsGTMAccUpdateRollUpExecuted 0 ' + RecursionHandler.IsGTMAccUpdateRollUpExecuted);
+
+        if(gtmAccountIdSet != null && RecursionHandler.IsGTMAccUpdateRollUpExecuted == false) {
             System.debug('inside gtmAccountIdset gateway call 1');
             OSCPQ_ContractTriggerGateway.updateRollUpNeededFieldInGTMAccountForNewContract(gtmAccountIdSet);
         }
@@ -222,7 +224,9 @@ public class OSCPQ_ContractTriggerHandler {
             OSCPQ_ContractTriggerGateway.updateRollUpNeededFieldInGTMAccountForSubACVChange(gtmAccountIdSet);
         }
 
-        if(masterAccountIdSet != null) {
+        System.debug('ed check RecursionHandler.IsGTMAccUpdateRollUpExecuted 1' + RecursionHandler.IsGTMAccUpdateRollUpExecuted);
+
+        if(masterAccountIdSet != null && RecursionHandler.IsGTMAccUpdateRollUpExecuted == false) {
             System.debug('inside masterAccountIdSet gateway call');
             OSCPQ_ContractTriggerGateway.updateRollUpNeededFieldInGTMAccountForNewContract(masterAccountIdSet);
         }

@@ -50,5 +50,6 @@ Public class Recursionhandler{
     public static boolean IsContractAmendExecuted = false; //Eddie Wong 05/01/2020 W-005057
     public static boolean IsLPUToBoomiExecuted = false; //Eddie Wong 09/17/2020 W-005994
     public static boolean IsGTMOppGlobalRankingUpdateExecuted = false; //Eddie Wong 01/21/2021 W-007069
+    public static boolean IsGTMAccUpdateRollUpExecuted = false; //Eddie Wong 02/16/2021 W-007098
 
 }
