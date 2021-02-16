@@ -1,0 +1,14 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c">
+
+    <style type="text/css">
+     .actionColumn {display:none; visibility:hidden}
+    </style>
+     
+    <apex:relatedList list="Apttus_QPApprov__ApprovalRequests__r" title="Current Approvals Being Sought" />
+    
+
+    
+    <apex:relatedList list="Apttus_QPApprov__ApprovalRequestHistory__r" title="Previous Approvals Sought" />
+    
+
+</apex:page>

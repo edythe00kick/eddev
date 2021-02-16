@@ -1,0 +1,358 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteCreationController" tabStyle="SBQQ__Quote__c">
+    <script type="text/javascript">
+        function cancelError() {
+            url = new URL(window.location.href);
+            retURL = url.searchParams.get('retURL');
+            if (retURL != null && retURL != '') {
+                window.location.href = retURL;
+            } else {
+                window.location.href = '/home/home.jsp';
+            }
+        }
+
+        function licGrpNext(){
+            var selected = document.querySelector("[name*='selectedLG']:checked");
+            if (selected != null) {
+                licGrpNextCall(selected.value);
+            } else {
+                alert('Please select License Group to continue.');
+            }
+        }
+    
+        function resetLG() {
+            var selected = document.querySelector("[name*='selectedLG']:checked");
+            
+            if (selected != null) {
+                selected.checked = false;
+            }
+        }
+    
+        function selectChanged() {
+            var selected = document.querySelector("[name*='selectedLA']:checked");
+            var inputs = document.querySelectorAll("[id*='newLicField']");
+            var disable;
+            var display;
+            
+            if (selected == null || selected.value != 'New') {
+                disable = true;
+                display = 'none';
+            } else {
+                disable = false;
+                display = 'inherit';
+            }
+            
+            for (var i = 0; i<inputs.length-1; i++) {
+                inputs[i].disabled = disable;
+            }
+            inputs[inputs.length-1].style.display = display;
+        }
+        
+        function licAdmFinish() {
+            var selected = document.querySelector("[name*='selectedLA']:checked");
+            var licAdmId;
+            
+            if (selected == null) {
+                alert('Please select the License Administrator.');
+                return;
+            } else {
+                if (selected.value == 'New') {
+                    licAdmId = null;
+                } else {
+                    licAdmId = selected.value;
+                }
+            }
+            licAdmFinishCall(licAdmId);
+        }
+    
+        function resetLA() {
+            var selected = document.querySelector("[name*='selectedLA']:checked");
+            
+            if (selected != null) {
+                selected.checked = false;
+                selectChanged();
+            }
+        }
+
+        function disableButton() {
+            var buttons = document.getElementsByClassName('btn');
+            for (var i=0; i<buttons.length; i++) {
+                buttons[i].disabled = true;
+                buttons[i].style.color = 'grey';
+            }
+        }
+
+        function enableButton() {
+            var buttons = document.getElementsByClassName('btn');
+            for (var i=0; i<buttons.length; i++) {
+                buttons[i].disabled = false;
+                buttons[i].style.color = '';
+            }
+        }
+    </script>
+
+    <style>
+        .LALGPanel .message {
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.6em;
+        }
+        
+        .LALGPanel.pbTitle {
+            white-space: nowrap;
+        }
+        
+        .LALGPanel .mainTable {
+        }
+    </style>
+
+    <apex:form id="mainForm">
+        <apex:outputPanel rendered="{!hideSidebar}">
+            <script type="text/javascript">
+                document.getElementById('sidebarCell').style.display = 'none';
+            </script>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!showSidebar}">
+            <script type="text/javascript">
+                document.getElementById('sidebarCell').style.display = '';
+            </script>
+        </apex:outputPanel>
+        
+        
+        <!-- Added by: Sharma Nemani | W-012345 | Date: 06/27/2019 | START-->
+        <apex:pageBlock title="" rendered="{!if((quote!=null && quote.RecordType.DeveloperName != 'Draft' && !isAllowed),true,false)}">    <!-- "!isAllowed" Added by: Sharma Nemani | W-013514 | Date: 11/04/2019  -->
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Cancel" onClick="cancelError(); return false;"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:pageMessage escape="false" summary="You can only Submit Order Group when the Record Type is 'Draft'." severity="error" strength="2"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!-- Sharma Nemani | W-012345 | Date: 06/27/2019 | END-->
+        
+        <!-- Error Page Block -->
+        <apex:pageBlock title="Create Quote" rendered="{!hasError}">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Cancel" onClick="cancelError(); return false;"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="1">
+                <apex:pageMessage escape="false" summary="Quote can only be created from Opportunity." severity="error" strength="2"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <!-- Select Quote Type Page Block-->
+        <apex:pageBlock title="Create Quote" tabStyle="SBQQ__Quote__c" mode="edit" rendered="{!showRecordType}">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Cancel" action="{!cancel}" reRender="mainForm" status="recordTypeStatus"/>
+                <apex:commandButton value="Next" action="{!recordTypeNext}" reRender="mainForm" status="recordTypeStatus"/>
+
+                <apex:actionStatus id="recordTypeStatus" onstart="disableButton(); return false;" onstop="enableButton(); return false;">
+                    <apex:facet name="start">
+                        <apex:image url="/img/loading.gif"/>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Select Quote Type" collapsible="false" columns="1">
+                <apex:pageMessages />
+                <apex:selectList value="{!quoteType}" label="Quote Type" size="1">
+                    <apex:selectOptions value="{!quoteTypes}"/>
+                    
+                    <apex:actionSupport reRender="mainForm" event="onchange"/>
+                </apex:selectList>
+                <apex:selectList value="{!purchaseType}" label="Purchase Type" size="1" rendered="{!quoteType=='Purchase'}">
+                    <apex:selectOptions value="{!purchaseTypes}" />
+                </apex:selectList>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <!-- License Group & License Admin Output Panel -->
+        <apex:outputPanel rendered="{!showLGLA}" styleClass="LALGPanel">
+            <!-- License Order Page Block -->
+            <apex:pageBlock title="Select License Group" id="licGrpBlock" rendered="{!showLicGrpBlock}">
+                <!-- License Order Page Block Buttons-->
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Skip" action="{!skip}" status="statusLG" rendered="{!showSkip}" reRender="mainForm"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}" status="statusLG" reRender="mainForm"/>
+                    <apex:commandButton value="Back" action="{!licGrpBack}" status="statusLG" reRender="mainForm" rendered="{!!opp.NFR_Opportunity__c}"/>
+                    <apex:commandButton value="Reset" onclick="resetLG(); return false;" status="statusLG" reRender="mainForm"/>
+                    <apex:commandButton value="Next" onclick="licGrpNext(); return false;" reRender="mainForm" status="statusLG"/>
+                    <!-- Actions Functions for License Order Page Block -->
+                    <apex:actionFunction name="licGrpNextCall" action="{!licGrpNext}" reRender="mainForm" status="statusLG">
+                        <apex:param name="licGrpId" value="" assignTo="{!licGrpId}"/>
+                    </apex:actionFunction>
+                    
+                    <apex:actionStatus id="statusLG" onstart="disableButton(); return false;" onstop="enableButton(); return false;">
+                        <apex:facet name="start">
+                            <apex:image url="/img/loading.gif"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+                
+                <apex:pageMessage escape="false" summary="Your new license keys can only be assigned to one License Group.  License Groups are used to organize licenses in the License Portal for the License Administrator." severity="info" strength="2"/>
+                
+                <apex:pageMessage escape="false" summary="TO AVOID FUTURE LICENSING ISSUES, PLEASE MAKE SURE YOU CAREFULLY VERIFY THAT YOU ARE CHOOSING THE CORRECT LICENSE GROUP FOR THIS LICENSE(S)." severity="warning" strength="2"/>
+                <br/>
+                
+                <apex:pageBlockSection columns="1">
+                    <apex:outputPanel style="text-align: center; display: block;">
+                        <apex:commandButton value="Create License Group" action="{!createLicGrp}" style="" reRender="mainForm" status="statusLG"/>
+                    </apex:outputPanel>
+                    
+                    <apex:pageBlockTable value="{!licGrpList}" var="licGrpRec" styleClass="mainTable" first="{!startRow}" rows="{!rowsLimit}">
+                        <apex:column style="text-align:center">
+                            <apex:facet name="header">Selected</apex:facet>
+                            <input type="radio" name="selectedLG" value="{!licGrpRec.Id}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">License Group No.</apex:facet>
+                            <apex:outputLink value="/{!licGrpRec.Id}" target="_blank">{!licGrpRec.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">License Group Name</apex:facet>
+                            <apex:outputField value="{!licGrpRec.License_Group_Name__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Primary License Administrator</apex:facet>
+                            <apex:outputField value="{!licGrpRec.Primary_License_Administrator__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Related Accepted Quotes – 3 Most Recent</apex:facet>
+                            <apex:pageBlockTable value="{!licGrpRec.Quotes__r}" var="proposal" rendered="{!IF(licGrpRec.Quotes__r.size>0, true, false)}">
+                                <apex:column >
+                                    <apex:facet name="header">Quote Id</apex:facet>
+                                    <apex:outputLink value="/{!proposal.Id}" target="_blank">{!proposal.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Quote Name</apex:facet>
+                                    <apex:outputLink value="/{!proposal.Id}" target="_blank">{!proposal.Name}</apex:outputLink>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Quote Amount</apex:facet>
+                                    <apex:outputField value="{!proposal.Amount__c}"/>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Accepted Date</apex:facet>
+                                    <apex:outputField value="{!proposal.Accepted_Date__c}"/>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:outputPanel style="display:block; padding: 5px 10px;">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:left;">
+                                    Total no of records: {!totalRecords}
+                                </td>
+                                <td style="text-align:center; display:{!IF(totalRecords>5, 'auto', 'none')}">
+                                    <apex:commandButton value="<< First" reRender="mainForm" action="{!firstPage}" disabled="{!currentPage==1}"/>
+                                    <apex:commandButton value="< Prev" reRender="mainForm" action="{!prevPage}" disabled="{!currentPage==1}"/>
+                                    {!currentPage} / {!totalPage} &nbsp;
+                                    <apex:commandButton value="Next >" reRender="mainForm" action="{!nextPage}" disabled="{!currentPage==totalPage}"/>
+                                    <apex:commandButton value="Last >>" reRender="mainForm" action="{!lastPage}" disabled="{!currentPage==totalPage}"/>
+                                </td>
+                                <td style="text-align:right; display:{!IF(totalRecords>5, 'auto', 'none')}">
+                                    Records to display: &nbsp;&nbsp;
+                                    <apex:selectList value="{!rowsLimit}" size="1">
+                                        <apex:selectOption itemValue="5"/>
+                                        <apex:selectOption itemValue="10" rendered="{!totalRecords>5}"/>
+                                        <apex:selectOption itemValue="15" rendered="{!totalRecords>10}"/>
+                                        <apex:selectOption itemValue="20" rendered="{!totalRecords>15}"/>
+                                        
+                                        <apex:actionSupport event="onchange" reRender="mainForm" action="{!rowsLimitChanged}"/>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+
+            <!-- License Administrator Page Block -->
+            <apex:pageBlock title="Select License Administrator for '{!licGrpRec.License_Group_Name__c}'" id="licAdmBlock" rendered="{!showLicAdmBlock}" >
+                <apex:pageMessages />
+                <!-- License Administrator Page Block Buttons -->
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Cancel" action="{!cancel}" reRender="mainForm" status="statusLA"/>
+                    <apex:commandButton value="Back" action="{!licAdmBack}" reRender="mainForm" status="statusLA"/>
+                    <apex:commandButton value="Reset" onclick="resetLA(); return false;" reRender="mainForm" status="statusLA"/>
+                    <apex:commandButton value="Finish" onclick="licAdmFinish(); return false;" reRender="mainForm" status="statusLA"/>
+                    <!-- Actions Functions for License Administrator Page Block -->
+                    <apex:actionFunction name="licAdmFinishCall" action="{!licAdmFinish}" reRender="mainForm" status="statusLA">
+                        <apex:param name="licAdmId" value="" assignTo="{!licAdmId}"/>
+                    </apex:actionFunction>
+                    
+                    <apex:actionStatus id="statusLA" onstart="disableButton(); return false;" onstop="enableButton(); return false;">
+                        <apex:facet name="start">
+                            <apex:image url="/img/loading.gif"/>
+                            <img src="/img/loading.gif"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection >
+                    <apex:pageBlockTable value="{!licAdmList}" var="licAdmRec">
+                        <apex:column style="text-align:center">
+                            <apex:facet name="header">Selected</apex:facet>
+                            <input type="radio" name="selectedLA" value="{!IF(licAdmRec.Id != null, licAdmRec.Id, 'New')}" onChange="selectChanged();" />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">License Administrator Name</apex:facet>
+                            <apex:outputLink value="/{!licAdmRec.Id}" target="_blank" rendered="{!licAdmRec.Id != null}">{!licAdmRec.Name}</apex:outputLink>
+                            <apex:outputText value="New" style="font-weight: bold;" rendered="{!licAdmRec.Id == null}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Contact Name</apex:facet>
+                            <!--apex:outputField value="{!licAdmRec.Contact__c}" rendered="{!licAdmRec.Id != null}"/-->
+                            <apex:outputLink value="/{!licAdmRec.Contact__c}" target="_blank" rendered="{!licAdmRec.Contact__c != null}">{!licAdmRec.Contact__r.Name}</apex:outputLink>
+                            <apex:inputField value="{!newLicAdmRec.Contact__c}" id="newLicField" rendered="{!licAdmRec.Id == null}" html-disabled="true"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <script>
+                    selectChanged();
+                </script>
+            </apex:pageBlock>
+
+            <!-- Contact Selection Page Block -->
+            <apex:pageBlock title="Create License Group" id="ContBlock" rendered="{!showContBlock}">
+                <apex:pageMessages />
+                <!-- Contact Selection Page Block Buttons -->
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Skip" action="{!skip}" rendered="{!showSkip}" reRender="mainForm" status="statusContact"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}" reRender="mainForm" status="statusContact"/>
+                    <apex:commandButton value="Back" action="{!contButton}" reRender="mainForm" status="statusContact"/>
+                    <apex:commandButton value="Finish" action="{!contFinish}" reRender="mainForm" status="statusContact"/>
+                    
+                    <apex:actionStatus id="statusContact" onstart="disableButton(); return false;" onstop="enableButton(); return false;">
+                        <apex:facet name="start">
+                            <apex:image url="/img/loading.gif"/>
+                            <img src="/img/loading.gif"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+                
+                <apex:pageMessage escape="false" summary="Please enter a name for the license group. If no name is entered, the system will auto generate a name when the Contact is selected." severity="info" strength="2"/>
+                <br/>
+                
+                <apex:pageBlockSection >
+                    <apex:pageBlockTable value="{!licAdmList}" var="licAdm">
+                        <apex:column >
+                            <apex:facet name="header">License Group Name</apex:facet>
+                            <apex:inputField value="{!licGrpRec.License_Group_Name__c}"/>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Contact</apex:facet>
+                            <apex:inputField value="{!licAdmRec.Contact__c}">
+                                <apex:actionSupport event="onchange" action="{!contactChanged}" reRender="mainForm"/>
+                            </apex:inputField>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <br/><br/>
+                <apex:pageMessage escape="false" summary="If you are unsure if new License Group is needed at this point, you can click “Skip”. You will still have the ability to create a new License Group from within the Quote page." severity="info" strength="2"/>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

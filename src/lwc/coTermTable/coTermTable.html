@@ -1,0 +1,19 @@
+<!--
+ - Created by csalgado on 6/16/2020.
+ -->
+
+<!-- Co Term Table -->
+<template>
+    <div>
+        <template if:true={contractList}>
+            <lightning-datatable key-field="Id"
+                                 data={contractList}
+                                 columns={columns}
+                                 onrowselection={verifyContract}>
+            </lightning-datatable>
+        </template>
+        <template if:true={error}>
+            <h1>An error occurred while loading the Contract list!</h1>
+        </template>
+    </div>
+</template>

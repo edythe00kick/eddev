@@ -1,0 +1,41 @@
+<apex:page tabStyle="Apttus_Proposal__Proposal__c" showHeader="false" sidebar="false">
+    <input id="rescindFromDealDesk" type="button" style="visibility: hidden;" class="btn" value="Rescind from Deal Desk" onclick="updateApprovalStage()" />
+    
+    <script src="/soap/ajax/38.0/connection.js" />
+    <script type="text/javascript">
+          
+        var current_loc = String(window.location);
+        var prop_id = '';
+        if(current_loc.indexOf('?id=') != -1) {
+            prop_id = current_loc.substr(current_loc.indexOf('?id=') + 4, 15);
+        }
+            
+        function updateApprovalStage(){
+            try{ 
+                sforce.connection.sessionId = '{!GETSESSIONID()}';
+                
+                var quoteToUpdate = new sforce.SObject("Apttus_Proposal__Proposal__c"); 
+                
+                quoteToUpdate.Id = prop_id;
+                quoteToUpdate.Apttus_Proposal__Approval_Stage__c = 'Draft';   
+                
+                var result = sforce.connection.update([quoteToUpdate]);
+                
+                if(result[0].success == "true"){ 
+                    window.top.location.href = "/" + prop_id;
+                } 
+                else{ 
+                    alert("An Error has Occurred. Error: " + result[0].errors.message ); 
+                }
+            } 
+            catch(e){ 
+                alert( 
+                    "An Error has Occurred. Error: " + e 
+                ); 
+            }     
+        }
+        
+        document.getElementById("rescindFromDealDesk").click();
+        
+    </script>
+</apex:page>

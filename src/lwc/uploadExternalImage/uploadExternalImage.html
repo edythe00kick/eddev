@@ -1,0 +1,69 @@
+<!--
+ - Created by chris on 1/7/2020.
+ -->
+
+<!-- Upload External Image -->
+<template>
+    <lightning-card title="Upload External Image" icon-name="standard:actions_and_buttons">
+        <div class="slds-m-bottom_small slds-m-left_large">
+            <lightning-button label="Upload" onclick={openModal}></lightning-button>
+            <!-- <lightning-input type="text" name="urlInput" value={imageURL} label="External URL" read-only="true"></lightning-input> -->
+            <lightning-button label="Refresh List" onclick={refreshList} class="slds-m-left_medium"></lightning-button>
+        </div>
+        <div>
+            <c-upload-external-image-list parent-record-id={recordId}></c-upload-external-image-list>
+        </div>
+    </lightning-card>
+
+    <!-- START MODAL -->
+    <template if:true={modalState}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Upload External Image</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    INSTRUCTIONS:
+                    <br>
+                    1. Choose File and click the Upload Image button.
+                    <br>
+                    2. Component sends the image to be hosted externally and outputs the external URL in the list related list.
+                    <br>
+                    NOTE: Click the Refresh List button until you see the URL populate, then refresh the page to see the image render in your Article.
+                    <br>
+                    3. System will copy & paste the image HTML tag into your Knowledge Article.
+                    <br>
+                    - "Resolution" field for 'Break Fix' Articles
+                    <br>
+                    - "Body" field for 'How To' Articles
+                    <br>
+                    NOTE: You can cut and paste the image to move it to where you need to.
+                    <br>
+                    <br>
+                    SUPPORTED FILE TYPES: .PNG
+                    <!--CURRENTLY NOT SUPPORTED: .JPG, .JPEG, .GIF, .SVG -->
+                    <br>
+                    <br>
+                    MAX FILE SIZE: 9 MB
+                    <br>
+                    <br>
+                    <input type="file" id="fileInput" />
+                    <!-- <input type="file" id="fileInput" value={imageFile} /> -->
+
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Upload" variant="brand" onclick={uploadMethod2}></lightning-button>
+                    <!-- <lightning-button label="Upload" variant="brand" onclick={saveMethod}></lightning-button> -->
+                    &nbsp;&nbsp;
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+
+        <!-- START BACKDROP -->
+        <div class="slds-backdrop slds-fade-in-open"></div>
+        <!-- END BACKDROP -->
+
+    </template>
+    <!-- END MODAL -->
+</template>

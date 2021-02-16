@@ -1,0 +1,7 @@
+<apex:page standardController="Lead" >
+
+    <flow:interview name="Push_Back_Flow2"  finishlocation="/{!$CurrentPage.parameters.id}" >
+     <apex:param name="LeadID" value="{!$CurrentPage.parameters.id}"/>
+   </flow:interview>
+
+</apex:page>

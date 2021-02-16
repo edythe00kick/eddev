@@ -1,0 +1,89 @@
+<!-- Author: Sharma Nemani | W-013090 | Case: 00293335 | Date: 09/11/2019   -->
+<!-- Description: This Component is to display the required fields on the Case Close layout and the picklist values in 
+				  'Case Category' and 'Case Reason' fields for Community  -->
+<aura:component controller="CustomCaseCloseComponent" implements="force:lightningQuickAction,flexipage:availableForRecordHome,force:hasRecordId">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="caseToBeClosed" type="CustomCaseCloseWrapper" />
+    <aura:attribute name="caseRec" type="Case" />
+    <aura:attribute name="caseCat" type="Map" />
+    <aura:attribute name="caseReason" type="String[]" />
+    <aura:attribute name="acc" type="Account[]" />
+    
+    <div class="c-container">
+            <aura:if isTrue="{!v.caseToBeClosed!=null}">
+            	<lightning:select name="select1" label="Status" value="{!v.caseRec.Status}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.caseToBeClosed.caseStatus}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>  
+                
+                <div onkeyup="{! c.handleKeyUp }">
+                    <lightning:input
+                        aura:id="enter-search"
+                        name="enter-search"
+                        label="Search Account"
+                        type="search"
+                        onkeyup="{!c.handleKeyUp}"
+                        value="{!v.caseRec.Account.Name}"
+                    />
+                    <aura:if isTrue="{!not(empty(v.acc))}">
+                    	<ul>
+                    		<aura:iteration items="{!v.acc}" var="accVal">
+                                <li data-id="{!accVal.Id}" data-name="{!accVal.Name}" onclick="{!c.selectedAcc}">{!accVal.Name}</li>
+                            </aura:iteration>
+                    	</ul>
+                    </aura:if>
+                    
+                </div>
+               <!-- <lightning:input name="input1" label="Account" value="{!v.caseRec.Account.Name}" />-->
+                
+                <lightning:input type="checkbox" label="Make Close Comment Public" name="input1" value="{!v.caseRec.Make_Close_Comment_Public__c}"/>
+                
+                <lightning:select name="select1" label="Type" value="{!v.caseRec.Type}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.caseToBeClosed.caseType}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+                
+                <lightning:select name="select1" label="Product" value="{!v.caseRec.Products__c}">
+                    <option value="">choose one...</option> 
+                    <aura:iteration items="{!v.caseToBeClosed.caseProduct}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+                
+                <lightning:select name="select1" label="Case Category" value="{!v.caseRec.Case_Category__c}" onchange="{!c.changeCaseCategeory}">
+                    <option value="">choose one...</option> 
+                    <aura:iteration items="{!v.caseToBeClosed.lstCaseCateGeory}" var="item">
+                        <option value="{!item.ccName}">{!item.ccName}</option>
+                    </aura:iteration>
+                </lightning:select>
+                <aura:if isTrue="{!not(empty(v.caseReason))}">
+                	<lightning:select name="select1" label="Case Reason" value="{!v.caseRec.Case_Detail__c }">
+                        <option value="choose">choose one...</option> 
+                        <aura:iteration items="{!v.caseReason}" var="item">
+                            <option value="{!item}">{!item}</option>
+                        </aura:iteration>
+                    </lightning:select>
+                </aura:if>
+                <lightning:select name="select1" label="Case Currency" value="{!v.caseRec.CurrencyIsoCode}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.caseToBeClosed.lstCaseCaseCurrency}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+                
+                <lightning:select name="select1" label="Severity" value="{!v.caseRec.Severity__c}">
+                    <option value="">choose one...</option>
+                    <aura:iteration items="{!v.caseToBeClosed.lstCaseSeverity}" var="item">
+                        <option value="{!item}">{!item}</option>
+                    </aura:iteration>
+                </lightning:select>
+                
+                <lightning:button variant="brand" label="Save" title="Save" onclick="{! c.save }" />
+            </aura:if>
+    </div>
+    
+</aura:component>

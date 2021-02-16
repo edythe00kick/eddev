@@ -1,0 +1,74 @@
+.THIS .registerForm{position: relative;border: 1px solid #ffffff; background: none;padding: 20px;}
+.THIS .createDiv{border-bottom: 2px solid;padding-bottom: 5px;}
+.THIS .createText{ font-size: 36px;  font-family: sans-serif;color: #ffffff;vertical-align: middle;
+    padding: 0px 15px;color:black}
+.THIS .cHeaderTopInternalWrapper slds-grid slds-is-relative slds-container--fluid slds-grid--vertical-align-center {display:none;}
+.THIS .comm-navigation forceCommunityGlobalNavigation {diaplay:none;}
+.THIS .crossimg{position: absolute;top: -25px;right: -10px;}
+.THIS .requiredMsgDiv{padding: 10px 0px 0px 0px;text-align: left;font-size: 16px;color:#c23934;font-family: "Proxima Nova";}
+.THIS .leftFormDiv{padding:20px 20px 0px 0px;width:50%;float:left;}
+.THIS .rightFormDiv{padding: 20px 0px 0px 20px;width:50%;float:right;}
+.THIS .registerForm input::-webkit-input-placeholder {font-size: 22px;font-family: "Proxima Nova"; color: #b0b0b0;}
+.THIS .registerForm input::-moz-placeholder{font-size: 22px;font-family: "Proxima Nova"; color: #b0b0b0;}
+.THIS .registerForm input::-ms-input-placeholder{font-size: 22px;font-family: "Proxima Nova"; color: #b0b0b0;}
+.THIS .registerForm input::-moz-placeholder{font-size: 22px;font-family: "Proxima Nova"; color: #b0b0b0;}
+.THIS .registerForm input:focus, .THIS .registerForm select:focus{outline:0px;}
+.THIS .registerForm input{padding-left:10px;width:100%;font-size: 22px;font-family: "Proxima Nova"; color: #333;}
+.THIS .registerForm select{font-size: 22px;font-family: "Proxima Nova"; color: #333;width:100%;height: 34px;padding-left:10px;}
+.THIS .agreeDiv{padding:20px 0px 0px 0px;}
+.THIS .agreeDiv input[type=checkbox]{width:20px;height:20px;display:inline-block;vertical-align: middle;}
+.THIS .agreeText{color:#fff;padding-top:15px;display:inline-block;vertical-align: middle;text-align:left;text-decoration: underline !important;}
+.THIS #errorMsg{font-size: 16px;font-family: "Proxima Nova"; color: #c23934;display:none;    padding: 10px 0px;}
+.THIS .SIGN_UP, .THIS .cancel, .THIS .signInForSmall{background:transparent;  font-size: 20px;  font-family: sans-serif;  color: #ffffff;padding:10px 20px;border:1px solid #ffffff;border-radius:100px;text-transform:uppercase;}
+.THIS .cancel{margin-left:20px;color:}
+.THIS .myheader {background-color: rgb(0, 153, 222); color:white;}
+.THIS .myheader span {font-size: 16px;}
+.THIS .myheader button {bottom:3px;border:none;background-color:white}
+.THIS .myheader button:hover {background: cornsilk;color: orangered;}
+.THIS .signupbtndiv a, .THIS .signupbtndiv a:hover, .THIS .signInDivForSmallView a, .THIS .signInDivForSmallView a:hover{color:#fff;text-decoration:none;}
+.THIS .inputLabel{font-size: 20px;font-family:sans-serif; color: #1c647c;}
+.THIS #forgot_anchor1 {background:none; color:#000000;margin-bottom:5px;}
+.THIS #confirmBox{position: fixed;top: 30vh;left: 14.7vw;width:70%;}
+.THIS .cross{float:right;}
+.THIS .SIGN_UP, .THIS .cancel, .THIS a{width: 10%;margin-top: 5px;margin-bottom: 15px;color: #ffffff;cursor: pointer;background-color: rgb(0, 153, 222);display: inline-block;
+    text-align: center;vertical-align: middle;background-image: none;border: 1px solid transparent;white-space: nowrap;
+    padding: 10px 12px;font-size: 16px;font-family: sans-serif;font-weight: 700;line-height: 1.42857143;border-radius: 2px;}
+.THIS a {width: 100%}
+.THIS .blockDiv{background-color: rgb(0, 0, 0);border: medium none;cursor: wait;height: 100%;left: 0;margin: 0; opacity: 0.6;
+    padding: 0;position: fixed;top: 0;width: 100%;z-index: 1000;
+}
+.THIS .pleaseWait{background-color: rgb(0, 0, 0);border: medium none;border-radius: 10px;color: rgb(255, 255, 255);
+    cursor: wait;font-size: 20px;left: 35%;margin: 0;opacity: 0.6;padding: 10px;position: fixed;text-align: center;
+    top: 40%;width: 30%;z-index: 1011;
+}
+.THIS .hidePleaseWaitBlock{display:none;}
+.THIS .siteforceLoadingBalls.global {text-align: center;background: none;border-radius: 2px;
+    padding: 40px;color: #ccc;top: 50%;left: 50%;margin-left: -86px;margin-top: -50px;position: absolute;
+    z-index: 99999; display: block;font-size: 20px;}
+.THIS .siteforceLoadingBalls.loadingCon {-webkit-transition: all .3s ease-in-out 0s; transition: all .3s ease-in-out 0s;
+    margin-top: 10px;}
+
+.THIS .siteforceLoadingBalls .loadingBall {display: inline-block;width: 1em;height: 1em;border-radius: 1em;
+    -webkit-animation: bouncedelay 1.4s infinite ease-in-out;animation: bouncedelay 1.4s infinite ease-in-out;
+    -webkit-animation-delay: -.48s;animation-delay: -.48s;-webkit-animation-fill-mode: both;animation-fill-mode: both;
+    background-color: #c2cacf;margin-right: 16px;background:none;
+}
+.THIS .siteforceLoadingBalls .loadingBall.second {-webkit-animation-delay: -.32s;animation-delay: -.32s;}
+.THIS .siteforceLoadingBalls .loadingBall {display: inline-block;width: 1em;height: 1em;border-radius: 1em;
+    -webkit-animation: bouncedelay 1.4s infinite ease-in-out;animation: bouncedelay 1.4s infinite ease-in-out;
+    -webkit-animation-delay: -.48s;animation-delay: -.48s;-webkit-animation-fill-mode: both;animation-fill-mode: both;
+    background-color: #c2cacf;margin-right: 16px;}
+.THIS .siteforceLoadingBalls .loadingBall.third {-webkit-animation-delay: -.16s;animation-delay: -.16s;margin-right: 0;}
+.THIS .siteforceLoadingBalls .loadingBall {
+    display: inline-block;width: 1em;height: 1em;border-radius: 1em;
+    -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+    animation: bouncedelay 1.4s infinite ease-in-out;
+    -webkit-animation-delay: -.48s; animation-delay: -.48s;
+    -webkit-animation-fill-mode: both;animation-fill-mode: both;
+    background-color: #c2cacf;margin-right: 16px;
+}
+@media screen and (min-width: 320px) and (max-width: 767px) {
+    .THIS .createText{ font-size: 20px; }
+     .THIS .rightFormDiv{padding: 20px 0px 0px 0px !important;width:100%;}
+    .THIS .leftFormDiv{padding:20px 0px 0px 0px !important;width:100%;}
+}

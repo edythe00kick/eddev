@@ -1,0 +1,38 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="heading1" type="string" default=""/>
+    <aura:attribute name="description1" type="string" default=""/>
+    <aura:attribute name="lightningIcon1" type="string" default=""/>
+    <aura:attribute name="Tile1Backgroundimage" type="string" default=""/>
+    <aura:attribute name="PageLink1" type="string" default=""/>
+    <aura:attribute name="Color1" type="string" default="#fff"/>
+    
+    <aura:attribute name="heading2" type="string" default=""/>
+    <aura:attribute name="description2" type="string" default=""/>
+    <aura:attribute name="lightningIcon2" type="string" default=""/>
+    <aura:attribute name="Tile2Backgroundimage" type="string" default=""/>
+    <aura:attribute name="PageLink2" type="string" default=""/>
+    <aura:attribute name="Color2" type="string" default="#fff"/>
+    
+    <aura:attribute name="heading3" type="string" default=""/>
+    <aura:attribute name="description3" type="string" default=""/>
+    <aura:attribute name="lightningIcon3" type="string" default=""/>
+    <aura:attribute name="Tile3Backgroundimage" type="string" default=""/>
+    <aura:attribute name="PageLink3" type="string" default=""/>
+    <aura:attribute name="Color3" type="string" default="#fff"/>
+    
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--4-of-12 LeadDiv">
+                    <c:AL_LeadsOppoResources tileHead="{!v.heading1}" tileDesc="{!v.description1}" lightningIcon="{!v.lightningIcon1}" backImage="{!v.Tile1Backgroundimage}" PageLink="{!v.PageLink1}" color="{!v.Color1}"/>
+                </div>
+                <div class="slds-col slds-size--4-of-12 Oppodiv">
+                    <c:AL_LeadsOppoResources tileHead="{!v.heading2}" tileDesc="{!v.description2}" lightningIcon="{!v.lightningIcon2}" backImage="{!v.Tile2Backgroundimage}" PageLink="{!v.PageLink2}" color="{!v.Color2}"/>
+                </div>
+                <div class="slds-col slds-size--4-of-12 ResourceDiv">
+                    <c:AL_LeadsOppoResources tileHead="{!v.heading3}" tileDesc="{!v.description3}" lightningIcon="{!v.lightningIcon3}" backImage="{!v.Tile3Backgroundimage}" PageLink="{!v.PageLink3}" color="{!v.Color3}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    </aura:component>

@@ -1,0 +1,20 @@
+<!-- Author: Sharma Nemani | W-013136 & W-013397| Case: 00302811 & 00302812
+	   Date: 09/26/2019. Modified the code again on 10/16/2019 for W-013397
+Description: This Visualforce Page is to display the error message on the Quote - Related List's
+				  "Delete" button that's on Opportunity and License Group. We're preventing anyone from deleting Quotes using this VF Page and
+				  Controller.
+-->
+<apex:page standardController="SBQQ__Quote__c" extensions="PreventQuoteDeletionController">
+    <script>
+    
+        var quoteId = "{!$CurrentPage.parameters.id}";
+        var retUrl = '{!retUrl}';
+        
+        if(confirm('You are not allowed to delete this Quote.')){
+            window.top.location.href = '{!retUrl}';
+        }else{ // retUrl
+            window.top.location.href = '{!retUrl}';
+        }
+    
+    </script>
+</apex:page>

@@ -1,0 +1,28 @@
+<apex:page standardController="Lead" extensions="LeadProcessController">
+
+    <apex:form >
+    <apex:actionFunction action="{!getRenderVariable}" name="myFunction" reRender="newflow" >
+        <apex:param name="q" assignTo="{!displayVal}" value="" />
+    </apex:actionFunction>
+    </apex:form>
+    
+    
+<script>
+     var a = '{!country}';  
+     var b = '{!profileName}'; 
+         if(a != 'Australia' && a != '' && a != 'New Zealand' && b == 'Alteryx - ANZ - Customer Support'){
+          myFunction(false);
+          alert('You can convert a lead only for Australia / New Zealand address');
+          window.location.href = '/'+'{!leadId}' ;
+     }
+     else{
+             myFunction(true);
+     }
+</script>  
+
+    <apex:outputPanel id="newflow">
+       <flow:interview name="AskOpportunityCreation" interview="{!myflow}"  finishlocation="{!OID}"  rendered="{!displayVal}">
+       </flow:interview>
+    </apex:outputPanel>
+
+</apex:page>

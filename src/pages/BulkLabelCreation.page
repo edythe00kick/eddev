@@ -1,0 +1,106 @@
+<apex:page controller="BulkLabelCreationController">
+	<apex:form >
+		<style>
+			.shipmentsTable {
+				border-collapse: collapse;
+			}
+
+			.shipmentsTable td,
+			.shipmentsTable th {
+				border: 1px solid grey;
+			}
+
+			.shipmentsTable th {
+				background: #eee;
+			}
+		</style>
+	    <apex:pageBlock title="Bulk Label Creation" id="all">
+	    	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    		<tr>
+	    			<td style="width: 40px;">
+	    				<apex:image rendered="{! startPoller }" value="/img/loading32.gif"
+	    					width="30px"/>
+	    			</td>
+	    			<td>
+	    				<apex:pageMessages escape="false"/>
+	    			</td>
+	    		</tr>
+	    	</table>
+			<apex:actionPoller id="poller" action="{! checkShipmentStatus }" 
+				reRender="all" interval="5" enabled="{! startPoller }"/>
+	    	<apex:pageBlockSection collapsible="false">
+	    		<apex:pageBlockSectionItem rendered="{! isDisplayUpload }">
+	    			<apex:outputLabel value="Select CSV file"/>
+	    			<apex:inputFile value="{! attachBody }" fileName="{! csvAttachment.Name }"/>
+	    		</apex:pageBlockSectionItem>
+	    	</apex:pageBlockSection>
+	    	<apex:outputPanel rendered="{! customShipmentsListtoDisplay.size > 0 }">
+		    	<table width="100%" cellspacing="0" cellpadding="3px" class="shipmentsTable">
+		    		<tr>
+		    			<th>To Contact Name</th>
+		    			<th>To Account Name</th>
+		    			<th>Phone</th>
+		    			<th>Street 1</th>
+		    			<th>Street 2</th>
+		    			<th>Street 3</th>
+		    			<th>City</th>
+		    			<th>State</th>
+		    			<th>Postal Code</th>
+		    			<th>Ship to Email</th>
+		    			<th>Country</th>
+		    			<th>Service Type</th>
+		    			<th>Weight</th>
+		    			<th>Length</th>
+		    			<th>Width</th>
+		    			<th>Height</th>
+		    			<th>Declared Value</th>
+		    			<th>Part Number</th>
+		    			<th>Product Description</th>
+		    			<th>Country of Manufacture</th>
+		    			<th>HS Code</th>
+		    			<th>Contact Id</th>
+		    			<th>Is Return</th>
+		    			<th>Fulfillment Product</th>
+		    		</tr>
+		    		<apex:repeat value="{! customShipmentsListtoDisplay }" var="shipment">
+			    		<tr>
+			    			<td>{! shipment.toContactName }</td>
+			    			<td>{! shipment.toAccountName }</td>
+			    			<td>{! shipment.toPhone }</td>
+			    			<td>{! shipment.toStreet1 }</td>
+			    			<td>{! shipment.toStreet2 }</td>
+			    			<td>{! shipment.toStreet3 }</td>
+			    			<td>{! shipment.toCity }</td>
+			    			<td>{! shipment.toState }</td>
+			    			<td>{! shipment.toPostalCode }</td>
+			    			<td>{! shipment.shipToEmail }</td>
+			    			<td>{! shipment.toCountry }</td>
+			    			<td>{! shipment.serviceType }</td>
+			    			<td>{! shipment.weight }</td>
+			    			<td>{! shipment.length }</td>
+			    			<td>{! shipment.width }</td>
+			    			<td>{! shipment.height }</td>
+			    			<td>{! shipment.declaredValue }</td>
+			    			<td>{! shipment.partNumber }</td>
+			    			<td>{! shipment.productDescription }</td>
+			    			<td>{! shipment.countryOfManufacture }</td>
+			    			<td>{! shipment.hsCode }</td>
+			    			<td>{! shipment.contactId }</td>
+			    			<td>{! shipment.isReturn }</td>
+			    			<td>{! shipment.fulfillmentProduct }</td>
+			    		</tr>
+		    		</apex:repeat>
+		    	</table>
+	    	</apex:outputPanel>
+	    	<apex:pageBlockButtons location="bottom">
+	    		<apex:outputLink value="/apex/BulkLabelCreation" 
+	    			rendered="{! NOT(isDisplayUpload) }"
+	    			styleClass="btn"
+	    			style="padding: 4px 3px; text-decoration: none; color: black;">Re-upload CSV</apex:outputLink>
+	    		<apex:commandButton value="Create Shipments" action="{! createShipments }" 
+	    			rendered="{! NOT(isDisplayUpload) }" reRender="all"/>
+	    		<apex:commandButton value="Parse" action="{! parseCurrentFile }" rendered="{! isDisplayUpload }"/>
+	    	</apex:pageBlockButtons>
+	    </apex:pageBlock>
+    </apex:form>
+</apex:page>

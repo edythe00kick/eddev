@@ -1,0 +1,6 @@
+<apex:page standardController="Opportunity">
+
+ <flow:interview name="ECUR_Opportunity_Chatter_Post" finishLocation="/{!$CurrentPage.parameters.FinishUrl}">
+        <apex:param name="OpportunityId" value="{!$CurrentPage.parameters.Id}"/>
+ </flow:interview>
+</apex:page>

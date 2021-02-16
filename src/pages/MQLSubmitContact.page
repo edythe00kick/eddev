@@ -1,0 +1,8 @@
+<apex:page standardController="Contact" extensions="LDRFlowControllerContact">
+    <flow:interview name="LDR_flow_MQL_Submit_Contact" interview="{!customFlow}" finishLocation="{!Redirection}">
+        <apex:param name="RecordId" value="{!$CurrentPage.parameters.Id}"/>
+        <apex:param name="RecordOwnerId" value="{!$CurrentPage.parameters.OwnerID}"/>
+        <apex:param name="CurrentUserId" value="{!$CurrentPage.parameters.CurrentUserID}"/>
+        <apex:param name="AccountId" value="{!$CurrentPage.parameters.AccountID}"/>
+    </flow:interview>
+</apex:page>

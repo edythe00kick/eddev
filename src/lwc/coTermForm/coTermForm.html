@@ -1,0 +1,22 @@
+<!--
+ - Created by csalgado on 6/16/2020.
+ -->
+
+<!-- Co Term Form -->
+<template>
+    <h1 class="slds-col slds-align_absolute-center">Confirm this is the Contract you want to Co-Term?</h1>
+    <br/>
+    <lightning-record-view-form class="slds-col slds-align_absolute-center"
+                                record-id={selectedContractId}
+                                object-api-name="Contract">
+        <!--<lightning-output-field field-name="Id"></lightning-output-field>
+        <lightning-output-field field-name="Name"></lightning-output-field>-->
+        <lightning-output-field field-name="Account_Name__c"></lightning-output-field>
+        <lightning-output-field field-name="ContractNumber"></lightning-output-field>
+        <lightning-output-field field-name="StartDate"></lightning-output-field>
+        <lightning-output-field field-name="EndDate"></lightning-output-field>
+    </lightning-record-view-form>
+    <br/>
+    <lightning-button class="slds-col slds-align_absolute-center" variant="brand" label="Confirm" title="Confirm Contract"
+                      onclick={coTermOpp}></lightning-button>
+</template>

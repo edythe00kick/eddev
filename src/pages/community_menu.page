@@ -1,0 +1,25 @@
+<apex:page showHeader="false">
+    <apex:composition template="comm_template">
+        <apex:define name="body">
+        <div align="center">
+          <a href="community_menu"><img src="{!$Resource.forums_icon_on}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/product-training"><img src="{!$Resource.training_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/community/customer-portal"><img src="{!$Resource.support_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="moduleexchange_menu?criteria=BESTANSWERS&feedtype=RECENT&dc=Module_Exchange"><img src="{!$Resource.module_icon_off}" /></a>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="comm_line"></div>
+        <br />
+        <div class="comm_margin">
+<div id="header-wrapper2">
+          <h3 class="hdr_dg">Forum &#38; Knowledge Base</h3>
+          <h3 class="hdr_lg">Combines case solutions, knowledgebase articles, and community participation into a searchable format.</h3>
+        <br />
+        <h3 class="hdr_rss"><a href="http://www.alteryx.com/rss/commfeed.rss"><img src="{!$Resource.rss_image}" style="vertical-align:middle" /> Subscribe to our RSS feed</a></h3>
+        <br />
+</div>
+        </div>
+          <apex:include pageName="Communities_main"/>
+        </apex:define> 
+    </apex:composition>
+ </apex:page>

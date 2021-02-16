@@ -1,0 +1,18 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="CPQ_QuoteExtController"  >
+	<apex:actionStatus id="pageStatus">
+		<apex:facet name="start">
+			<apex:outputPanel >
+				<img src="/img/loading32.gif" width="25" height="25" />
+				<apex:outputLabel value="Loading..."/>
+			</apex:outputPanel>
+		</apex:facet>
+	</apex:actionStatus>
+	<apex:form >
+		<apex:commandButton value="Click Here To Recall Approval" rerender="rerenderId" status="pageStatus" action="{!onRecall}"/>
+	</apex:form>
+	<script>
+		window.onload = function() {
+
+		}
+	</script>
+</apex:page>

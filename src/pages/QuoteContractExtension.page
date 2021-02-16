@@ -1,0 +1,355 @@
+<apex:page standardcontroller="SBQQ__Quote__c" extensions="QuoteContractExtensionCtrl">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <apex:form >
+            <apex:slds />
+            <ul id="mainUL">
+                <li>
+                    <div >
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered" >
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Select Contract">Select Contract</div>
+                                  </th>
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Contract Name</div>
+                                  </th>
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Contract Number</div>
+                                  </th>
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Account Name</div>
+                                  </th>
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Status</div>
+                                  </th>
+                                  
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Contract Start Date</div>
+                                  </th>
+                                      
+                                  <th class="" scope="col">
+                                      <div class="slds-truncate" title="Contract Name">Contract End Date</div>
+                                  </th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbl"></tbody>
+                        </table>
+                    </div>
+                    <br></br>
+                    <button class="slds-button slds-button_brand" onclick="getAllSelectedContracts();return false;">Create Related Contract</button>
+                    <button class="slds-button slds-button_brand" onclick="backToQuote();return false;">Cancel</button>
+                </li>
+                <br></br>
+                <li></li>
+            </ul>
+            
+            <ul id="2ndUL">
+              <li>
+                       <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                              <div class="slds-checkbox">
+                                <input type="checkbox" name="options" id="checkbox-44" value="checkbox-44" checked="" />
+                                <label class="slds-checkbox__label" for="checkbox-44">
+                                  <span class="slds-checkbox_faux"></span>
+                                  <span class="slds-form-element__label">Search Accounts</span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>                 
+              </li>
+              <br></br> 
+                                    
+               <li><Span id="selectedAccount" ></span></li>
+                                    
+              <br></br>                     
+              <li>
+                    <label id="searchLabel" class="slds-form-element__label" for="searchText">Select Contract</label>
+                    <div class="slds-form-element__control">
+                        <input type="text" id="searchText" placeholder="Search By Contract Number" class="slds-input" onkeyUp="searchRecords(this.value);return false;"/>
+                    </div>
+                    
+                    <div id="contractsAfterAccount" class="slds-hide">
+                        <br></br>
+                        	<div class="slds-form-element">
+                              <label class="slds-form-element__label" for="select-01">Select Contract Related To Above Account : </label>
+                              <div class="slds-form-element__control">
+                                <div class="slds-select_container">
+                                  <select class="slds-select" id="selectAccContracts" onchange="selectedContractAfterSearch(this.options[this.selectedIndex].value,this.options[this.selectedIndex]);return false;">
+                                    	
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                    </div>
+                    <ul id="searchResult" class="slds-list--vertical"></ul>
+              </li>
+            </ul>
+                                    
+                                    
+                                    
+            <div class="demo-only slds-hide" id="toast" style="height:4rem">
+              <div class="slds-notify_container slds-is-relative">
+                <div class="slds-notify slds-notify_toast slds-theme_warning" role="status">
+                  <span class="slds-assistive-text">warning</span>
+                  <span class="slds-icon_container slds-icon-utility-warning slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
+                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                      
+                    </svg>
+                  </span>
+                  <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small "> you are not allowed to view this page .</h2>
+                  </div>
+                  <div class="slds-notify__close">
+                    <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close">
+                      <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        
+                      </svg>
+                      <span class="slds-assistive-text">Close</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </apex:form>
+        
+        <script>
+            var selected = '';
+            var selectedAccountId = '';  
+            var allowedUser = '{!allowed}';
+                                      
+            // 2 called while searching
+            function searchRecords(searchKey) {
+                    selectedAccountId = '';
+                    $('#selectedAccount').html('');
+                    if($('#checkbox-44').is(":checked")){
+                        $('#contractsAfterAccount').addClass('slds-hide');
+                //$('#searchText1').val(''); selectAccContracts
+                		$('#selectAccContracts').html('');	
+                        searchAccounts(searchKey);
+                    }else{
+                        searchContracts(searchKey);
+                    }
+            }
+            // while seaching Contracts
+            function searchContracts(keyword){
+                	$('#searchResult').html('');
+                	
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.QuoteContractExtensionCtrl.getContracts}',
+                        keyword,availableContracts,selectedAccountId,'{!quoteId}', //Eddie Wong W-004529 3/31/2020 "Added !quoteId"
+                        function(result, event){
+                            if (event.status) {
+                                var str = '';
+                				if(selectedAccountId=='' || selectedAccountId==undefined || selectedAccountId == null){
+                						for(var i=0;i<result.length;i++){
+                							console.log(result[i].ContractNumber);
+                                            str+='<li class="slds-list__item"><a data-id="'+result[i].Id+'" data-name="'+result[i].Name+'" data-status="'+result[i].Status+'" data-connum="'+result[i].ContractNumber+'" data-enddate="'+result[i].EndDate+'" data-startdate="'+result[i].StartDate+'" data-acc="'+result[i].Account.Name+'" onclick="selectedContractAfterSearch('+'\''+result[i].ContractNumber+'\''+',this);return false;">'+result[i].Name+'</a><li>';
+                                        }
+                                        if(str!=''){
+                                            $('#searchResult').html(str);
+                                        }else{
+                                            $('#searchResult').html('');
+                                            $('#searchResult').html('<p style="color:red">No Contract Found OR Already Available In Above Table</p>');
+                                        }
+                				}
+                
+                				if(selectedAccountId != '' && selectedAccountId != undefined && selectedAccountId != null){
+                					str+= '<option value="" selected="true" disabled="true"> Please select contract </option>';
+                					for(var i=0;i<result.length;i++){
+                						str+='<option data-id="'+result[i].Id+'" data-name="'+result[i].Name+'" data-status="'+result[i].Status+'" data-enddate="'+result[i].EndDate+'" data-acc="'+result[i].Account.Name+'" data-startdate="'+result[i].StartDate+'"  value="'+result[i].ContractNumber+'"> '+result[i].Name+' </option>';
+                                    }
+                                    if(str!='' && str!='<option value="" selected="true" disabled="true"> Please select contract </option>'){
+                                    	$('#selectAccContracts').html(str);
+                                    }else{
+                                        $('#selectAccContracts').html('<option value="" selected="true" disabled="true"> No Contract Found OR Already Available In Above Table </option>');
+                						//$('#selectAccContracts').html('<p style="color:red">No Contract Found OR Already Available In Above Table</p>');
+                						
+                                    }
+                				}
+                                
+                            }else if (event.type === 'exception') {
+                               
+                            } else {
+                                //document.getElementById("responseErrors").innerHTML = event.message;
+                            }
+                        }, 
+                        {escape: true}
+                    );
+            }
+            // while seaching Accounts
+            function searchAccounts(keyword){
+                $('#searchResult').html('');
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.QuoteContractExtensionCtrl.getAccounts}',
+                        keyword,
+                        function(result, event){
+                            if (event.status) {
+                                var str = '';
+                                for(var i=0;i<result.length;i++){ 
+                                    str+='<li class="slds-list__item"><a onclick="selectedAccountAfterSearch($(this).text(),this);return false;" data-id="'+result[i].Id+'">'+result[i].Name+'</a><li>';
+                                }
+                                if(str!=''){
+                                    $('#searchResult').html(str);
+                                }else{
+                                    $('#searchResult').html('');
+                                    $('#searchResult').html('No Account Found');
+                                }
+                            }else if (event.type === 'exception') {
+                               
+                            } else {
+                                //document.getElementById("responseErrors").innerHTML = event.message;
+                            }
+                        }, 
+                        {escape: true}
+                    );
+            }
+            
+            // when conracts are clicked after search 
+            function selectedContractAfterSearch(removeResults,availableResultClicked){
+                // not to search contracts avaialble in availableContracts again.
+                availableContracts.push(availableResultClicked.getAttribute("data-id"));
+                
+                selected = removeResults;
+                if(selected=='Please select contract'){
+                    return ;
+                 }
+                
+                if($('#checkbox-44').is(":checked")){
+                    //$('#searchText1').val(removeResults);
+                }else{
+                    $('#searchText').val(removeResults);
+                }
+                $('#searchResult').html('');
+                var startDate = new Date(parseInt(availableResultClicked.getAttribute("data-startdate"))).getMonth()+'/'+new Date(parseInt(availableResultClicked.getAttribute("data-startdate"))).getDate()+'/'+new Date(parseInt(availableResultClicked.getAttribute("data-startdate"))).getFullYear();
+                var endDate = new Date(parseInt(availableResultClicked.getAttribute("data-enddate"))).getMonth()+'/'+new Date(parseInt(availableResultClicked.getAttribute("data-enddate"))).getDate()+'/'+new Date(parseInt(availableResultClicked.getAttribute("data-enddate"))).getFullYear();
+                
+                availableResultClicked.disabled = true;
+                var str = '';
+                str+='<tr class="slds-hint-parent"><td data-label="Account Name"><input type="Checkbox" checked="true" /></td> <td data-id="'+availableResultClicked.getAttribute("data-id")+'" data-label="Account Name"><div class="slds-truncate" title="Cloudhub">'+availableResultClicked.getAttribute("data-name")+'</div></td> <td data-id="'+availableResultClicked.getAttribute("data-id")+'" data-label="Account Name"><div class="slds-truncate" title="Cloudhub">'+selected+'</div></td> <td> '+availableResultClicked.getAttribute("data-acc")+' </td> <td> '+availableResultClicked.getAttribute("data-status")+' </td><td>'+startDate+'</td> <td>'+endDate+'</td> </tr>';
+                $('#tbl').append(str);
+            }
+            // when Accounts are clicked after search
+            function selectedAccountAfterSearch(removeResults,availableResultClicked){
+                $('#searchText').val(removeResults);
+                $('#searchResult').html('');
+                $('#selectedAccount').html('<b style="color:green">Selected Account : </b>'+removeResults);
+                $('#contractsAfterAccount').removeClass('slds-hide');
+                selectedAccountId = availableResultClicked.getAttribute("data-id");
+                
+                searchContracts('');
+            }
+    
+            // 1 called on page load
+            showRemoteContracts();
+    
+            var availableContracts = [];
+            function showRemoteContracts() {
+                	if(allowedUser == 'false'){
+                        $("#toast").removeClass('slds-hide'); 
+                        $("#mainUL").addClass('slds-hide'); 
+                        $("#2ndUL").addClass('slds-hide');
+                    	return ;
+                    }
+                        
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.QuoteContractExtensionCtrl.showContracts}',
+                        '{!quoteId}', 
+                        function(result, event){
+                            if (event.status) {
+                                var str = '';
+                                for(var i=0;i<result.length;i++){
+                                    availableContracts.push(result[i].contractRecord.Id); 
+                                    
+                                    var startDate = new Date(result[i].contractRecord.StartDate).getMonth()+'/'+new Date(result[i].contractRecord.StartDate).getDate()+'/'+new Date(result[i].contractRecord.StartDate).getFullYear();
+                                    var endDate = new Date(result[i].contractRecord.EndDate).getMonth()+'/'+new Date(result[i].contractRecord.EndDate).getDate()+'/'+new Date(result[i].contractRecord.EndDate).getFullYear();
+                                    
+                                    if(result[i].selected){
+                                            str+='<tr class="slds-hint-parent"><td data-label="Account Name"><input type="Checkbox" data-id="'+result[i].contractRecord.Id+'" checked="'+result[i].selected+'" /></td> <td data-id="'+result[i].contractRecord.Id+'">'+result[i].contractRecord.Name+'</td> <td data-id="'+result[i].contractRecord.Id+'" data-label="Account Name"><div class="slds-truncate">'+result[i].contractRecord.ContractNumber+'</div></td> <td data-id="'+result[i].contractRecord.Id+'" data-label="Account Name"><div class="slds-truncate">'+result[i].contractRecord.Account.Name+'</div></td> <td>'+result[i].contractRecord.Status+'</td><td>'+startDate+'</td> <td>'+endDate+'</td> </tr>';
+                                    }else{
+                                        str+='<tr class="slds-hint-parent"><td data-label="Account Name"><input data-id="'+result[i].contractRecord.Id+'" type="Checkbox"/></td> <td data-id="'+result[i].contractRecord.Id+'">'+result[i].contractRecord.Name+'</td> <td data-id="'+result[i].contractRecord.Id+'" data-label="Account Name"><div class="slds-truncate">'+result[i].contractRecord.ContractNumber+'</div></td> <td data-id="'+result[i].contractRecord.Id+'" data-label="Account Name"><div class="slds-truncate">'+result[i].contractRecord.Account.Name+'</div></td> <td>'+result[i].contractRecord.Status+'</td><td>'+startDate+'</td> <td>'+endDate+'</td> </tr>';    
+                                    }
+                                }
+                                if(str!=''){
+                                    $('#tbl').html(str);
+                                }
+                            }else if (event.type === 'exception') {
+                               
+                            } else {
+                                //document.getElementById("responseErrors").innerHTML = event.message;
+                            }
+                        }, 
+                        {escape: true}
+                    );
+            }
+            
+            // 4
+            function CreateJunctionObject(selectedContractsList){
+                Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.QuoteContractExtensionCtrl.createJunctionObjectRecords}',
+                        selectedContractsList,'{!quoteId}',
+                        function(result, event){
+                            if (event.status) {
+                                if(result.length == 18 || result.length == 15){
+                                    window.top.location.href = '{!baseUrl}'+'/'+result;
+                                }else{
+                                    alert('Something went wrong :: '+result);
+                                }
+                            }else if (event.type === 'exception') {
+                               
+                            } else {
+                                //document.getElementById("responseErrors").innerHTML = event.message;
+                            }
+                        }, 
+                        {escape: true}
+                    );
+            }
+            
+            // 3 called on save
+            function getAllSelectedContracts(){
+                    var selectedContract = [];
+                    var i = 0;
+                    var selected = false;
+                     $('#tbl').find('tr').each(function(){
+                            $(this).find('td').each(function(){
+                                i++;
+                                if(i==1){
+                                    $(this).find('input').each(function(){
+                                        if($(this).is(":checked")){
+                                            selected = true;
+                                        }
+                                    });    
+                                }else{
+                                    if(selected == true && i==2){
+                                         selectedContract.push($(this).attr('data-id')); 
+                                    }
+                                }
+                            });
+                            i = 0;
+                            selected = false;
+                     });
+                     CreateJunctionObject(selectedContract);
+            }
+            function  backToQuote(){
+                    window.top.location.href = '{!baseUrl}'+'/'+'{!quoteId}';
+            }
+            
+            $('#checkbox-44').click(function(){
+                if($('#checkbox-44').is(":checked")){
+                    $('#searchLabel').text("Search Accounts");
+                    $('#searchText').attr('placeholder','Search By Account Name');
+                }else{
+                    $('#contractsAfterAccount').addClass('slds-hide');
+                    $('#searchLabel').text("Search Contracts"); 
+                    $('#searchText').attr('placeholder','Search By Contract Number');
+                }
+                $('#searchResult').html('');
+                $('#searchText').val('');
+                $('#selectedAccount').html('');
+                $('#contractsAfterAccount').addClass('slds-hide');
+                //$('#searchText1').val(''); 
+                $('#selectAccContracts').html('');
+                selectedAccountId = '';
+            });
+        </script>
+</apex:page>

@@ -1,0 +1,10 @@
+<apex:page standardController="Lead" sidebar="False"  extensions="TaskRedirectController"  action="{!taskpageRedirect}">
+
+    <flow:interview name="Field_Reset_When_Cancel"  finishlocation="https://{!$Label.instance}.salesforce.com/{!$CurrentPage.parameters.id}" >
+    
+    <apex:param name="LeadID" value="{!$CurrentPage.parameters.id}"/>
+  
+    
+   </flow:interview>
+
+</apex:page>

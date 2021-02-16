@@ -1,0 +1,22 @@
+<apex:page standardController="Case">
+<button onclick="onPOAutomationClick()">POAutomation</button> 
+<script>
+    function onPOAutomationClick() {
+     var container = document.getElementById("POAutomation-container")
+ 
+        var iframe = document.createElement('iframe');
+        iframe.src="https://flow.boomi.com/1c7dac92-ae32-4c3c-9ef1-f83f00ba6907/play/Alteryx/?flow-id=d0e4cc76-734b-44dc-a634-b8854a6ae4c1"
+        iframe.style = "width: 100%; height: 660px;"
+        iframe.frameBorder = "0";
+        container.innerHTML = "";
+ 
+        container.appendChild(iframe);
+    }
+</script>
+<apex:slds />
+<div class="slds-scope">
+<div class="slds-p-around_none">
+<div id="POAutomation-container"></div>
+</div>
+</div>
+</apex:page>

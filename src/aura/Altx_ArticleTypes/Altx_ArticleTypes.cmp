@@ -1,0 +1,19 @@
+<aura:component controller="Altx_ArticleTypesController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="articlesType" type="List"/>
+    <aura:attribute name="selectedArt" type="String" default="All"/>
+    <aura:registerEvent name="ArticleTypesEvent" type="c:Altx_ArticleTypesEvent"/>
+    <div class="slds-grid slds-wrap mainArticlesType">
+        <div class="slds-col slds-size--12-of-12 heading">
+            Article Types            
+        </div>
+        <div class="slds-col slds-size--12-of-12 articleTypeList collapse" id="dropdownDiv">
+            <ul>
+                <li><a id="All" class="{!if(v.selectedArt == 'All', 'selected', '')}" onclick="{!c.getArticleValue}">All</a></li>
+                <aura:iteration items="{!v.articlesType}" var="art">
+                    <li><a class="{!if(art.value == v.selectedArt, 'selected', '')}" id="{!art.value}" onclick="{!c.getArticleValue}">{!art.label}</a></li>
+                </aura:iteration>
+            </ul>
+        </div>
+    </div>
+</aura:component>

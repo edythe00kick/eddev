@@ -1,0 +1,5 @@
+<apex:page standardController="Contact" sidebar="False">
+  <flow:interview name="Field_Reset_When_Cancel_Contact"  finishlocation="/{!$CurrentPage.parameters.id}">
+      <apex:param name="RecordId" value="{!$CurrentPage.parameters.id}"/>
+  </flow:interview>
+</apex:page>

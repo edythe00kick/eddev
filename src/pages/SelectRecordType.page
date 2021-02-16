@@ -1,0 +1,120 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c" lightningStylesheets="true">
+    <style>
+        .purchseTypeHide {display: none;}
+    </style>
+    <apex:form >
+        <apex:pageBlock mode="edit">
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton onClick="redirectNext(); return false;" value="Next"/>
+                <apex:commandButton onClick="redirectBack(); return false;" value="Back"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Create Proposal"  columns="1">
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Record Type"/>
+                    <apex:outputPanel >
+                        <select id="recordType" onChange="getRecordType()">
+                            <option value="--None--">--None--</option>
+                        </select> 
+                    </apex:outputPanel>
+                </apex:pageblocksectionitem>
+                <apex:pageblocksectionitem ></apex:pageblocksectionitem>
+                <apex:pageblocksectionitem >  
+                    <apex:outputLabel value="Purchase Type" id="purchaseType1" styleClass="purchseTypeHide"/>
+                    <apex:outputPanel id="purchaseType2" styleClass="purchseTypeHide">
+                        <div id="purchaseTypeWrapper">
+                            <apex:inputField value="{!Apttus_Proposal__Proposal__c.Purchase_Type__c}"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageblocksectionitem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <script type="text/javascript"> var __sfdcSessionId = '{!GETSESSIONID()}'; </script>
+    <script src="../../soap/ajax/42.0/connection.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        document.querySelector('[id*="purchaseType1"]').style.display = 'none';
+        document.querySelector('[id*="purchaseType2"]').style.display = 'none';
+    	if ({!$User.UIThemeDisplayed == 'Theme3'}) {            
+            var url = decodeURIComponent(window.location.href);
+            var re_retURL = /retURL=\/([A-Za-z0-9]{0,15})/;
+            var re_result = re_retURL.exec(url);
+            var source_record_id = re_result != null ? re_result[1] : '';
+        } else {
+            var source_record_id = decodeURIComponent(window.location.href.split('_lkid')[1]).substring(1,16);
+        }
+        if(source_record_id.startsWith('001')){
+            var list = document.getElementById('recordType');
+            var value_1 = document.createElement('option'); value_1.text = 'AFG';
+            var value_2 = document.createElement('option'); value_2.text = 'NFR';
+            list.appendChild(value_1);list.appendChild(value_2);
+        }
+        else if(source_record_id.startsWith('006')){
+            var list = document.getElementById('recordType');
+            var value_1 = document.createElement('option'); value_1.text = 'Purchased';
+            var value_2 = document.createElement('option'); value_2.text = 'Evaluation';
+            list.appendChild(value_1);list.appendChild(value_2);
+        }
+        
+        function getRecordType() {
+            var record_type = document.getElementById('recordType').value;
+            if(record_type == 'Purchased') {
+                document.querySelector('[id*="purchaseType1"]').style.display = 'block';
+                document.querySelector('[id*="purchaseType2"]').style.display = 'block';
+                var x = document.getElementById('purchaseTypeWrapper').childNodes[0];
+                x.selectedIndex = 0;
+                /*var x = document.getElementById('purchaseTypeWrapper').childNodes[0].childNodes[0].value;
+                if(x!= ''){
+                    var first_element = document.getElementById('purchaseTypeWrapper').childNodes[0];
+                    var value_1 = document.createElement('option'); value_1.text = '--None--';
+                     first_element.appendChild(value_1);
+                }*/
+            } else {
+                document.querySelector('[id*="purchaseType1"]').style.display = 'none';
+                document.querySelector('[id*="purchaseType2"]').style.display = 'none';
+                document.getElementById('purchaseTypeWrapper').childNodes[0].value = null;
+            }
+        }
+        
+        function redirectNext() {
+            var purchase_type = document.getElementById('purchaseTypeWrapper').childNodes[0].value;
+            if(purchase_type!= null && purchase_type!='')
+                purchase_type = purchase_type.replace('&','And').replace(/\s/g,'+');
+            
+            var record_type = document.getElementById('recordType').value.replace(/\s/g,'+');
+            
+            if(document.getElementById('recordType').value == '--None--'){
+                alert('Please selected a Record Type to continue.');
+                return;
+            }
+            
+            if(document.getElementById('recordType').value == "Purchased"){
+                if(document.getElementById('purchaseTypeWrapper').childNodes[0].selectedIndex == 0){
+                    alert('Please selected a Purchase Type to continue.');
+                    return;
+                }
+            }
+            
+            url = "/apex/OrderGroupPage?recordType=" + record_type;
+            if(source_record_id.startsWith('006')) {
+                var query = "SELECT AccountId FROM Opportunity WHERE Id = '"+source_record_id+"' LIMIT 1";
+                var opp = sforce.connection.query(query);
+                var records = opp.getArray("records");
+                var accId = records[0].AccountId;
+                console.log(accId);
+                url += "&purchasetype=" + purchase_type + "&accId=" + accId + "&retId=" + source_record_id + "&oppId=";
+                }
+            else if(source_record_id.startsWith('001'))
+                url += "&retId=" + source_record_id + "&accId=";
+            
+            url += source_record_id+"&dealdesk=false";
+            window.location.href = url;
+        }
+        
+        function redirectBack() {
+            url = "/" + source_record_id;
+            window.location.href = url;
+        }
+    </script>
+</apex:page>

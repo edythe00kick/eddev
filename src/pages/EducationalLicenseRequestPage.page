@@ -1,0 +1,129 @@
+<apex:page standardcontroller="Evaluation_License_Request__c" extensions="EducationalLicenseRequestPageController">
+    <style type="text/css">
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody {
+            margin: 0px;
+        }
+        
+        .cls {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            line-height: 0px;
+            clear: both;
+        }
+        
+        .sectionHeader {
+            padding: 4px 16px;
+            background-color: #E3E6EF;
+        }
+        
+        .sectionHeader h3 {
+            display: inline;
+        }
+        
+        .sectionHeader span {
+            border-left: 3px solid #c00;
+            padding-left: 7px;
+            font-size: 10px;
+            float: right;
+        }
+        
+        .recordFieldArea {
+            margin-top: 7px;
+            padding: 0 12px 20px 12px;
+        }
+        
+        .recordFieldArea table{
+            width: 100%;
+        }
+        
+        .recordFieldArea table tr td.contentRight {
+            padding: 0 10px 5px 0;
+            text-align: right;
+            font-weight: bold;
+            width: 18%;
+        }
+        
+        .recordFieldArea table tr td.contentLeft {
+            padding: 0 0 5px 10px;
+            width: 32%;
+        }
+        
+        .licensePicker {
+            padding: 10px 15px;
+        }
+    </style>
+    <apex:form >
+        <apex:pageBlock title="License Selection">
+            <div class="licensePicker">
+                <apex:outputText value="Please select the type of license you want to create: "/>
+                <apex:selectList value="{!licenseType}"  multiselect="false" size="1">
+                    <apex:selectOptions value="{!licenseTypes}"/>
+                    <apex:actionSupport event="onchange" action="{!setlicenseToEdit}" reRender="licenseEditPage"/>
+                </apex:selectList>
+            </div>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:form >
+        <apex:outputpanel id="licenseEditPage">
+            <apex:pageBlock title="{!licenseType} Request Edit" >
+                <apex:pageMessages ></apex:pageMessages>
+                <div class="sectionHeader">
+                    <h3>Information</h3>
+                    <span>= Required Information</span>
+                </div>
+                <div class="recordFieldArea">
+                    <table>
+                        <tr>
+                            <td class="contentRight">
+                                Account
+                            </td>
+                            <td class="contentLeft">
+                                <apex:inputField value="{!elr.Account__c}"/>
+                            </td>
+                            <td class="contentRight">
+                                Owner
+                            </td>
+                            <td class="contentLeft">
+                                <apex:outputText value="{!$User.FirstName + ' ' + $User.LastName}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="contentRight">
+                                Product Bundle
+                            </td>
+                            <td class="contentLeft">
+                                <apex:inputField value="{!elr.Product_Bundle__c}" required="true"/>
+                            </td>
+                            <td class="contentRight">
+                                Number of Licenses
+                            </td>
+                            <td class="contentLeft">
+                                <apex:inputField value="{!elr.Number_of_Licenses__c}" required="true"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="contentRight">
+                                Contact
+                            </td>
+                            <td class="contentLeft">
+                                <apex:inputField value="{!elr.Contact__c}" required="true"/>
+                            </td>
+                            <td class="contentRight">
+                                Expiration Date
+                            </td>
+                            <td class="contentLeft">
+                                <apex:inputField value="{!elr.Expiration_Date__c}" required="true"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <apex:pageBlockButtons >
+                    <apex:commandButton action="{!save}" value="Save"/>
+                    <apex:commandButton action="{!cancel}" value="Cancel"/>
+                </apex:pageBlockButtons>
+                <div class="cls"></div>
+            </apex:pageBlock>
+        </apex:outputpanel>
+    </apex:form>
+</apex:page>

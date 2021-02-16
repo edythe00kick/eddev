@@ -1,0 +1,21 @@
+<!--
+ - Created by ewong on 11/13/2020.
+ -->
+
+<!-- Create Afg Quote Button -->
+<template>
+    <Lightning-card title="Create AFG Quote" icon-name="standard:datadotcom">
+        <div class="slds-m-bottom_small slds-m-left_large">
+            <lightning-button label="Create AFG Quote" onclick={handleCreateAFGQuote}></lightning-button>
+        </div>
+        <div class="slds-m-around_large">
+            <div if:false={isLoaded}></div>
+            <div if:true={isLoaded} class="slds-is-relative">
+                <lightning-spinner
+                    alternative-text="Loading..." size="medium">
+
+                </lightning-spinner>
+            </div>
+        </div>
+    </Lightning-card>
+</template>

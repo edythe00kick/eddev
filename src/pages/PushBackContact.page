@@ -1,0 +1,5 @@
+<apex:page standardController="Contact" >
+    <flow:interview name="Push_Back_Flow_Contact"  finishlocation="/{!$CurrentPage.parameters.id}" >
+        <apex:param name="RecordId" value="{!$CurrentPage.parameters.id}"/>
+    </flow:interview>
+</apex:page>

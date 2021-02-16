@@ -1,0 +1,216 @@
+<aura:component controller="UnequalPayments" implements="lightning:actionOverride,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <!--****______Attributes______***-->
+    <!--***Handler to load intial data***-->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="mainQuote" type="SBQQ__Quote__c"/>
+    <aura:attribute name="subscriptionSchedulesList" type="List"/>
+    <aura:attribute name="amountPercentList" type="Double[]"/>
+    <aura:attribute name="percentList" type="Double[]"/>
+    <aura:attribute name="amountList" type="Double[]"/>
+    <aura:attribute name="currentTCV" type="Double"/>
+    <aura:attribute name="difference" type="Double"/>
+    <aura:attribute name="amountSelected" type="Boolean" default="false"/>
+    <aura:attribute name="errorMessage" type="Boolean" default="false"/>
+    <aura:attribute name="oneTimePaymentError" type="Boolean" default="false"/>
+    <aura:attribute name="validated" type="Boolean" default="false"/>
+    <aura:attribute name="saved" type="Boolean" default="false"/>
+    
+    
+    <div class="innerDivWrapper">
+        
+        
+        <div align="center">
+            <h1 class="header">Unequal Payments</h1>            
+        </div>
+        
+        <div style="width:100%;">
+            <div style="width:20%; margin: auto;">
+                <lightning:select aura:id="overrideSelected"
+                                  name="overrideSelected" 
+                                  label="Select Override"
+                                  onchange="{!c.overrideSelected}">
+                    <option value="Amount Override">Amount Override</option>
+                    <option value="Percent Override">Percent Override</option>
+                </lightning:select>
+            </div>
+            <div>
+                <aura:if isTrue="{!v.errorMessage}">  
+                    <ui:message title="Error" severity="error" closable="true"> 
+                        Difference must be 0. Please complete the fields in red. There can't be any 0 inputs. Current TCV can't be greater than Order TCV.
+                    </ui:message> 
+                </aura:if>
+            </div>
+            <div>
+                <aura:if isTrue="{!v.oneTimePaymentError}">  
+                    <ui:message title="Error" severity="error" closable="true"> 
+                        The first year amount must be greater than the one-time payment total of <lightning:formattedNumber value="{!v.subscriptionSchedulesList[0].Non_Recurring_Total__c}" style="currency"/> 
+                    </ui:message> 
+                </aura:if>
+            </div>
+            <div>
+                <aura:if isTrue="{!v.saved}">  
+                    <ui:message title="Confirmation" severity="confirm" closable="true">
+                        You are all set! Redirecting back to quote.
+                    </ui:message>
+                </aura:if>
+            </div>
+            <div align="center" style="margin:1em;">
+                <lightning:button variant="brand" class="slds-button slds-button--neutral" title="validate"  onclick="{!c.validate}">Validate</lightning:button>
+                <lightning:button variant="brand" class="slds-button slds-button--neutral" title="cancel"  onclick="{!c.cancel}">Cancel</lightning:button>
+                <aura:if isTrue="{!v.validated}">
+                    <lightning:button variant="brand" class="slds-button slds-button--neutral" title="save"  onclick="{!c.save}">Save</lightning:button> 
+                </aura:if>
+            </div>
+            <!-- This is to represent the totals -->
+            
+            <div style="float:left; width: 75%">
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-size_1-of-4 header">
+                        Currency: {!v.mainQuote.CurrencyIsoCode}
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-4 header">
+                        Net Amount: <lightning:formattedNumber value="{!v.mainQuote.SBQQ__NetAmount__c}" style="currency"/>
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-4 header">
+                        Override Total: <lightning:formattedNumber value="{!v.currentTCV}" style="currency"/> 
+                    </div>
+                    
+                    <div class="slds-col slds-size_1-of-4 header">
+                        Difference: <lightning:formattedNumber value="{!v.difference}" style="currency"/> 
+                    </div>
+                </div>
+            </div>
+            
+            <div style="float:left;">
+                <div class="slds-grid slds-gutters slds-wrap">
+                    <div class="slds-col slds-size_1-of-1">
+                        <aura:if isTrue="{!v.amountSelected}">
+                            <div class="slds-col slds-size_1-of-5 header">
+                                Percent:
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.amountSelected != true}">
+                            <div class="slds-col slds-size_1-of-5 header">
+                                Amount:
+                            </div>
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div style="width:100%;"> 
+            <!-- This is to represent the different subscriptions -->
+            <div style="float:left; width: 75%; margin-top:1em;">
+                <aura:iteration items="{!v.subscriptionSchedulesList}" var="subSchedule" indexVar="indx">
+                    
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        
+                        <div class="slds-col slds-size_1-of-4">
+                            
+                        </div>
+                        <div class="slds-col slds-size_1-of-4 normal">
+                            {!subSchedule.Year__c} Original Subscription Amount Total <lightning:formattedNumber value="{!subSchedule.Net_Total__c}" style="currency"/> 
+                        </div>
+                        
+                        <aura:if isTrue="{!v.amountSelected}">
+                            
+                            
+                            <div class="slds-col slds-size_1-of-4">
+                                
+                                
+                                <lightning:input type="number"
+                                                 aura:id="amountOverride"
+                                                 name="{!indx}"
+                                                 label="Amount Override"
+                                                 value="{!subSchedule}"
+                                                 onchange="{!c.calculateAmount}"
+                                                 required="true"
+                                                 class="label"
+                                                 formatter="currency"
+                                                 step="0.01"/>
+                                
+                            </div>
+                        </aura:if>
+                        <aura:if isTrue="{!v.amountSelected != true}">
+                            
+                            
+                            <div class="slds-col slds-size_1-of-5" >
+                                <lightning:input type="percent"
+                                                 aura:id="percentOverride"
+                                                 name="{!indx}"
+                                                 value="{!subSchedule}"
+                                                 label="Percent Override"
+                                                 onchange="{!c.calculatePercent}"
+                                                 required="true"
+                                                 class="label"
+                                                 maxlength = "2"/>
+                            </div>
+                        </aura:if>
+                        
+                        <div class="slds-col slds-size_1-of-4 normal">
+                            </div>
+                        
+                        
+                    </div>
+                    
+                </aura:iteration>
+            </div>
+            
+            <aura:if isTrue="{!v.amountSelected != true}">
+                <div style="float:left;">
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <div class="slds-col slds-size_1-of-1">
+                            
+                            <aura:iteration items="{!v.percentList}" var="percent" indexVar="indx">
+                                <div style="margin-top:2em;">
+                                    <lightning:input type="number"
+                                                     aura:id="percentAmount"
+                                                     name="{!indx}"
+                                                     value="{!percent}"
+                                                     readonly="true"
+                                                     class="label"
+                                                     formatter="currency"/>
+                                </div>
+                            </aura:iteration>
+                            
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.amountSelected}">
+                <div style="float:left;">
+                    <div class="slds-grid slds-gutters slds-wrap">
+                        <div class="slds-col slds-size_1-of-1">
+                            
+                            <aura:iteration items="{!v.amountPercentList}" var="percent" indexVar="indx">
+                                <div style="margin-top:2em; margin-left: 1em;">
+                                    <lightning:input type="number"
+                                                     aura:id="amountPercent"
+                                                     name="{!indx}"
+                                                     value="{!percent}"
+                                                     readonly="true"
+                                                     class="label"
+                                                     formatter="percent"/>
+                                </div>
+                            </aura:iteration>
+                            
+                        </div>
+                    </div>
+                </div>
+            </aura:if>
+            
+            
+        </div>
+        
+        
+    </div>
+    
+</aura:component>

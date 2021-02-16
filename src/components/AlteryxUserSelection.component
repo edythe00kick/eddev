@@ -1,0 +1,30 @@
+<apex:component >
+    <style>
+        .cust_comm_tnail{cursor:pointer;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/Customer_community.png')});
+           background-size:100% 100%;float:left;
+        }
+        .part_comm_tnail{cursor:pointer;float:left;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/partner-com.png')});
+            background-size:100% 100%;
+        }
+        .ugrp_comm_tnail{cursor:pointer;float:left;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/user-gr.png')});
+          background-size:100% 100%;  
+        }
+        a.part_comm_tnail:hover{cursor:pointer;float:left;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/partner-com_hover.png')});
+            background-size:100% 100%;text-decoration:none;}
+        a.ugrp_comm_tnail:hover{cursor:pointer;float:left;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/user-gr_hover.png')});
+          background-size:100% 100%;text-decoration:none;}
+        a.cust_comm_tnail:hover{cursor:pointer;width:100%;height:174px;background-repeat:no-repeat;background-image:url({!URLFOR($Resource.AlteryxCommunityGlobal,'/images/hover_custormer_community.png')});
+           background-size:100% 100%;float:left;text-decoration:none;}
+        .cust_comm_div{float:left;width:33%;}
+    </style>
+    <!--
+    <div style="float:left;margin-top:2.5%;width:100%;">
+        <div class="cust_comm_div">
+            <a class="cust_comm_tnail" href="{!$Page.AlteryxCustomersHome}">&nbsp;</a>
+        </div>
+        
+        <div class="cust_comm_div"><a class="part_comm_tnail" href="{!$Page.AlteryxPartnersHome}">&nbsp;</a></div>
+        <div class="cust_comm_div"><a class="ugrp_comm_tnail" href="{!$Page.AlteryxUserGroupsHome}">&nbsp;</a></div>
+    </div>
+    -->
+</apex:component>

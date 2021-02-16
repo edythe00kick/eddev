@@ -1,0 +1,77 @@
+<apex:page >
+<footer id="footer">
+    <div class="region region-footer">
+    <div id="block-block-38" class="block block-block first last odd">
+      <div class="content">
+        <div id="globalFooter">
+        <div class="columns">
+          <div class="content"><div class="span2">
+             <p class="pfooter"><a href="http://www.alteryx.com/products"><strong>Alteryx products</strong></a></p>
+             <ul>
+               <li><a href="/products/agile-analysis-software-designers-desktop">Designer's desktop</a></li>
+               <li><a href="/products/strategic-analytic-apps">Analytics apps</a></li>
+               <li><a href="/products/strategic-analytics-solution-for-the-cloud">Private Cloud Server</a></li>
+               <li><a href="/products/why-strategic-analytics-software">Why Strategic Analytics</a></li>
+               <li><a href="/products/alteryx-8.0">Alteryx 8.0</a></li>
+               <li><a href="/products/alteryx-communications-edition">Communications Edition</a></li>
+               <li><a href="/analytics-gallery">Analytics Gallery</a></li>
+               <li><a href="/personal-edition">Personal Edition</a></li>
+             </ul>
+          </div></div>
+          <div class="spacer"></div>
+          <div class="content"><div class="span2">
+            <p class="pfooter"><a href="http://www.alteryx.com/solutions"><strong>Solutions</strong></a></p>
+            <ul>
+              <li><a href="/analytic-solutions">Analytic Solutions</a></li>
+              <li><a href="/solutions/commercial-real-estate-location-analysis">Commercial Real Estate</a></li>
+              <li><a href="/solutions/telecom-cable">Communications</a></li>
+              <li><a href="/solutions/consumer-packaged-goods">Consumer goods</a></li>
+              <li><a href="/solutions/restaurants">Restaurants</a></li>
+              <li><a href="/solutions/retail">Retail</a></li>
+            </ul>
+            </div></div>
+            <div class="spacer"></div>
+          <div class="content"><div class="span2">
+             <p class="pfooter"><a href="http://www.alteryx.com/resources"><strong>Resources</strong></a></p>
+             <ul>
+               <li><a href="/community">Community</a></li>
+               <li><a href="/product-training">Product Training</a></li>
+               <li><a href="/case-studies">Case studies</a></li>
+               <li><a href="/testimonials">Testimonials</a></li>
+               <li><a href="/whitepapers">Whitepapers</a></li>
+               <li><a href="/videos">Videos</a></li>
+             </ul>
+            </div></div>
+            <div class="spacer"></div>
+          <div class="content"><div class="span2">
+             <p class="pfooter"><a href="http://www.alteryx.com/about-us"><strong>About</strong></a></p>
+             <ul>
+               <li><a href="/our-company">Our Company</a></li>
+               <li><a href="/leadership">Leadership</a></li>
+               <li><a href="/board-of-directors">Board of Directors</a></li>
+               <li><a href="/careers">Careers</a></li>
+               <li><a href="/press-releases">Press Releases</a></li>
+               <li><a href="/in-the-news">In the news</a></li>
+               <li><a href="/academia">Academia</a></li>
+               <li><a href="/contact-us">Contact Us</a></li>
+             </ul>
+            </div></div>
+          </div>
+          <div class="ad">
+            <a href="http://www.alteryx.com/events/inspire"><img src="http://www.alteryx.com/sites/default/files/inspire-banner-footer-2013.jpg" /></a>
+          </div>
+          <div class="clearFloat"></div>
+          <div class="bottomLinks">
+            <p>&#169; 2012 Alteryx, Inc.</p>
+            <p><a href="http://www.alteryx.com/terms-and-conditions">Terms and conditions</a></p>
+            <p><a href="http://www.alteryx.com/privacy-policy">Privacy policy</a></p>
+            <p><a href="http://www.alteryx.com/sitemap">Site map</a></p>
+          </div>
+        </div>
+        </div>
+    </div><!-- /.block -->
+    </div><!-- /.region -->
+  <div class="region region-page-bottom">
+  </div><!-- /.region -->
+</footer>
+</apex:page>

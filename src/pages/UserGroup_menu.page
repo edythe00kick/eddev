@@ -1,0 +1,23 @@
+<apex:page showHeader="false">
+    <apex:composition template="comm_template">
+        <apex:define name="body">
+        <div align="center">
+          <a href="http://alteryx.force.com/community/community_menu"><img src="{!$Resource.forums_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://alteryx.force.com/community/UserGroup_menu?criteria=OPENQUESTIONS"><img src="{!$Resource.usergroups_icon_on}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/community/customer-portal"><img src="{!$Resource.support_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://alteryx.force.com/community/moduleexchange_menu"><img src="{!$Resource.module_icon_off}" /></a>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="comm_line"></div>
+        <br />
+        <div class="comm_margin">
+        <div id="header-wrapper2">
+          <h3 class="hdr_dg">User Groups</h3>
+          <h3 class="hdr_lg">Share your insight and expertise with Alteryx Data Artisans in your area.</h3>
+        <br /><br />
+        </div>
+        </div>
+          <apex:include pageName="User_Group_main"/>
+        </apex:define> 
+    </apex:composition>
+ </apex:page>

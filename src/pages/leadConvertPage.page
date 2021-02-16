@@ -1,0 +1,4 @@
+<!-- This is our page component tag -->
+<!-- We are using the Standard Controller for Lead and a Controller Extension called 'leadConvertController' -->
+
+<apex:page ></apex:page>

@@ -1,0 +1,16 @@
+<apex:page standardController="Lead" extensions="LDRFlowController" sidebar="False">
+
+    <flow:interview name="LDR_flow" interview="{!myflow}" finishLocation="{!OID}">
+
+ 
+   
+     <apex:param name="LeadID" value="{!$CurrentPage.parameters.id}"/>
+     <apex:param name="LeadOwnerID" value="{!$CurrentPage.parameters.OwnerID}"/>
+     <apex:param name="CurrentUserID" value="{!$CurrentPage.parameters.CurrentUserID}"/>
+ 
+    
+   </flow:interview>
+   
+    
+
+</apex:page>

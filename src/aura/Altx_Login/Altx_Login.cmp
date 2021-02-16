@@ -1,0 +1,7 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <style>
+        .salesforceIdentityLoginBody2 .cCenterPanel{min-width:95% !important;max-width:95%;}
+		.siteforceSldsTwoCol66Layout .slds-nowrap--large .slds-col--padded.slds-size--12-of-12.slds-medium-size--6-of-12.slds-large-size--6-of-12:first-child .ui-widget{width:50%;margin:0 auto;}
+        .employeeLoginLink.salesforceIdentityEmployeeLoginLink2 {float:left;font-size:smaller;}
+    </style>
+</aura:component>

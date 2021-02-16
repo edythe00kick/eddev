@@ -1,0 +1,185 @@
+<apex:page controller="AddPartnerController" showHeader="true" sidebar="false" lightningStylesheets="true" >
+    <style>
+        .formTable {
+          border-collapse: collapse;
+        }
+        .myclas {
+            padding: 15px;
+            font-size: small;
+            background-color: white;
+        } 
+        .additionalClass {
+            padding-top: 15px;
+            font-size: small;
+            background-color: white;
+        }
+        th {
+            padding-left: 15px;
+            background-color:#DCDCDC;
+        }    
+        #myRow {
+            border-bottom : 1px solid lightgrey; 
+        }
+         
+    </style>
+    <script>
+        function getPrimaryRoles(){
+            getPrimaryPartnerRole();
+        }
+        function getDistriRoles(){
+            getDistributorRole();
+        }
+        function getInfluencerRoles(){
+            getInfluencerPartnerRole();
+        }
+        function getPrimaryFee(){
+            getprimaryReferralFee();
+        }
+        
+        function getSecondaryFee(){
+            getsecondaryReferral();
+        }
+        function disableButton() {
+            var buttons = document.getElementsByClassName('btn');
+            for (var i=0; i<buttons.length; i++) {
+                buttons[i].disabled = true;
+                buttons[i].style.color = 'grey';
+            }
+        }
+
+        function enableButton() {
+            var buttons = document.getElementsByClassName('btn');
+            for (var i=0; i<buttons.length; i++) {
+                buttons[i].disabled = false;
+                buttons[i].style.color = '';
+            }
+        }
+    
+    </script>
+    <apex:form id="theForm">  
+            <apex:pageMessages /> <!-- Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -->
+        <apex:outputPanel rendered="{! If(((currentRecord != null || currentQuoteRecord != null) && showPage),true,false) }" >        
+            <apex:actionFunction name="getPrimaryPartnerRole" action="{!primaryPartnerRole}" reRender="mainPanel,error"/>
+            <apex:actionFunction name="getDistributorRole" action="{!secondaryPartnerRole}" reRender="mainPanel,error"/>
+            <apex:actionFunction name="getprimaryReferralFee" action="{!primaryReferralFee}" reRender="mainPanel,error,PI"/> <!-- "PI & PI2" Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -->
+            <apex:actionFunction name="getsecondaryReferral" action="{!secondaryReferralFee}" reRender="mainPanel,error,PI2"/>
+            <apex:actionFunction name="getInfluencerPartnerRole" action="{!influencerPartnerRole}" reRender="theForm"/>
+            <apex:pageBlock mode="edit" id="block" title="{!IF(currentRecord != null,'Add Partners on Opportunity','Add Partner on Quote')}">
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Save" action="{!saveThisOpp}" status="processing" reRender="theForm"/>
+                    <apex:commandButton value="Cancel"  action="{!Cancel}"  status="processing" immediate="true" reRender="theForm" />
+                    <apex:actionStatus id="processing" onstart="disableButton(); return false;" onstop="enableButton(); return false;">
+                        <apex:facet name="start">
+                            <apex:image url="/img/loading.gif"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+                <apex:outputPanel id="mainPanel">
+                    <apex:pageMessages id="error" rendered="{!hasError}" />
+                    <table class="formTable" id="mainTable">
+                        <tr>
+                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Partner</th>
+                            <th width ="16%" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Role</th>
+                            <th width ="16%" class="col-lg-4 col-md-4 col-sm-4 col-xs-4">Partner Influence</th> <!--  Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019  -->
+                            <th width ="15%" class="col-lg-5 col-md-5 col-sm-5 col-xs-5">Referral Fee %</th>
+                            <th rowspan="3" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="font-weight: normal;background-color:transparent;">
+                                <div style="padding: 15px;">
+                                    <apex:pagemessage title="Primary:" strength="{!primaryStrength }" severity="{!primaryType }" summary="<br/>{!primaryHelpText}" escape="false" rendered="{!IF(primaryHelpText != null, true,false)}"/>
+                                    <apex:pagemessage title="Secondary:" strength="{!secondaryStrength }" severity="{!secondaryType }" summary="<br/>{!SecondaryHelpText}" escape="false" rendered="{!IF(SecondaryHelpText != null, true,false)}"/>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr id= 'myRow'>
+                            <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas primaryPartner">
+                                
+                                <apex:inputField styleClass="inputclass" id="partner" label="Primary Partner" value="{!con1.Partner_Account__c}" onchange="getPrimaryRoles();" />
+                            </td>
+                            <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas  primaryRole">
+                                <apex:selectList id="primarypartnerRole" value="{!primaryPartnerRole}" multiselect="false" size="1" onchange="getPrimaryFee();" > 
+                                        <apex:selectOptions value="{!primaryPartnerRoles}"/>
+                                    </apex:selectList>
+                            </td> 
+                             <!--  Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -> START --> 
+                             <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas  primaryRole">
+                                    <apex:selectList id="PI" value="{!selectedPI}" multiselect="false" size="1" rendered="{!primaryPartnerRole=='Collaborative Sale'}"> 
+                                    <apex:selectOption itemValue="--None--" itemLabel="--None--"/>
+                                    <apex:selectOption itemValue="Pre-sales technical collaboration" itemLabel="Pre-sales technical collaboration"/>
+                                    <apex:selectOption itemValue="Customer Expansion collaboration" itemLabel="Customer Expansion collaboration"/>
+                                    <apex:selectOption itemValue="Advanced Domain Expertise" itemLabel="Advanced Domain Expertise"/>
+                                    <apex:selectOption itemValue="Customer Relationship support" itemLabel="Customer Relationship support"/>
+                                    <apex:selectOption itemValue="Strategic Consulting" itemLabel="Strategic Consulting"/>
+                                    <apex:selectOption itemValue="Customer Training & Enablement" itemLabel="Customer Training & Enablement"/>
+                                    </apex:selectList>
+                             </td> 
+                             <!--  Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -> END  -->
+                            <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas  PrimaryReferralFee">
+                                <apex:outputText value="{!primaryReferralDiscount}" rendered="{!showprimaryFee}"/>
+                            </td>
+
+                        </tr>
+                        <tr id='secondaryRow' >
+                            
+                            <td class="col-lg-5 col-md-5 col-sm-5 col-xs-5 myclas distributorPartner">
+                                <apex:inputField id="distributor" label="Secondary Partner" value="{!con2.Partner_Account__c }" onchange="getDistriRoles();" style="{!if(showSecond,'','pointer-events:none;background-color:lightgrey;' )}"/>
+                            </td>
+                            <td class="col-lg-5 col-md-5 col-sm-5 col-xs-5 myclas  distributorRole">
+                                <apex:selectList id="distributorRole" value="{!secondaryPartnerRole}" multiselect="false" size="1" onchange="getSecondaryFee();" style="{!if(showSecond,'','pointer-events:none;background-color:lightgrey;' )}"> 
+                                        <apex:selectOptions value="{!distributorRoles}" />
+                                </apex:selectList>                                
+                            </td>
+                            <!--  Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -> START --> 
+                            <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas  primaryRole">
+                                    <apex:selectList id="PI2" value="{!selectedPI2}" multiselect="false" size="1" rendered="{!secondaryPartnerRole=='Collaborative Sale'}"> 
+                                    <apex:selectOption itemValue="--None--" itemLabel="--None--"/>
+                                    <apex:selectOption itemValue="Pre-sales technical collaboration" itemLabel="Pre-sales technical collaboration"/>
+                                    <apex:selectOption itemValue="Customer Expansion collaboration" itemLabel="Customer Expansion collaboration"/>
+                                    <apex:selectOption itemValue="Advanced Domain Expertise" itemLabel="Advanced Domain Expertise"/>
+                                    <apex:selectOption itemValue="Customer Relationship support" itemLabel="Customer Relationship support"/>
+                                    <apex:selectOption itemValue="Strategic Consulting" itemLabel="Strategic Consulting"/>
+                                    <apex:selectOption itemValue="Customer Training & Enablement" itemLabel="Customer Training & Enablement"/>
+                                    </apex:selectList>
+                             </td> 
+                             <!--  Added by: Sharma Nemani | W-010762 | Case: 00251431 | Date: 09/04/2019 -> END -->
+                            <td class="col-lg-4 col-md-4 col-sm-4 col-xs-4 myclas  SecondaryReferralFee">
+                                <apex:outputText value="{!secondaryReferralDiscount}" rendered="{!secondaryPartnerRole == 'Referrer'}"/>
+                            </td> 
+                        </tr>
+                    </table>
+                    <apex:pageBlock title="Additional Influencer">
+                        <table class="formTable" id='additionalTable'>
+                            <tr>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">Partner</th>
+                                <th class="col-lg-4 col-md-4 col-xs-4 col-sm-4">Role</th>
+                                <th rowspan="2" class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="font-weight: normal;background-color:transparent;">
+                                  <apex:pagemessage title="Additional:" strength="{!additionalStrength}" severity="{!additionalType}" summary="<br/>{!additionalHelpText}" escape="false" rendered="{!IF(additionalHelpText != null, true,false)}"/>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-4 col-md-4 col-xs-4 col-sm-4 additionalClass" >
+                                    <apex:inputField label="Primary Partner" value="{!con3.Partner_Account__c}" onchange="getInfluencerRoles();"/>
+                                </td>
+                                <td class="col-lg-4 col-md-4 col-xs-4 col-sm-4 additionalClass">
+                                    <apex:selectList id="primarypartnerRole" value="{!InfluencerPartnerRole}" multiselect="false" size="1"> 
+                                        <apex:selectOptions value="{!influencerRoles}"/>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                        </table>
+                    </apex:pageBlock>
+                </apex:outputPanel>    
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!(currentRecord == Null && currentQuoteRecord == null)}">
+            <apex:pageMessage escape="false" summary="This session is invalid. Kindly go to a Opportunity and Quote and then click on the Add Partner to access this page." severity="error" strength="2"/>
+        </apex:outputPanel>
+        <apex:pageBlock title="Add Partner" rendered="{! If(!showPage ,true,false) }">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Cancel"  action="{!Cancel}"  status="processing" immediate="true" reRender="theForm" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageMessage escape="false" summary="Please make sure that you are an authorized user to Add Partners." severity="error" strength="2"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+        
+    </apex:form>
+</apex:page>

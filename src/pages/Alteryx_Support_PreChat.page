@@ -1,0 +1,351 @@
+<apex:page showHeader="false" sidebar="false" title="Alteryx Support PreChat">
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxEmpCommunityGlobal, 'AlteryxEmpCommunityGlobal/css/Bootstrap.min.css')}" />   
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.footer.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.header.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.AlteryxEmpCommunityGlobal, 'AlteryxEmpCommunityGlobal/js/jquery.js')}"/>
+    <html>
+        <head>
+            <script>
+                (function() { 
+                  function handlePageLoad() {
+                    var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+                    document.getElementById('prechatForm').setAttribute('action',
+                    decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+                  } 
+                  if (window.addEventListener) {
+                    window.addEventListener('load', handlePageLoad, false);
+                  } else { 
+                    window.attachEvent('onload', handlePageLoad, false);
+                  }
+                })();
+                function changeScreenSize(w,h){       
+                    window.resizeTo( w,h );
+                    var is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
+
+                    if(!is_chrome){
+                        window.document.documentElement.style.overflow='scroll';
+                        window.document.body.style.overflow='scroll';  
+                    }
+                }
+                function phonenumber(inputtxt){debugger;
+                    var phoneno = /^\d{10}$/;
+                    if(inputtxt.value != '' ){
+                        if(inputtxt.value.match(phoneno)){
+                            return true;
+                        }else{
+                             alert("Please enter a valid Phone Number");
+                             document.getElementById('phoneweb').focus();
+                             return false;
+                         }
+                     }
+                }
+                function validate(){
+                    if(document.getElementById('first_name').value == ''){
+                        alert('Please fill the First Name');
+                        document.getElementById('first_name').focus();
+                        return false;
+                    }
+                    if(document.getElementById('last_name').value == ''){
+                        alert('Please fill the Last Name');
+                        document.getElementById('last_name').focus();
+                        return false;
+                    }
+                    if(document.getElementById('contactmail').value == ''){
+                        alert('Please fill the Email Address');
+                        document.getElementById('contactmail').focus();
+                        return false;
+                    }
+                    var phoneno = /^\d{10}$/;
+                    var inputtxt = document.getElementById('phoneweb');
+                    if(inputtxt.value != '' ){
+                        if(inputtxt.value.match(phoneno)){
+                            return true;
+                        }else{
+                             alert("Please enter a valid Phone Number");
+                             document.getElementById('phoneweb').focus();
+                             return false;
+                         }
+                    }
+                    if(document.getElementById('CaseSubject').value == ''){
+                        alert('Please fill the Subject');
+                        document.getElementById('CaseSubject').focus();
+                        return false;
+                    }
+                    if(document.getElementById('company').value == ''){
+                        alert('Please fill the Company');
+                        document.getElementById('company').focus();
+                        return false;
+                    }
+                    if(document.getElementById('product').value == 'none'){
+                        alert('You must choose a Product to go.');
+                        document.getElementById('product').focus();
+                        return false;
+                    }
+                    if(document.getElementById('version').value == 'none'){
+                        alert('You must choose the version of Alteryx that you are currently using');
+                        document.getElementById('version').focus();
+                        return false;
+                    }
+                    if(document.getElementById('topic').value == 'none'){
+                        alert('You must select a Topic');
+                        document.getElementById('topic').focus();
+                        return false;
+                    }
+                    if(document.getElementById('dummy').value == ''){
+                        alert('Please fill out the Description');
+                        document.getElementById('dummy').focus();
+                        return false;
+                    }
+                }
+                function changeMe(sel){
+                    sel.style.color = "#000";
+                }                    
+                function webfieldsupdate(){
+                    document.getElementById('desc').value = 'What products are you using?: ' + '\n' + document.getElementById('product').value + '\n' + '\n' + 'What version of Alteryx are you currently using?: '+ '\n' + document.getElementById('version').value + '\n' + '\n' + 'Please select a topic: ' +  '\n' + document.getElementById('topic').value +  '\n' + '\n' + 'Description ' + '\n' + document.getElementById('dummy').value ;
+                    document.getElementById('webname').value = document.getElementById('first_name').value +' ' +  document.getElementById('last_name').value ; 
+                    document.getElementById('webemail').value = document.getElementById('contactmail').value;
+                }
+                function validatephone(phone) {
+                    var regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+                
+                    if (regex.test(phone)) {
+                        // Valid international phone number
+                    } else {
+                        // Invalid international phone number
+                    }
+                }
+                function checkphonenumber(){debugger;
+                    var phoneno = /^\d{10}$/;
+                    var inputtxt = document.getElementById('phoneweb');
+                    if(inputtxt.value != '' ){
+                        if(inputtxt.value.match(phoneno)){
+                            return true;
+                        }else{
+                             alert("Please enter a valid Phone Number");
+                             document.getElementById('phoneweb').focus();
+                             return false;
+                         }
+                     }
+                }
+            </script>
+            <style>
+                select{color: #ccc;}
+                option{color: #000;}
+                option:first-child{color: #ccc;}
+                .head{Background-color:#0097B4;Color:White;padding:25px;}
+                //. {padding:20px;}
+                html,body {height: 100%;}
+                .field {padding:20px;}
+                .form_buttom {padding-bottom:20px;}
+                .headPart {position:relative;}
+                //input {width:325px;}
+                //select {height:25px;width:325px;}
+                //textarea {width:325px;}
+                .nopad {padding:0px;margin:0px;width:100%;}
+
+            </style>
+        </head>
+        <body onload="changeScreenSize(560,510);">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopad">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 headPart nopad">
+                    <header class="site-header" style="padding:50px 0 0 50px;">
+                        <a href="https://www.alteryx.com" class="site-logo">
+                            <img alt="Alteryx Logo" src="{!$Resource.AlteryxLogo}"/>
+                        </a> 
+                    </header><br/>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 head">
+                        <h2>
+                            Welcome to Alteryx Live Chat.
+                        </h2>
+                        <br/>
+                        <h3>
+                            To proceed, please provide the requested information below:
+                        </h3>
+                        <br/>
+                    </div><br/>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+                    <form method="post" id="prechatForm" class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-offset-1 col-sm-10 col-xs-12">
+                        <!-- Detail inputs -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                First Name: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">    
+                                    <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="text" name="liveagent.prechat:FirstName" id="first_name" required="true"/>
+                                    <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">   
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                Last Name: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                    <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="text" name="liveagent.prechat:LastName" id="last_name" required="true"/>
+                                    <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                    Email Address: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                    <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="email" name="liveagent.prechat:contactEmail" id="contactmail" required="true"/>
+                                    <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <!-- Subject: <input type="text" name="liveagent.prechat:caseSubject" required="true"/><br /> -->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                    Subject: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                    <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="text" name="liveagent.prechat:CaseSubject" id="CaseSubject" required="true"/>
+                                    <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                Phone: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="tel" name="liveagent.prechat:webphone" id="phoneweb"  onchange="phonenumber(this)"/>
+                               <!-- Not required here <span class="asterisk" style="font-size:1.2em;color:#BF0000">*</span> -->
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                Company: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <input class="col-lg-10 col-md-10 col-xs-10 col-sm-10" type="text" id="company" name="liveagent.prechat:caseSuppliedCompany" required="true"/>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                What Product are you using?: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <Select class="col-lg-10 col-md-10 col-xs-10 col-sm-10" required="true" id="product" onchange="changeMe(this)">
+                                    <option selected="true" disabled="disabled" value="none">Please Select</option>
+                                    <option value="Alteryx Free Trial">Alteryx Free Trial</option>
+                                    <option value="Alteryx Designer">Alteryx Designer</option>
+                                    <option value="Gallery">Gallery</option>
+                                    <option value="Alteryx Connect">Alteryx Connect</option>
+                                    <option value="Alteryx Promote">Alteryx Promote</option>
+                                    <option value="Alteryx Server">Alteryx Server</option>
+                                    <option value="Educational License">Educational License</option>
+                                </Select>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                What Version of Alteryx are you currently using?:   
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <Select class="col-lg-10 col-md-10 col-xs-10 col-sm-10" required="true" id="version" onchange="changeMe(this)">
+                                    <option selected="true" disabled="disabled" value="none">Please Select</option>
+                                    <option value="2019.4">2019.4</option>  <!-- Eddie Wong    | W-013750 | 12/16/2019 -->
+                                    <option value="2019.3">2019.3</option>  <!-- Regina Thomas | W-013100 | 09/13/2019 -->
+                                    <option value="2019.2">2019.2</option>  <!-- Sharma Nemani | W-012534 | 08/07/2019 -->
+                                    <option value="2019.1">2019.1</option>  <!-- Sharma Nemani | W-011225 | 03/06/2019 -->
+                                    <option value="2018.4">2018.4</option>
+                                    <option value="2018.3">2018.3</option>
+                                    <option value="2018.2">2018.2</option>
+                                    <option value="2018.1">2018.1</option>
+                                    <option value="11.7">11.7</option>
+                                    <option value="11.5">11.5</option>
+                                    <option value="11.3">11.3</option>
+                                    <option value="11.0">11.0</option>
+                                    <option value="10.6">10.6</option>
+                                    <option value="10.5">10.5</option>
+                                    <option value="10.1">10.1</option>
+                                    <option value="10.0">10.0</option>
+                                    <option value="9.5">9.5</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                Please select a topic:  
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <Select class="col-lg-10 col-md-10 col-xs-10 col-sm-10" required="true" id="topic" onchange="changeMe(this);" name="liveagent.prechat:topicSubject">
+                                    <option selected="true" disabled="disabled" value="none">Please Select</option>
+                                    <option value="Licensing/Activation/Installation">Licensing/Activation/Installation</option>
+                                    <option value="Input/Output/DB Connectors">Input/Output/DB Connectors</option>
+                                    <option value="Data Prep (expressions,data manipulation,etc)">Data Prep (expressions,data manipulation,etc.)</option>
+                                    <option value="Reporting">Reporting</option>
+                                    <option value="Analytic Applications/Macros">Analytic Applications/Macros</option>
+                                    <option value="Predictive">Predictive</option>
+                                    <option value="Demographic Analysis">Demographic Analysis</option>
+                                    <option value="Spatial">Spatial</option>
+                                    <option value="Other">Other</option>
+                                </Select>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                Description: 
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 field">
+                                <textarea class="col-lg-10 col-md-10 col-xs-10 col-sm-10" id="dummy" required="true"/>
+                                <span class="col-lg-2 col-md-2 col-sm-2 col-xs-2 asterisk" style="font-size:1.2em;color:#BF0000">*</span>
+                                <textarea id='desc' style="display:none" required="true" name="liveagent.prechat:CaseDescription" />
+                            </div>
+                        </div>
+                            
+                            <input type="hidden" name="liveagent.prechat:webemail" id="webemail"/>
+                            <input type="hidden" name="liveagent.prechat:webname" id="webname"/>    
+                            <!--
+                            <input type="hidden" name="liveagent.prechat.phone" value="web_phone__c"/>
+                            
+                            <input type="hidden" name="liveagent.prechat.Company" value= "web_company__c"/> -->
+                            <!-- <input type="hidden" name="liveagent.prechat:FullName" value="liveagent.prechat.FirstName+liveagent.prechat.FirstName"  /> -->
+                            <!-- Map the detail inputs to the Contact fields --> 
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map:Contact" value="FirstName,contactFirstName;LastName,contactLastName;Email,contactEmail;Phone,contactPhone;" />
+                            
+                            <!-- Try to find the Contact by email (exact match) -->
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map.doFind:Contact" value="Email,true;" />
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map.isExactMatch:Contact" value="Email,true;" />
+                            
+                            <!-- If the Contact is not found, then create one with the following fields set -->
+                            <!-- commented by Pulkit <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Contact" value="FirstName,true;LastName,true;Email,true;phone,true;" /> --> 
+                            <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="Contact" />
+                            <!-- Show the Contact when it is found or created -->
+                            <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Contact" value="true" />
+                            
+                            <!-- Create a Case every time -->
+                            <input type="hidden" name="liveagent.prechat:caseOrigin" value="Chat" />
+                            <!-- <input type="hidden" name="liveagent.prechat.findorcreate.map:Case" value="Origin,caseOrigin;Company,caseSuppliedCompany;Description,CaseDescription;Subject,caseSubject;webemail,prechat:caseSuppliedEmail; webphone,contactPhone;webname,contactName" />
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Case" value="Origin,true;Company,true;Description,true;Subject,true;webemail,true;webphone,true;webname,true;" /> -->
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map:Case" value="Origin,caseOrigin;Web_Company__c,caseSuppliedCompany;Description,CaseDescription;Web_Email__c,webemail;Web_Phone__c,webphone;Web_Name__c,webname;Subject,CaseSubject;" />
+                            <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Case" value="Origin,true;Web_Company__c,true;Description,true;Web_Email__c,true;Web_Phone__c,true;Web_Name__c,true;Subject,true" />
+                            
+                            
+                          <!--  <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="Contact" /> -->
+                            <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Case" value="Case" />
+                            <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Case" value="true" />
+                            
+                            <!-- Link the Contact to the Case -->
+                            <input type= "hidden" name="liveagent.prechat.findorcreate.linkToEntity:Contact" value="Case,ContactId" />
+                            <!-- saveToTranscript: Associates the records found / created, i.e. Contact and Case, to the Live Chat Transcript record. -->
+                            
+                            
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-12 col-xs-12 form_buttom">
+                                <input class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " type="submit" value="Request Chat" id="prechat_submit" onclick="webfieldsupdate();return(validate());;checkphonenumber();" />
+                            </div>
+                        </div>        
+                            
+                    </form> 
+                </div>
+            </div>
+        </body>
+    </html>
+</apex:page>

@@ -1,0 +1,188 @@
+<apex:page controller="AttachPartnerController" tabStyle="Opportunity" showHeader="true" sidebar="true" lightningStylesheets="true" >
+    
+    <style>
+        .requiredBlock
+        {
+            margin-top:-12px;
+        }
+        .lookupIcon
+        {
+            margin-top: -11px !important;
+        }
+        .lookupIconOn {
+            margin-top: -11px !important;
+        }
+    </style>
+    <!--<script type="text/javascript">
+        var radthis = false; // must match default radio state true if checked, false if not 
+        function dothis(elem) {
+            (radthis && elem.checked) ? (elem.checked = false) : (elem.checked = true);
+            radthis = elem.checked;
+        }
+    </script>-->
+
+    <apex:sectionHeader title="Partners" subtitle="{!currOpportunity.Name}"/>
+     <apex:param name="cURL" value="{!$CurrentPage.parameters.cURL}"/>
+    <apex:form id="theForm"> 
+       <apex:outputPanel id="new">
+       </apex:outputPanel>  
+      <apex:outputPanel rendered="{!LEN(errStr)!=0 && check == True }">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr}</span>
+        </apex:outputPanel>     
+        <apex:outputPanel rendered="{!LEN(errStr1)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr1}</span>
+        </apex:outputPanel> 
+        <apex:outputPanel rendered="{!LEN(errStr2)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr2}</span>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!LEN(errStr6)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr6}</span>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!LEN(errStr7)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr7}</span>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!LEN(errStr8)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr8}</span>
+        </apex:outputPanel> 
+        <apex:outputPanel rendered="{!LEN(errStr9)!=0}">                        
+            <span style="color:red;font-weight:bold;font-size:10;"><strong>Error:</strong>&nbsp;{!errStr9}</span>
+        </apex:outputPanel>          
+        <!-- // commented on 17 April,2015  <apex:outputPanel rendered="{!IF(currPartnerExists == true,false,true)}" >-->
+        <apex:outputPanel > 
+            <apex:pageBlock mode="edit" id="block" title="Partners Edit">
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Save" onclick="resetRadioToggle();" action="{!doChangePartner}" status="processing" reRender="theForm"/>
+                    <apex:commandButton value="Cancel"  action="{!doCancel}"  status="processing" immediate="true" reRender="theForm" />
+                    <apex:actionStatus id="processing" >
+                        <apex:facet name="start">
+                            <apex:image url="/img/loading.gif"/>
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:pageBlockButtons>
+               <!-- <apex:pageBlockTable style="width:50%;align:left;" value="{!newPartner}" var="item" title="Partners">  --> 
+               <apex:variable var="counter" value="{!1}"/>
+               <table><tr>
+               <td>
+                <apex:pageBlockTable style="width:50%;align:left;" value="{!wrapclassList}" var="item" title="Partners">                                     
+                  <tr>
+                    <th>Firstname</th>
+                    <th>Lastname</th>       
+                  <div id='kk'>
+                    <th>Points</th>
+                  </div>
+                  </tr>
+                  
+                  
+                    <apex:column headerValue="Primary">
+                    <!-- <apex:selectRadio id="theRadio"  value="{!item.selected}"  required="false" style=" margin-top:-12px; ">
+                    <apex:selectOptions value="{!items}"/>
+                    </apex:selectRadio> -->
+                    <input type="radio" name="firstchoice"  value="{!counter}" style=" margin-top:-12px;" id = "rad_{!counter}" class="selRadios">
+                    </input>
+                    
+                    
+                    <apex:variable var="counter" value="{!counter+1}"/>
+                    </apex:column>
+                    <apex:column headerValue="Partner">
+                        <apex:inputField label="Partner" value="{!item.contac.Partner_Account__c}" required="false" style=" margin-top:-10px; ">
+                            <apex:actionSupport event="onchange" reRender="roleselectlist"/>
+                        </apex:inputField>
+                        <!--<apex:outputPanel rendered="{!LEN(errStr)!=0 && item.hasError == TRUE}">   
+                        <apex:outputPanel rendered="{!LEN(errStr4)!=0 && item.hasError == TRUE}">                     
+                            <span style="color:red;"><strong>Error:</strong>&nbsp;{!errStr4}</span>
+                        </apex:outputPanel> -->
+                        <apex:outputPanel id="errBlock"  rendered="{!LEN(errStr5)!=0 && item.hasError == TRUE}">                     
+                            <span class="errClss" style="color:red;"><strong>Error:</strong>&nbsp;{!errStr5}</span>
+                        </apex:outputPanel>
+                     </apex:column> 
+                    <apex:column headerValue="Role">
+                        <apex:actionRegion >
+                         <apex:outputPanel id="roleselectlist" >                           
+                           <apex:selectList value="{!item.rol}" multiselect="false" size="1">
+                                <apex:selectOptions value="{!item.roleitems}"/>
+                                <apex:actionSupport event="onchange" reRender="xyz, referralDiscount"/>
+                            </apex:selectList><p/>  
+                            </apex:outputPanel> 
+                        </apex:actionRegion>                      
+                    </apex:column>    
+                    
+ <!--                   <apex:column id="abc">
+                    <apex:facet name="header" >
+                        <apex:outputPanel id="dd" >
+                         <apex:outputText value="Partner Influence" rendered="{!partnerRole='Deal Influencer'}"  > </apex:outputText>
+                         </apex:outputPanel>
+                     </apex:facet>
+                     <apex:selectList value="{!partnerInfluence}" multiselect="false" size="1"  >
+                            <apex:selectOptions value="{!partnerInfluenceItems}" />
+                     </apex:selectList><p/>                      
+                    </apex:column>  -->
+                    
+                    <apex:column id="abc">
+                        <apex:facet name="header" >
+                            <apex:outputPanel id="dd" >
+                             <apex:outputText value="Partner Influence" > </apex:outputText>
+                             </apex:outputPanel>
+                         </apex:facet>
+                         <apex:outputPanel id="xyz" >
+                             <apex:selectList value="{!item.partinfluence}"  disabled="{!item.rol!='Deal Influencer'}"  multiselect="false" size="1"  >
+                                    <apex:selectOptions value="{!partnerInfluenceItems}" />
+                             </apex:selectList><p/>
+                         </apex:outputPanel>                      
+                    </apex:column>
+                    
+                    <!-- Added by Oshin on January 20, 2016 -->             
+                    <apex:column headerValue="Referral Fee %">
+                        <apex:outputPanel id="referralDiscount">
+                            <apex:outputText value="__________________________" style="color:#ffffff"  rendered="{!item.rol != ' Collaborative Sale'}"></apex:outputText>
+                            <apex:inputText value="{!item.referralDiscount}" style=" margin-top:-10px;" rendered="{!item.rol == ' Collaborative Sale'}"/>
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    
+                </apex:pageBlockTable>
+                 <apex:param name="Partner_Role" value="{!partnerRole}"/>
+                 </td>
+                 <td>
+                     <div style="padding: 10px 0 0 0;">
+                         <p><b>Value Added Reseller:</b> Partner is the seller on this deal</p>
+                         <p><b>Referrer:</b> Partner referred this deal to Alteryx and is being paid a referral fee</p>
+                         <p><b>Deal Influencer:</b> Partner had influence on this deal but is not receiving payment</p>
+                     </div>
+                 </td>
+                 </tr></table>
+                 <script>                    
+          function resetRadioToggle() {            
+                var genders = document.getElementsByName("firstchoice");
+                document.getElementById("{!$Component.hid_Val}").value=0;                  
+                for(var i = 0; i < genders.length; i++) {
+                    if(genders[i].checked == true) {
+                        selectedGender = i;
+                        document.getElementById("{!$Component.hid_Val}").value=i+1;                                                              
+                    }
+                }                
+                return true;
+            }  
+                        
+                     </script>
+                 <apex:inputHidden id="hid_Val"  value="{!selIndex}"/>
+            </apex:pageBlock>    
+        </apex:outputPanel>
+ 
+   <!-- if(document.getElementById("yourID") != null,document.getElementById("yourID").style.visibility = "visible",document.getElementById("yourID").style.visibility = "hidden");   
+  //commented on 17 april,2015 because we don't need these fields anymore       
+        <apex:outputPanel rendered="{!IF(currPartnerExists == true,true,false)}">            
+            <apex:pageBlock mode="edit" id="blockDel" title="Delete Partner">
+                <apex:pageBlockButtons location="bottom">                    
+                    <apex:commandButton value="Cancel" action="{!doCancel}" immediate="true" rerender="None" />
+                </apex:pageBlockButtons>        
+                <apex:pageBlockSection columns="1" title="Delete Existing Partner">    
+                    Partner,<b> {!currOpportunity.Partner_Account_Name__c} </b> ,already exists for this opportunity. Only one partner is allowed per opportunity.                
+                    You can remove this partner from opportunity partner related list.
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel> 
+ //commented on 17 april,2015 because we don't need these fields anymore         -->
+ 
+    </apex:form>        
+  
+</apex:page>

@@ -1,0 +1,11 @@
+<!-- Author: Sharma Nemani | W-013035 | Case: 00296706
+		 Date: 09/06/2019
+		 Description: This component is to Popup a message saying that the Case's Contact Role is ACE
+					  so that the reps can give special attention to the ACE Cases. -->
+<aura:component controller="SpecialCaseComponentCtrl" implements="flexipage:availableForAllPageTypes,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="caseRec" type="Case" />
+    
+    <aura:if isTrue="{!and(v.caseRec!=null,v.caseRec.Contact_Role__c == 'ACE')}">
+  </aura:if> 
+</aura:component>

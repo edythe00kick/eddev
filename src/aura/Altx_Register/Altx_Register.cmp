@@ -1,0 +1,111 @@
+<aura:component controller="IORegistrationController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="validationMsgOnRegistration" type="String"/>
+    <aura:attribute name="showLoginForm" type="String" default="false"/>    
+    <aura:attribute name="Lead" type="Lead" default="{'sobjectType': 'Lead',
+                                                     'FirstName': '',                                                     
+                                                     'LastName': '',
+                                                     'Company' : '',
+                                                     'Email': '',
+                                                     'Country' : '',
+                                                     'Phone' : '',
+                                                     'City' : '',
+                                                     'State' : '',
+                                                     'PostalCode' : '',
+                                                     }" />
+    
+    <div class="slds-grid slds-wrap">
+        
+        <div class="slds-col slds-size--12-of-12 registerForm" id="registerFormDiv">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--12-of-12 createDiv">
+                    <!--<img src="{!$Resource.User_Logo}"/>-->
+                    <span class="createText">Create Your Account</span>                    
+                </div>
+                <div class="slds-col slds-size--12-of-12">
+                    <!--<div class="slds-grid slds-wrap">-->
+                    <aura:if isTrue="{!(v.validationMsgOnRegistration !='')}">
+                        <div class="slds-col slds-size--12-of-12 requiredMsgDiv">
+                            <aura:unescapedHtml value="{!v.validationMsgOnRegistration}"/>
+                        </div>
+                    </aura:if>
+                    <div class="leftFormDiv">
+                        <ui:inputText aura:id="fname" class="field" value="{!v.Lead.FirstName}" maxlength="30" placeholder="First Name"/>
+                    </div>
+                    <div class="rightFormDiv">
+                        <ui:inputText aura:id="lname" class="field" value="{!v.Lead.LastName}" maxlength="30" placeholder="Last Name" />
+                    </div>
+                    <div class="leftFormDiv">
+                        <ui:inputText aura:id="cname" class="field" value="{!v.Lead.Company}" maxlength="80" placeholder="Company"/>
+                    </div>
+                    <div class="rightFormDiv">
+                        <ui:inputText aura:id="email" class="field" value="{!v.Lead.Email}" maxlength="75" placeholder="Email Address"/>
+                    </div>
+                    <div class="leftFormDiv">
+                        <ui:inputText aura:id="country" class="field" value="{!v.Lead.Country}" maxlength="75" placeholder="Country"/>
+                    </div>
+                    <div class="rightFormDiv">
+                        <ui:inputText aura:id="state" class="field" value="{!v.Lead.State}" maxlength="75" placeholder="State"/>
+                    </div>
+                    <div class="leftFormDiv">
+                        <ui:inputText aura:id="city" class="field" value="{!v.Lead.City}" maxlength="75" placeholder="City"/>
+                    </div>
+                    <div class="rightFormDiv">
+                        <ui:inputText aura:id="postalcode" class="field" value="{!v.Lead.PostalCode}" maxlength="75" placeholder="Postal Code"/>
+                    </div>                    
+                    <div class="leftFormDiv">
+                        <ui:inputPhone aura:id="phone" class="field" value="{!v.Lead.Phone}" placeholder="Phone Number"/>
+                    </div>
+                    <div class="slds-col slds-size--12-of-12 agreeDiv">
+                        <a id="forgot_anchor1" class="agreeText" href="" onclick="{!c.openLink}" >Terms &amp; Policies</a>
+                        <!--<ui:inputCheckbox aura:id="agreeCheckbox" class="agreeCheckbox"/>
+                        <input type="checkbox" class="agreeCheckbox" id="boxcheck"/>
+                        <span class="agreeText">I agree to the</span>
+                        <span class="agreeText"><a id="forgot_anchor1" href="" onclick="{!c.openLink}" >Terms &amp; Policies</a></span>-->
+                    </div>
+                </div>                            
+                <div class="slds-col slds-size--6-of-12">
+                    <div aria-modal="true" id="confirmBox" role="dialog" class="slds-modal slds-modal--large slds-fade-in-open slds-hide">
+                        <div class="modal-dialog">
+                            <div class="sldc-modal__container modal-content successContentDiv">
+                                <div class="modal-body">
+                                    <div lass="slds-modal__content slds-p-around_medium" id="modal-content-id-1"> 
+                                    	<header class="slds-modal__header myheader">
+                                            <span><b>Your form has been submitted successfully.</b></span>
+                                        	<button class="slds-button slds-button--neutral cross" onclick="{!c.hideModal}">X</button> 
+                                    	</header>
+                                	</div>
+                                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                                        <p>Your request is being processed.  You will receive an email with login instructions soon. If you do not see the email, please make sure to check your Junk Mail folder. </p>  
+                                        <p>Please email channels@alteryx.com if you should have any questions. </p>
+                                        <p><br/> </p>
+                                        <p>Best regards,</p> 
+                                        <p>The Alteryx Partner Team</p>
+                                    </div>
+                                </div>
+                            </div>      
+                        </div>
+                        
+                    </div>
+                    <div class="slds-backdrop slds-backdrop_open slds-hide" id="backdrop"></div>
+                </div>
+                <div>
+                    <div class="hidePleaseWaitBlock" aura:id="pleaseWaitBlock">
+                        <!--<div>TEST - Work in Progress - - Don't Panic - TEST</div>-->
+                        <div class="loadingCon global siteforceLoadingBalls">
+                            <span class="loadingBall first"></span>
+                            <span class="loadingBall second"></span>
+                            <span class="loadingBall third"></span>
+                        </div>
+                        <!-- -->
+                    </div>
+                </div>
+                <div class="slds-col slds-size--12-of-12 signupbtndiv">                            
+                    <a id="forgot_anchor" class="SIGN_UP" onclick="{!c.saveleadRecord}" oncomplete="{!c.doneWaiting}">Sign up</a>
+                    <a href="/AlteryxPartner/s/login" id="forgot_anchor" class="cancel" onclick="{!c.hidepopup}">Cancel</a>
+                </div> 
+                
+            </div>
+            
+        </div> 
+    </div> 
+</aura:component>

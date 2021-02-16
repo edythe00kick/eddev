@@ -1,0 +1,11 @@
+<apex:page standardController="Opportunity" extensions="ApprovalProcessController">
+
+    <flow:interview name="ApprovalProcess" interview="{!myflow}" finishlocation="{!OID}" >
+    
+   <apex:param name="OppID" value="{!$CurrentPage.parameters.oppID}"/>
+   <apex:param name="Partner_Role" value="{!$CurrentPage.parameters.Partner_Role}"/>
+  
+    
+   </flow:interview>
+
+</apex:page>

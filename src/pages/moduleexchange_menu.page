@@ -1,0 +1,32 @@
+<apex:page showHeader="false">
+    <apex:composition template="comm_template">
+        <apex:define name="body">
+        <div align="center">
+          <a href="community_menu"><img src="{!$Resource.forums_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/product-training"><img src="{!$Resource.training_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/community/customer-portal"><img src="{!$Resource.support_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="moduleexchange_menu"><img src="{!$Resource.module_icon_on}" /></a>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="comm_line"></div>
+        <br />
+        <div class="comm_margin">
+        <div id="header-wrapper2">
+          <h3 class="hdr_dg">Module Exchange</h3>
+          <h3 class="hdr_lg">Upload and share Modules and Macros with other Data Artisans.  Download Certified Modules to help solve business challenges.</h3>
+        </div>
+        </div>  
+        <div class="nav-spacer-sm"></div>
+        <div id="header-wrapper2">
+        <div class="comm_margin_right"> 
+          <h3 class="hdr_lg">Share a Module or Macro:  <a href="http://www.alteryx.com/module-exchange-submission-form"><img style="vertical-align:middle" src="{!$Resource.upload_btn}" /></a></h3>
+        </div>
+        <br />
+        <h3 class="hdr_rss"><a href="http://www.alteryx.com/rss/modfeed.rss"><img src="{!$Resource.rss_image}" style="vertical-align:middle" /> Subscribe to our RSS feed</a></h3>
+        <br />
+        </div>
+        <br />
+          <apex:include pageName="Module_Exchange_main"/>
+        </apex:define> 
+    </apex:composition>
+ </apex:page>

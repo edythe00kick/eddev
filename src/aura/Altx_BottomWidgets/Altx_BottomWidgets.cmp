@@ -1,0 +1,45 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="VideoTitle" type="string" default=""/>
+    <aura:attribute name="VideoShortDesc" type="string" default=""/>
+    <aura:attribute name="VideoURL" type="string" default=""/>
+    
+    <aura:attribute name="NewsHead" type="string" default=""/>
+    <aura:attribute name="NewsImgIcon" type="string" default=""/>
+    <aura:attribute name="NewsTitle1" type="string" default=""/>
+    <aura:attribute name="NewsTitle2" type="string" default=""/>
+    <aura:attribute name="NewsTitle3" type="string" default=""/>
+    <aura:attribute name="NewsTitleLink1" type="string" default=""/>
+    <aura:attribute name="NewsTitleLink2" type="string" default=""/>
+    <aura:attribute name="NewsTitleLink3" type="string" default=""/>
+    <aura:attribute name="NewsButtonText" type="string" default=""/>
+    <aura:attribute name="NewsButtonLink" type="string" default=""/>
+    
+    <aura:attribute name="EventsHead" type="string" default=""/>
+    <aura:attribute name="EventsImgIcon" type="string" default=""/>
+    <aura:attribute name="EventsTitle1" type="string" default=""/>
+    <aura:attribute name="EventsDate1" type="string" default=""/>
+    <aura:attribute name="EventsTitle2" type="string" default=""/>
+    <aura:attribute name="EventsDate2" type="string" default=""/>
+    <aura:attribute name="EventsTitle3" type="string" default=""/>
+    <aura:attribute name="EventsDate3" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink1" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink2" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink3" type="string" default=""/>
+    <aura:attribute name="EventsButtonText" type="string" default=""/>
+    <aura:attribute name="EventsButtonLink" type="string" default=""/>
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12 OuterMainDiv">
+            <div class="slds-grid slds-wrap mainWidgetsDiv">
+                <div class="slds-col slds-size--4-of-12 VideoDiv">
+                    <c:Altx_VideoWidget VideoTitle="{!v.VideoTitle}" VideoShortDesc="{!v.VideoShortDesc}" VideoURL="{!v.VideoURL}"/>
+                </div>
+                <div class="slds-col slds-size--4-of-12 NewsDiv">
+                    <c:Altx_NewsWidget NewsHead="{!v.NewsHead}" NewsImgIcon="{!v.NewsImgIcon}" NewsTitle1="{!v.NewsTitle1}" NewsTitle2="{!v.NewsTitle2}" NewsTitle3="{!v.NewsTitle3}" NewsTitleLink1="{!v.NewsTitleLink1}" NewsTitleLink2="{!v.NewsTitleLink2}" NewsTitleLink3="{!v.NewsTitleLink3}" ButtonText="{!v.NewsButtonText}" ButtonLink="{!v.NewsButtonLink}"/>
+                </div>
+                <div class="slds-col slds-size--4-of-12 EventsDiv">
+                    <c:Altx_EventsWidget EventsHead="{!v.EventsHead}" EventsImgIcon="{!v.EventsImgIcon}" EventsTitle1="{!v.EventsTitle1}" EventsTitle2="{!v.EventsTitle2}" EventsTitle3="{!v.EventsTitle3}" EventsDate1="{!v.EventsDate1}" EventsDate2="{!v.EventsDate2}" EventsDate3="{!v.EventsDate3}" EventsTitleLink1="{!v.EventsTitleLink1}" EventsTitleLink2="{!v.EventsTitleLink2}" EventsTitleLink3="{!v.EventsTitleLink3}" EventsButtonText="{!v.EventsButtonText}" EventsButtonLink="{!v.EventsButtonLink}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

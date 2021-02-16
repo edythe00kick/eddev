@@ -1,0 +1,249 @@
+<apex:page controller="LeadConvertOptimizedController" lightningStylesheets="true" tabStyle="lead">
+    <script>
+    document.addEventListener("DOMContentLoaded", function(event){
+        var url = new URL(window.location.href);
+        var leadId = url.searchParams.get("id");
+        if (leadId == null) {
+            alert('Error: Invalid URL');
+            location.href = '/00Q/o';
+        }
+        var x = document.querySelector("[id*='leadStatus']");
+        var i = 0;
+        var b = x.length;
+        for(a = 0;a<b;a++) {
+            if(x.options.selectedIndex != i) {
+                x.options.remove(i);
+            } else {
+                i++;
+            }
+        }
+    });
+    </script>
+    <style  type="text/css">
+        .lookuphidden { 
+            width:1px;
+            height:1px;
+            border:0;
+            padding:0;
+            margin:0;
+        }
+        .requiredvalues{
+            background-color: #c00;
+            position: absolute;
+            margin-left: -3px;
+            width: 3px;
+        }
+    </style>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+        <style>
+            .requiredvalues{
+                height: 19px;
+            }
+        </style>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
+        <style>
+            .requiredvalues{
+                height: 30px;
+            }
+        </style>
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="Viewcript">
+        <script> 
+            function  viewscript(recid,type){
+               if(recid != 'NEW' && recid != 'NONE'){
+                    var newWindow = window.open('/'+recid+'/p','_blank','width=400,height=400');
+                    newWindow.focus(); 
+                } else {
+                    alert('You can only view existing '+type+'.');
+                }
+            }
+        </script>
+    </apex:outputPanel>
+    <apex:sectionHeader title="Convert Lead" />
+    <div> 
+       <p>Leads can be converted to accounts, contacts, opportunities, and follow up tasks.</p>
+       <p>You should only convert a lead once you have identified it as qualified.</p>
+       <p>After this lead has been converted, it can no longer be viewed or edited as a lead, but can be viewed in lead reports.</p>
+    </div>
+    <apex:form id="apexform">
+        <apex:pageBlock >
+            <!-- BUTTONS SECTION START -->
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Convert" action="{!ConvertLead}" reRender="apexform" status="processing" />
+                <apex:commandButton value="Cancel" action="{!Cancel}" reRender="apexform" status="processing" />
+                <apex:actionStatus id="processing" >
+                    <apex:facet name="start">
+                        <apex:image url="/img/loading.gif"/>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockButtons>
+            <!-- BUTTONS SECTION END -->
+
+            <apex:outputPanel >
+               <apex:pageMessages ></apex:pageMessages>
+            </apex:outputPanel>
+            
+            <apex:pageBlockSection title="Convert Lead" collapsible="false" columns="1" >
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Record Owner"  />
+                    <apex:inputField value="{!dummyAccount .ownerid}"   />
+                </apex:pageblocksectionitem>
+                
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Converted Status"  />
+                    <apex:outputPanel >
+                        <apex:outputPanel styleclass="requiredvalues" />
+                        <apex:inputField value="{!dummyLead.Status}" id="leadStatus"/>
+                    </apex:outputPanel>
+                </apex:pageblocksectionitem>
+                
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Lead Outcome Reason"  />
+                    <apex:outputPanel >
+                        <apex:outputPanel styleclass="requiredvalues" />
+                        <apex:inputField value="{!dummyLead.Lead_Close_Reason__c}" />
+                    </apex:outputPanel>
+                </apex:pageblocksectionitem>
+
+                <!-- send notification to owner part START -->
+                <apex:pageblocksectionitem >
+                    <apex:outputLabel value="Send Email to the Owner"   />
+                    <apex:inputCheckbox value="{!sendnotification}" />
+                </apex:pageblocksectionitem>
+                <!-- send notification to owner part END -->
+                
+                <!-- Account part START  -->
+                <apex:pageblocksectionitem >   
+                    <apex:outputLabel value="Account Name" for="Accountnames" />
+                    <apex:outputPanel > 
+                        <apex:outputPanel styleclass="requiredvalues" />
+                        <apex:selectList id="Accountnames" size="1" multiselect="false"  value="{!selectedAccount}"   styleClass="required">
+                            <apex:actionSupport event="onchange" action="{!selectedAccountChange}"  reRender="oppname,Contactname,Viewaccount,ViewContact"/>
+                            <apex:selectOptions value="{!accountList}"/>
+                        </apex:selectList> 
+                        <apex:inputField value="{!dummyContact.AccountId}" styleClass="lookuphidden" >
+                            <apex:actionSupport event="onchange" action="{!AccountLookedUp}" reRender="Accountnames,oppname,Contactname,Viewaccount,ViewContact" />
+                        </apex:inputField>
+                        <apex:outputPanel id="Viewaccount">
+                            <apex:commandLink value="view" onclick="viewscript('{!selectedAccount}','Account')" reRender="true" />
+                        </apex:outputPanel> 
+                    </apex:outputPanel>
+                </apex:pageblocksectionitem>
+                <!-- Account part Over  -->
+                
+                <!-- Merge Contactname part START -->
+                <apex:outputPanel id="Contactname" >
+                    <apex:pageBlockSection title="Contact" columns="1" collapsible="false" rendered="{!hascontact}" showHeader="false" >
+                        <apex:pageblocksectionitem >
+                            <apex:outputLabel value="Contact Name"  />
+                            <apex:outputPanel >
+                                <apex:outputPanel styleclass="requiredvalues" />
+                                <apex:selectList id="Contactnames1" size="1" multiselect="false"  value="{!selectedContact}"   styleClass="required">
+                                    <apex:selectOptions value="{!ContactList}"/>
+                                    <apex:actionSupport event="onchange" reRender="ViewContact" />
+                                </apex:selectList> 
+                                
+                                <!--<apex:inputField value="{!dummyOpp.Primary_Contact__c}" styleClass="lookuphidden" >
+                                    <apex:actionSupport event="onchange" action="{!ContactLookedUp}" reRender="Contactname,ViewContact" />
+                                </apex:inputField>-->
+                                <apex:outputPanel id="ViewContact">
+                                    <apex:commandLink value="view" onclick="viewscript('{!selectedContact}','Contact')"  reRender="true" />
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:pageblocksectionitem>
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+                <!-- Merge Contactname part END -->
+                
+                <!-- Opportunity checkbox part START  -->
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Do you want to create opportunity" />
+                    <apex:inputCheckbox value="{!createOpp}" id="opptrue">
+                        <apex:actionSupport event="onchange"  reRender="oppname" />
+                    </apex:inputCheckbox>
+                </apex:pageBlockSectionItem>
+                <!-- Opportunity checkbox part END -->
+            </apex:pageBlockSection>
+            
+            <!-- Create Opportunity part START -->
+            <apex:outputPanel id="oppname">
+                <apex:pageBlockSection title="Opportunity Details" columns="1" collapsible="false" rendered="{!createOpp}" showHeader="false">
+                    <apex:pageblocksectionitem >  
+                        <apex:outputLabel value="Opportunity Name"   />
+                        <apex:outputPanel > 
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputText id="oppid" value="{!oppName}"   />
+                        </apex:outputPanel>
+                    </apex:pageblocksectionitem>
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="Class of Business"  />
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:selectList size="1" multiselect="false" value="{!OppType}"  styleClass="required">
+                                <apex:selectOptions value="{!ClassOfBusiness}"/>
+                            </apex:selectList>
+                        </apex:outputPanel>
+                    </apex:pageblocksectionitem>
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="Close Date"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.CloseDate}"/>
+                        </apex:outputPanel>
+                    </apex:pageblocksectionitem>
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value="Forecast Amount (ACV)"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.Forecast_Amount__c}"/>
+                        </apex:outputPanel>
+                    </apex:pageblockSectionItem>
+                    <apex:pageblocksectionitem > <!-- Sergio Flores W-011118 -->
+                        <apex:outputLabel value="Term in Months"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.Term_in_Months__c}" html-placeholder="12"/>
+                        </apex:outputPanel>
+                    </apex:pageblocksectionitem>
+                    <!--Sergio Flores 02/21/2020 W-004548
+                    <apex:pageblockSectionItem > 
+                        <apex:outputLabel value="Upside Forecast Amount (ACV)"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.Upside_Forecast_Amount_ACV__c}"/>
+                        </apex:outputPanel>
+                    </apex:pageblockSectionItem>
+                    <apex:pageblocksectionitem >
+                        <apex:outputLabel value="Upside Term in Months"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.Best_Case_Term__c}" html-placeholder="12"/>
+                        </apex:outputPanel>
+                    </apex:pageblocksectionitem>-->
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value="Is this a Partner deal?" />
+                        <apex:inputCheckbox value="{!isPartner}" id="partnertrue">
+                            <apex:actionSupport event="onchange"  reRender="oppname,apexform" />
+                        </apex:inputCheckbox>                        
+                    </apex:pageblockSectionItem>
+                    <!-- Partner Deal's Amount part -->
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+           <!-- Create Opportunity part END -->
+           <!-- Commented out by Sergio to add amount when creating Opp
+           <apex:outputPanel id="partneramount" rendered="{!isPartner}">
+                <apex:pageblockSection title="Partner Details" columns="1" collapsible="false" showHeader="false">
+                    <apex:pageblockSectionItem >
+                        <apex:outputLabel value="Amount"/>
+                        <apex:outputPanel >
+                            <apex:outputPanel styleclass="requiredvalues" />
+                            <apex:inputField required="false" value="{!dummyOpp.Amount}"/>
+                        </apex:outputPanel>
+                    </apex:pageblockSectionItem>
+                </apex:pageblockSection>
+            </apex:outputPanel> -->
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

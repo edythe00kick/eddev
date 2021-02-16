@@ -1,0 +1,3 @@
+<apex:page >
+  <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1AFYJmQv1kkVi2rUS2B4AEl0IOpk" width="1280" height="720" frameborder="0"></iframe>
+</apex:page>

@@ -1,0 +1,516 @@
+<apex:page controller="WebToCaseController" showHeader="false" standardStylesheets="true" title="Alteryx Enterprise Applications Support Ticket Intake Page" >
+     
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxEmpCommunityGlobal, 'AlteryxEmpCommunityGlobal/css/Bootstrap.min.css')}" />   
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.footer.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.header.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.AlteryxEmpCommunityGlobal, 'AlteryxEmpCommunityGlobal/js/jquery.js')}"/>
+   
+    <style type="text/css">
+        .errorMsg,.errorMsg1{display:none;color:red;}
+        #cEmail{margin-top:15px;}
+        .PageMessage{display:none;}
+        .container-fluid{max-width:100%;pading-bottom:60px;margin-left:8px;padding: 0;}
+        .cls {margin: 0px;padding: 0px;width: 100%;line-height: 0px;clear: both;}
+        .recordFieldArea {margin-top: 7px;padding: 0 12px 20px 12px;}
+        .recordFieldArea table{width: 100%;}        
+        .recordFieldArea table tr label.contentRight {padding: 0 10px 5px 0;text-align: right;font-weight: bold;width: 18%;}        
+        .recordFieldArea table tr label.contentLeft {padding: 0 0 5px 10px;width: 32%;}        
+        .licensePicker {padding: 10px 15px;}
+        .content-left{float:left;padding:15px 5px 15px 30px;}
+        .content-right{float:right;}
+        .arrow-up {border-bottom: 5px solid #ffffff;border-left: 5px solid transparent;border-right: 5px solid transparent;height: 0;left: 47%;position: relative;top: -5px;width: 0;}
+        .form_header{background-color: #00a99e;color: #ffffff;font-size: 22px;text-align:center;line-height: 26px;padding: 15px;}
+        .form-container {background-color:white;max-width: 420px;margin-top: -80px;padding-bottom:30px;}
+        .output{border: 1px solid #d9d9d9;width:75%;height: 24px;margin-bottom:20px;padding:0px;}
+        .picklistinput1 {margin-bottom:25px;padding:0px;}
+        .picklistinput2 {margin-bottom:25px;padding:0px;}
+        .input{padding:0px;}
+        .picklist {padding:0px;width:96%;}
+         .Content {background: none repeat scroll 0 0 #ffffff;margin-top: 11px;background-color: #f7f7f7}
+         h3.blue {color: #1691c6;margin-bottom: 15px !important;padding: 10px 0 0;}
+        .arrow-up {border-bottom: 5px solid #ffffff;border-left: 5px solid transparent;border-right: 5px solid transparent;height: 0;left: 48%;position: relative;top: -5px;width: 0;}
+        .form-group{width:75%;}
+         h1.title_top{font-size:28px !important;}
+        .main{background-color:#EFF0F1;padding-bottom:50px;width:100%;margin-left:-8px;}
+        .site-footer{padding:50px 0 50px 50px;;background-color:#DFDFDF;width: 100%;margin-left:-8px;}
+        .messageCell{color:red;padding-bottom:0px;}
+        #no-padd{padding: 15px;width: 108%;margin-left:-15px;}
+        .header h2{padding:10px 0 0 0px;}
+        .infoM2{max-height: 400px;width: 305px;}
+        //.message .messageTable .messageCell { height:75px;}
+        .bPageBlock .message{margin-bottom:25px;min-height:95px;}
+        input,  select, textarea {width:75%;}
+        .dateOnlyInput input {width:75%;}
+        .requiredBlock{background-color: #c00; position: absolute; left: -3px;width: 3px; top: 1px;bottom: 1px;}
+        .bPageBlock .requiredInput .requiredBlock, .requiredInput .requiredBlock{left:0px !important;margin-left:-3px;}
+        .bPageBlock .requiredoutput, .requiredoutput{position: relative;height: 100%;}
+        .bPageBlock .requiredoutput .required, .requiredoutput .required{background-color: white;position: absolute;left:1px;width: 3px;top: 2px;bottom: 1px;max-height:20px;}
+        .alteryx-logo{Padding: 25px 0 10px 50px;}
+        .header{height:158px; margin-left:-8px;Background-color:#0097B4;Color:White;line-height:10px;padding-top: 14px;}
+        .formdiv{padding:0px;}
+        .btn{color:white !important;background:none !important;background-color: #0097B4 !important;width:120% !important;}
+        .pbTitle{display:none;}
+        .business{margin-top:31px;}
+        .message .messageText {height:80px;}
+        div.message.warningM3{height:160px;}
+        #contactphone{color:#E0E0E0;padding-left:3px;}
+        #contactname{color:#E0E0E0;padding-left:3px;} 
+        .bPageBlock .requiredInput, .requiredInput1,.textAreaInput {position: relative;height: 100%;padding-left: 0px;margin-bottom:20px;}
+        .bPageBlock .requiredoutput , .requiredoutput {position: relative;height: 100%;padding-left: 0px;}
+        .requiredpicklist {background-color: #c00;position: absolute;left: -3px;width: 3px;}
+        .bx-inputwrap {padding:0px;}
+        .infoM3 {height: 120px;}
+        select {color: gray;} 
+        #grey {color:gray;}
+        //div.message errorM3 .messageText {height:100px;}
+        option:not(:first-child) {color:Black;}
+        #apexbutton{background-color: #0097B4;color: white;border: none;height: 27px;width: 126px;margin-top: 1px; border: 1px solid #b5b5b5;border-bottom-color: #7f7f7f;font-weight: bold;font-size: .9em;} 
+        #btns{margin-left:12px}       
+        .main_content_link li{padding: 3px 0;}
+        .modal-header {min-height: 16.43px;padding: 15px;border-bottom: 1px solid #e5e5e5;}
+        .modal-title {margin: 0;line-height: 1.42857143;}
+        .modal-footer {padding: 19px 20px 20px;margin-top: 15px;text-align: right;border-top:none !important;}
+        
+        @media only screen and (min-device-width : 450px) and (max-device-width : 767px) and (orientation : landscape)   
+        {#btns{margin:0;}}
+        
+        @media (min-width: 768px) and (max-width: 991px){
+            .formdiv{padding-left:135px;margin-top: 110px;float:left;}
+            .form-container{width:100%;min-width:79%}
+            .alteryx{width:84%;padding-left:135px;margin-top:25px;}
+            .content {width:650px;}
+            #no-padd {width:105%;}
+            .picklist {width:98%}
+            .btn{width:100% !important;}
+            #btns{margin:auto;}
+        }
+    
+        
+        @media (max-width: 768px){
+            input, button, select, textarea {height:55px !important;}
+            .form-container{margin-top:40px;min-width:120%;height:100%;margin-left:14px}
+            .formdiv{width:80%;}
+            .requiredInput {height:25px;}
+            .requiredoutput {height:25px;}  
+            #nopad{width: 104%;margin-left: -14px;}    
+            .btn{width:100% !important;}   
+            #btns{margin:auto;}   
+        }
+ 
+        
+    </style>
+    
+    <script>
+        
+ 
+    
+    function changecolor(){ 
+         
+        var x = jQuery('#contactname > span > span');
+        var y = jQuery('#contactphone > span > span');
+        if(x.html() !="Contact Name")
+        {
+            x.css("color","black");        
+        }
+        
+        if(y.html() != "Contact Phone"){
+           y.css("color","black");
+        }                
+    }
+    
+    var myCaseId = "{!caseId}";
+ 
+        function validFiles(obj)
+        {
+           console.log('in it now');
+           var fileSize = obj.files[0].size;
+           
+                if(fileSize>26112000)
+                {
+                    alert('Please select file of maximum size 25MB');
+                    console.log('greater than 25 mb');
+                    this.value = '';
+                }
+                
+        }
+     function reload(){
+         refresh();
+     }
+ 
+    </script>
+ 
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 container-fluid">
+        <div Class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alteryx-logo">
+            <apex:image id="logo" url="{!$Resource.AlteryxLogo}"/><br/>
+            
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopad left-pad-ipad right-pad-ipad header">
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 business" style="padding-left:40px;">    
+                <h2>Enterprise Applications Request</h2>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+            </div>    
+      
+               <div class="site-content" id="xtra-padd2"></div> 
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 main">
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 alteryx">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 Content">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 nopad left-pad-ipad right-pad-ipad" id="blue-bg">
+                        <div class="site-content" id="xtra-padd2">
+                            <h3 class="blue"><strong style="padding: 10px 0; display: block;">The Enterprise Applications Group</strong></h3>
+                            <p>The Enterprise Applications Group manages business applications that are used enterprise wide (such as Salesforce.com and Netsuite). The main function of this group is to administer and troubleshoot business application challenges to increase productivity and perform business functions accurately. We support the different departments in streamlining processes tied to business applications.</p>
+                        </div> 
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alteryxcontent" id="xtra-padd">
+                        <h3 class="blue"><strong style="padding: 5px 0; display: block;">Requesting a Case</strong></h3>
+                        <p>The support ticket is meant for our internal users to channel any challenges they may be having with our current and future enterprise applications. It is thru this page that we’re able to queue and prioritize technical difficulties, error messages and departmental projects needing our attention.</p>
+                        <ol class="main_content_link">
+                            <li>Upon submission of the form, you should be receiving an email confirming your ticket was received and assigned with a case number.</li>
+                            <li>A member of our Enterprise Applications Group will be assigned to own your ticket and advise you of the status and disposition of the said ticket.</li>
+                            <li>Your ticket will be categorized either as a simple troubleshooting task or a large project impacting multiple business groups / departments.</li>
+                            <li>Depending on the complexity of your troubleshooting ticket, it may take us  up to 72 hours to resolve it.</li>
+                            <li>Prioritization of large projects impacting multiple business groups / departments is determined by the Governance Board.</li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alteryxcontent" id="xtra-padd">
+                        <h3 class="blue"><strong style="padding: 5px 0; display: block;">Severity</strong></h3>
+                        <p>For production defects and bugs provide a Severity level to help the Enterprise Applications team best prioritize your case.</p>
+                        <ol class="main_content_link">
+                            <li>Low : enhancements, new feature requests, defect with a light work around, one-off or non-revenue related defect</li>
+                            <li>Medium : defects with a temporary work around, small group or individual affected</li>
+                            <li>Major : defect with no workaround, large group affected, potential revenue impact, lack of access to non-core functionality, projects supporting critical business process</li>
+                            <li>Critical : system outages, lack of access to core functionality, revenue impacting defect, customer facing defect</li>
+                        </ol>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 alteryxcontent" id="xtra-padd">
+                        <h3 class="blue"><strong style="padding: 5px 0; display: block;">Priority</strong></h3>
+                        <p>For production defects and bugs provide a Severity level to help the Enterprise Applications team best prioritize your case.</p>
+                        <ol class="main_content_link">
+                            <li>Low : Loose or no deadline established, nice-to-have enhancements, general questions</li>
+                            <li>Medium : Deadline undefined, resolution needed, enhancements required for non-critical business process</li>
+                            <li>High : Strict deadline, expedient resolution needed, enhancements required for critical business process</li>
+                            <li>Urgent : Tight-deadline or ASAP, expedient resolution needed, key enhancements required to keep a project on schedule</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+      
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 nopad formdiv">
+                <apex:form id="form1">
+                    <apex:inputhidden value="{!contactEmail}" id="emaildede1"/>
+                    <apex:actionFunction name="reload" action="{!reset}" rerender="form1,form2,panel"/>
+                    <apex:actionFunction action="{!searchContact}" name="searchContactfunction" reRender="contactname,contactphone,pageMessagesPanel"/>
+                      <!-- <apex:param name="contactEmail"  assignTo="{!contactEmail}" value=""/>
+                    </apex:actionFunction> -->
+                </apex:form>
+                <span class="PageMessage" style="{!if(!isCaseCreated,'display:block;max-width: 420px;','display:none')}">
+                    <div class="message infoM3" role="alert">
+                        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                            <tbody>
+                                <tr valign="top"><td><img alt="INFO" class="msgIcon" src="{!$Resource.infoMsg}" title="INFO"/></td><td class="messageCell"><div id="j_id0:apexformalteryx:j_id11:j_id13:j_id14:j_id15:0:j_id16:j_id17:j_id19" class="messageText"><span id="j_id0:apexformalteryx:j_id11:j_id13:j_id14:j_id15:0:j_id16:j_id17:j_id20"><h4></h4></span>Thank you for submitting your case. A Enterprise Applications person will be assigned to your case. You should be getting an email letting you know of the owner and case number.<br/></div></td>
+                                </tr>
+                                <tr><td></td><td></td></tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                </span>
+                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 form-container" style="{!if(isCaseCreated,'display:block;','display:none')}">
+                    <div class="form_header" id="no-padd">Enter Details For Case</div>
+                    <div class="arrow-up clearfix"> </div>
+                    <apex:outputPanel id="pageMessagesPanel">
+                        <apex:pageMessages />
+                    </apex:outputPanel>
+                    
+                    <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 caseDetailsDiv" >
+                        <apex:outputPanel id="panel" style="display:block;">
+                            <div class = "col-lg-12 col-md-12 col-sm-12 sol-xs-12 requiredInput1">
+                                <div class = "requiredBlock" style="margin-top:15px;"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 bx-inputwrap">
+                                    <input type="Text"  id="cEmail" placeholder=" Contact Email" onblur="contact_Email();"/>
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                </div>
+                            </div>
+                            <div class = "col-lg-12 col-md-12 col-sm-12 sol-xs-12 requiredoutput">
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 output" id="contactname"> 
+                                    <div class = "required"></div>
+                                    <apex:outputPanel id="contactname">
+                                        <apex:outputText id="cname" value="{!contactName}" />
+                                        <script>
+                                            changecolor();
+                                        </script> 
+                                   </apex:outputPanel>
+                                </div> 
+                            </div>
+                            <div class = "col-lg-12 col-md-12 col-sm-12 sol-xs-12 requiredoutput">
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 output" id="contactphone">    
+                                    <div class = "required"></div>
+                                    <apex:outputPanel id="contactphone">
+                                        <apex:outputText value="{!contactPhone}" id="cphone" />
+                                    </apex:outputPanel>                                       
+                                </div>    
+                            </div>
+                        </apex:outputpanel>
+                        <apex:form id="form2">
+                            <apex:inputhidden value="{!contactEmail}" id="emaildede"/>
+                            <script>
+                                function saveCase(){
+                                    jQuery('.errorMsg').css('display','none');
+                                    jQuery('.errorMsg1').css('display','none');
+                                    console.log('----save function called------');
+                                    var a = 0;
+                                    var b = 0;
+                                    var c = 0;
+                                    var i = 0
+                                    
+                                    jQuery('.requiredInput1').each(function(){
+                                        
+                                        var x = jQuery(this).find('input').val();
+                                            console.log('--------'+x);
+                                        if(x == null || x == ''){
+                                            console.log('@@@@---->>>>');
+                                            i=1;
+                                            //a=1
+                                            jQuery(this).find('.errorMsg').css('display','block');
+                                        }
+                                        
+                                    });
+                                    jQuery('.picklistinput1 .picklist,.picklistinput2 .picklist').each(function(){
+                                        var x = jQuery(this).find('select').val();
+                                        if(x == null || x == ''){
+                                            i=1;
+                                            //b=1
+                                            jQuery(this).find('.errorMsg').css('display','block');
+                                        }
+                                    });
+                                    jQuery('.textAreaInput textarea').each(function(){
+                                        var x = jQuery(this).val();
+                                        if(x == null || x == ''){
+                                            i=1;
+                                            //c=1
+                                            jQuery('.errorMsg1').css('display','block');
+                                        }
+                                    });
+                                    
+                                    if(i == 0 ){
+                                    var c_email = document.getElementById('cEmail').value;
+                                        jQuery("[id$=emaildede]").val(c_email);
+                                        saveCaseWithAttachment();
+                                    }
+                                    
+
+                                }
+                                
+                                function again(){
+                                    previouspage();
+                                }
+                                                             
+                            </script>
+                            <apex:actionFunction name="previouspage" action="{!reset}"/>
+                            <apex:actionFunction name="saveCaseWithAttachment" action="{!save}" />
+                             
+                            <div class = "col-lg-12 col-md-12 col-sm-12 sol-xs-12 requiredInput1 ">
+                                <div class = "requiredBlock"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 input">    
+                                    <apex:inputField value="{!c.Subject}"  html-placeholder=" Subject"/>  
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>                                     
+                                </div>
+                            </div>
+                            
+                            <div class = "col-lg-12 col-md-12 col-sm-12 sol-xs-12 textAreaInput">
+                                <div class = "requiredBlock"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 input">    
+                                    <apex:inputField value="{!C.Description}"  html-placeholder=" Description"/>   
+                                    <div class="errorMsg1"><strong>Error:</strong> You must enter a value</div>                                 
+                                </div>        
+                            </div><br> </br>
+                            
+                            <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklistinput1">
+                                <div class = "requiredpicklist"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklist" >   
+                                  
+                                   <apex:inputField value="{!C.Business_System__c}" onchange="colorpicklist(this)"/>
+                                   <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                   
+                                </div>
+                            </div> 
+                                       
+                            <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklistinput2">    
+                                <div class = "requiredpicklist"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklist">
+                                    
+                                    <apex:inputField value="{!C.Business_System_Category__c}" onchange="colorpicklist1(this)"/>
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                                                                                           
+                                </div>
+                            </div><br/>
+                
+                            <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklistinput1">    
+                                <div class = "requiredpicklist"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklist">                  
+                                    <apex:inputField value="{!C.Type}" onchange="colorpicklist(this)" />
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                                                                                           
+                                </div>
+                            </div><br/>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklistinput1">    
+                                <div class = "requiredpicklist"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklist">
+                                    <apex:inputField value="{!C.Severity__c}" onchange="colorpicklist(this)" />
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                                                                                           
+                                </div>
+                            </div><br/>
+                            
+                            <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklistinput1">    
+                                <div class = "requiredpicklist"></div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 picklist">
+                                    <apex:inputField value="{!C.Priority}" onchange="colorpicklist(this)" />
+                                    <div class="errorMsg"><strong>Error:</strong> You must enter a value</div>
+                                                                                                           
+                                </div>
+                            </div><br/>
+                            
+                            <apex:outputPanel id="attachpart" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 sol-xs-12 subInput" style="width: 100%; margin:auto;text-align:center;background-color:#F2F2F2;Padding:10px;">
+                                    <center><apex:outputLabel value="Add an Attachment" for="att" /></center>
+                                    <center><span>This will only allow single attachment with a maximum file size of 25MB.</span></center><br/>
+                                    <apex:inputFile styleClass="tfbutton1" value="{!anAttachment.body}" filename="{!anAttachment.name}" title="Attachments" id="file" onchange="validFiles(this)"/><br/>
+                                </div> 
+                                <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12" id="pbbtn1"><br/>
+                                    <input type="button" id="saveBTN" onclick="saveCase();" value="Submit" class="btn" />
+                                </div>
+                                
+                                <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12" id="pbbtn2"><br/>
+                                    <input type="button" id="resetBTN" onclick="reload()" value="Reset" class="btn" />
+                                </div>
+                           </apex:outputPanel>
+                           
+                        </apex:form>
+                    </div>   
+                           
+                </div>
+                <apex:outputPanel style="{!if(isCaseCreated,'display:none;','display:block')}">
+                    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 col-lg-offset-1 col-md-offset-1" id="pbbtn2"><br/>
+                        <input type="button" id="resetBTN" onclick="again();" value="Create a New Case" class="btn" />
+                    </div>
+                                
+                </apex:outputPanel>  
+            </div>     
+        </div>
+          
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 site-footer">
+            <p class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-1 col-ms-offset-1 col-sm-offset-1 col-xs-offset-1 column1">
+                <strong>© <script>document.write(new Date().getFullYear())</script> Alteryx, Inc.</strong>
+                <a href="http://www.alteryx.com/terms-and-conditions">Terms and conditions</a>
+                <a href="http://www.alteryx.com/privacy-policy">Privacy policy</a>
+            </p>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 column2">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-ms-offset-2 col-sm-offset-2 col-xs-offset-2 social-links">
+                    <a href="//www.facebook.com/alteryx">
+                        <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_facebook.jpg"/>
+                    </a>
+                 </div>
+                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 social-links">   
+                    <a href="//twitter.com/alteryx">
+
+                        <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_twitter.jpg"/>
+                    </a>
+                 </div>
+                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 social-links">   
+                    <a href="//www.linkedin.com/company/alteryx">
+
+                         <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_linkedin.jpg"/>
+                    </a>
+                </div>    
+            
+            </div>
+        </div>
+    </div>
+    <script>
+    
+ 
+        function myFunction(a) {a.style.color = "black";}
+        
+        function depend(x){
+           var myDDL = $('.picklistinput2 > .picklist >select');
+            
+           if(x == 'SFDC' || x == 'Netsuite'){
+                $('.picklistinput2 > .picklist >select').prop('disabled' , false);   
+           }
+           else {
+              myDDL[0].selectedIndex = 0;
+              $('.picklistinput2 > .picklist >select').prop('disabled' , 'disabled');
+                 
+           }
+       }
+        
+        function getSelectValues(select) {
+            var result = [];
+            var options = select && select.options;
+            var opt;
+        
+            for (var i=0, iLen=options.length; i<iLen; i++) {
+                opt = options[i];
+        
+                if (opt.selected) {
+                result.push(opt.value || opt.text);
+                }
+          }
+          return result;    
+        }
+        
+        function save1(){ 
+            email = document.getElementById('cEmail').value;
+            saveCustom("","");
+          
+        }
+
+        function colorpicklistPrio(val){
+            var x = val.value;
+            if(x  != 'Priority' && x  != '' && x  != null){
+                val.style.color = "black";
+            }
+            else{
+                val.style.color = ' #E0E0E0';
+            }
+        }
+        
+        function colorpicklist(val){
+            var x = val.value;
+            if(x  != 'Business System' && x  != '' && x  != null){
+                val.style.color = "black";
+            }
+            else{
+                val.style.color = ' #E0E0E0';
+            }
+        }
+        
+        function colorpicklist1(val){
+            var x = val.value;
+            if(x  != '' && x  != null){
+                val.style.color = "black";
+            }
+            else{
+                val.style.color = ' #E0E0E0';
+            }
+        }
+     
+        function contact_Email(){
+            var c_email = document.getElementById('cEmail').value;
+            
+            jQuery("[id$=emaildede1]").val(c_email);
+            var a = jQuery("[id$=emaildede1]").val();
+            
+            searchContactfunction();
+        }
+        
+        
+        document.getElementsByTagName('select')[0].options[0].innerHTML = 'Enterprise Application';
+        document.getElementsByTagName('select')[2].options[0].innerHTML = 'Case Type';
+        document.getElementsByTagName('select')[3].options[0].innerHTML = 'Severity';
+        document.getElementsByTagName('select')[4].options[0].innerHTML = 'Priority';
+             
+    </script>
+</apex:page>

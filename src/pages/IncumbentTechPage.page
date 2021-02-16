@@ -1,0 +1,120 @@
+<apex:page controller="IncumbentTech_SearchController" showheader="false" sidebar="false" tabStyle="Account">
+    <script src="{!URLFOR($Resource.DataTables,'/media/js/jquery.js')}"></script> 
+    <script src="{!URLFOR($Resource.DataTables,'/media/js/jquery.dataTables.js')}"></script> 
+    <style type="text/css" title="currentStyle">
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_page.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_page.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_table_jui.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css')}";
+    </style>  
+           
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            jQuery('#resultsTable').dataTable();
+            jQuery('.dataTables_wrapper > .dataTables_length').remove();
+            jQuery('.dataTables_wrapper > .dataTables_filter').remove();
+            jQuery('.dataTables_info').remove();
+            jQuery('.dataTables_paginate').remove();
+            jQuery('.paging_two_button').remove();
+        });
+    </script>
+    
+    <style type="text/css">
+        #heading { font: bold 20px Arial;}
+        #searchTable { width: 80%;}
+        #searchTable tr td{ padding-bottom: 10px;}
+        
+        td{padding-left:1%;padding-right:1%;}
+        th{padding-left:1% !important;padding-right:1%;}
+        .paginate_disabled_previous{margin-right:5px !important;}
+        .dataTables_filter{width:40% !important;}
+        tr.odd td.sorting{background-color:#F8F8F8}
+    </style>
+    
+    <apex:pageBlock id="topPB">
+        <h2 id="heading">Current Technologies</h2>
+    </apex:pageBlock>
+    
+    <apex:form >
+        <apex:pageBlock title="Search">
+            <apex:pageMessages ></apex:pageMessages>
+            <table id="searchTable">
+                <tr>
+                    <td><apex:outputText value="Technology"/></td>
+                    <td>
+                        <apex:selectList value="{!technology}"  multiselect="false" size="1">
+                            <apex:selectOptions value="{!incumbentTechNames}"/>
+                        </apex:selectList>
+                    </td>
+                    
+                    <td><apex:outputText value="Technology Type"/></td>
+                    <td>
+                        <apex:selectList value="{!technologyType}"  multiselect="false" size="1">
+                            <apex:selectOptions value="{!incumbentTechTechnologyValues}"/>
+                        </apex:selectList>
+                    </td>
+                    
+                    <td><apex:outputText value="Account Type"/></td>
+                    <td>
+                        <apex:selectList value="{!accountType}"  multiselect="false" size="1">
+                            <apex:selectOptions value="{!AccountTypeValues}"/>
+                        </apex:selectList>
+                    </td>
+                </tr>
+                <tr>
+                    <td><apex:outputText value="Competitor"/></td>
+                    <td>
+                        <apex:selectList value="{!competitor}"  multiselect="false" size="1">
+                            <apex:selectOptions value="{!incumbentCompetitorValues}"/>
+                        </apex:selectList>
+                    </td>
+                    
+                    <td><apex:outputText value="Industry"/></td>
+                    <td>
+                        <apex:selectList value="{!industry}"  multiselect="false" size="1">
+                            <apex:selectOptions value="{!accountIndustryValues}"/>
+                        </apex:selectList>
+                    </td>
+                </tr>
+            </table>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!doSearch}" value="Search"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:form >
+        <apex:pageBlock title="Results" id="incumbent_records">
+            <table class="display" id="resultsTable">
+                <thead>
+                    <tr>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Current Technology Name</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Account</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Technology</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Technology Type</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Account Owner</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Account Type</th>
+                        <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Competitor?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!incumbents}" var="incumbent" id="theRepeat">
+                        <tr>
+                            <td style="padding-left:1% !important;padding-right:1% !important;"><a href="/{!incumbent.Id}" target="_blank">{!incumbent.Name}</a></td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;"><a href="/{!incumbent.Account__c}" target="_blank">{!incumbent.Account__r.Name}</a></td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;">{!incumbent.Incumbent_Technology__r.Name}</td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;">{!incumbent.Technology_Type__c}</td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;">{!incumbent.Account_Owner__c}</td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;">{!incumbent.Account_Type__c}</td>
+                            <td style="padding-left:1% !important;padding-right:1% !important;"><apex:inputCheckbox value="{!incumbent.Competitor__c}" disabled="true"/></td>
+                        </tr>
+                    </apex:repeat>
+                </tbody> 
+            </table>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Previous" action="{!setPreviousPage}" reRender="incumbent_records" disabled="{!previousPage}"/>
+                <apex:commandButton value="Next" action="{!setNextPage}" reRender="incumbent_records" disabled="{!nextPage}"/>
+            </apex:pageBlockButtons>
+      </apex:pageBlock>
+    </apex:form>
+</apex:page>

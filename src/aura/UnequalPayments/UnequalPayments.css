@@ -1,0 +1,21 @@
+.THIS .label{
+    border-color: gray;
+}
+
+.THIS .left{
+    float:left;
+}
+
+.THIS .right{
+    float: right;
+}
+
+.THIS .header{
+    font-size: medium;
+    font-weight: bold;
+}
+
+.THIS .normal{
+    font-size: small;
+    font-weight: bold; 
+}

@@ -1,0 +1,37 @@
+<!--
+ - Created by csalgado on 6/7/2020.
+ -->
+
+<!-- Co Term Button -->
+<template>
+    <lightning-card title="Co-Term Opportunity" icon-name="standard:activations">
+        <div class="slds-m-bottom_small slds-m-left_large">
+            <lightning-button label="Co-Term" onclick={openModal}></lightning-button>
+        </div>
+    </lightning-card>
+
+    <!-- START MODAL -->
+    <template if:true={modalState}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Co-Term Opportunity</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c-co-term-list parent-record-id={recordId} onclosemodalpass={closeModal}></c-co-term-list>
+                </div>
+                <footer class="slds-modal__footer">
+                    <!-- <lightning-button label="Save" variant="brand" onclick={childCoTermOpp}></lightning-button> -->
+                    &nbsp;&nbsp;
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+
+        <!-- START BACKDROP -->
+        <div class="slds-backdrop slds-fade-in-open"></div>
+        <!-- END BACKDROP -->
+
+    </template>
+    <!-- END MODAL -->
+</template>

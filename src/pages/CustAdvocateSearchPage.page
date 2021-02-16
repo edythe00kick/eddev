@@ -1,0 +1,237 @@
+<apex:page controller="CustAdvocacy_SearchController" sidebar="false" >
+  <!-------------------------new stuff --------------------------------->
+  <!-- Combo-handled YUI CSS files: --> 
+<!--<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/datatable/assets/skins/sam/datatable.css"></link>-->
+
+ <script src="{!URLFOR($Resource.DataTables,'/media/js/jquery.js')}"></script> 
+ <script src="{!URLFOR($Resource.DataTables,'/media/js/jquery.dataTables.js')}"></script> 
+
+ <style type="text/css" title="currentStyle">
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_page.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_page.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/media/css/demo_table_jui.css')}";
+        @import "{!URLFOR($Resource.DataTables, '/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css')}";
+ </style>  
+
+  
+  
+  
+           
+  <script type="text/javascript">
+        jQuery(document).ready(function(){
+           
+            jQuery('#resultsTable').dataTable();
+        });  
+        
+  </script>
+  <script type="text/javascript">
+    function followup() {
+        jQuery('#followup').unbind('click');
+    }
+  </script>
+  <script type="text/javascript">
+     function shareRecord(recId) {                                          
+        console.log(recId);                                                              
+        shareRecords(recId);        
+     } 
+     
+     
+  </script>
+  <!-------------------------end new stuff --------------------------------->
+  
+  <style>
+  div[id*="topPB"] h2.mainTitle{
+    font-size: 20px !important;
+  }
+  .zenbutton {
+        font-family: Arial;
+        font-size: 1.08em;
+        background-color: #8ab529;
+        border: 1px solid #6c8049;
+        background-image: -ms-linear-gradient(top,#8AB529 0,#87AC31 100%);
+        background-image: -moz-linear-gradient(top,#8AB529 0,#87AC31 100%);
+        background-image: -webkit-linear-gradient(top,#8AB529 0,#87AC31 100%);
+        background-image: linear-gradient(top,#8AB529 0,#87AC31 100%);
+        display: inline-block;
+        padding-top: 0;
+        padding-bottom: 1px;
+        padding-left: 10px;
+        padding-right: 10px;
+        height: 30px;
+        color: #fff;
+        -moz-border-radius: 3px;
+        border-radius: 2px;
+        -moz-box-shadow: 0 1px 2px 0 #adadad;
+        -webkit-box-shadow: 0 1px 2px 0 #adadad;
+        box-shadow: 0 1px 2px 0 #adadad;
+        margin: 0;
+}
+  </style>
+  
+  <style>
+    
+    td{padding-left:1%;padding-right:1%;}
+    th{padding-left:1% !important;padding-right:1%;}    
+   
+    .dataTables_filter{width:40% !important;}
+    .display{ margin:0px !important;}
+    tr.odd td.sorting{background-color:#F8F8F8}
+    tr.odd {background-color: #e1eef2;}    
+    tr.even {background-color: #edf3f5;} 
+    tr.odd td.sorting_1 {background-color: #c0e0ea;}
+    tr.even td.sorting_1 {background-color: #d6eaf0;}    
+    a.paginate_disabled_previous {display:none;}
+    a.paginate_enabled_previous{margin-right:4px;cursor:pointer;}
+    a.paginate_disabled_next {display:none;}
+    a.paginate_enabled_next  {cursor:pointer;}
+    table.display{margin-top:5px;}
+    table.display thead th{background-color:#1797c0;color:#fff;}
+  </style>
+  
+  <apex:pageBlock title="Customer Advocacy" mode="edit" id="topPB">
+    <apex:outputLink value="{!listLink}" id="theLink">Click here to add customer advocates or go to list view.</apex:outputLink>
+  </apex:pageBlock>
+  <apex:form >
+    
+    <apex:pageBlock title="Search" mode="edit">
+      <apex:pageBlockButtons >
+        <apex:commandButton action="{!doSearch}" value="Search"/>
+      </apex:pageBlockButtons>
+      <apex:actionFunction name="shareRecords" action="{!getShare}" rerender="blank">  
+        <apex:param name="firstParam" value="" assignTo="{!shareRecordId}" />                 
+      </apex:actionFunction>
+      <table>
+        <!-- DEPRECATED
+        <tr>
+          <td>
+                  <apex:outputText value="Search Phrase"  Style="font-weight:bold;font-size:14px;width:130px !important;"/>
+          </td>
+          <td><apex:inputText value="{!tSearch}" id="theTextInput"/></td>
+        </tr>
+        -->
+        <tr>
+         <td><apex:outputText value="NPS Type" style="width:100px !important"/></td>
+         
+         <td><apex:inputField value="{!caSearch.NPS_Type__c}" style="width:85%"/></td>   
+         <!-- <apex:selectList value="{!NPSTypeSelected}" multiselect="false" size="1" style="width:85%">
+             <apex:selectOptions value="{!NPSTypeSelect}"/>
+           </apex:selectList>  -->
+         
+        
+          
+          
+         <td><apex:outputText value="AR/PR Activities" style="width:130px !important"/></td>
+         <td>
+           <apex:selectList value="{!ARPRActivitiesSelected}" multiselect="false" size="1" style="width:85%">
+             <apex:selectOptions value="{!ARPRActivitiesSelect}"/>
+           </apex:selectList>
+          </td>
+          
+          <td><apex:outputText value="Participate in Webinars"/></td>
+           <td><apex:inputField value="{!caSearch.Participate_in_Webinars__c}" style="width:85%"/></td>
+         </tr>
+    
+        <tr>
+         <td><apex:outputText value="Industry"/></td>
+         <td>
+           <apex:selectList value="{!industrySelected}" multiselect="false" size="1" style="width:85%">
+             <apex:selectOptions value="{!industriesSelect}"/>
+           </apex:selectList>
+          </td>
+         <td><apex:outputText value="Events"/></td>
+         <td>
+         <apex:selectList value="{!eventsSelected}" multiselect="false" size="1" style="width:85%">
+            <apex:selectOptions value="{!eventsSelect}"/>
+         </apex:selectList>
+         </td>   
+         
+         <td><apex:outputText value="Advocacy Tools"/></td>
+         <td>
+          <apex:selectList value="{!advocacyToolsSelected}" multiselect="false" size="1" style="width:85%">
+            <apex:selectOptions value="{!advocacyToolsSelect}"/>
+         </apex:selectList>
+         </td>
+         
+         <!-- <td>
+           <apex:selectList value="{!csSearch.Partner__c}" multiselect="false" size="1">
+             <apex:selectOptions value="{!csSearch.Partner__c}"/>
+           </apex:selectList>
+          </td> -->
+         </tr>
+        
+       
+        
+         
+        <tr>
+         <td><apex:outputText value="Products"/></td>
+         <td>
+           <apex:selectList value="{!productSelected}" multiselect="false" size="1" style="width:85%">
+             <apex:selectOptions value="{!productsSelect}"/>
+           </apex:selectList>
+          </td>
+         <td><apex:outputText value="Creative and Web Activities"/></td>
+         <td>
+         <apex:selectList value="{!CreativeAndWebActivitiesSelected}" multiselect="false" size="1" style="width:85%">
+            <apex:selectOptions value="{!CreativeAndWebActivitiesSelect}"/>
+         </apex:selectList>
+         </td>   
+         
+         <td><apex:outputText value="Willing to be a Prospect Reference?"/></td>
+         <td><apex:inputField value="{!caSearch.Willing_to_be_a_Prospect_Reference__c}" style="width:85%"/></td>
+         <td>
+         <!-- <apex:selectList value="{!willingToBeAProspectReferenceSelected}" multiselect="false" size="1" style="width:85%">
+            <apex:selectOptions value="{!caSearch.Willing_to_be_a_Prospect_Reference__c}"/>
+         </apex:selectList> -->
+         </td>
+         
+         <!-- <td>
+           <apex:selectList value="{!csSearch.Partner__c}" multiselect="false" size="1">
+             <apex:selectOptions value="{!csSearch.Partner__c}"/>
+           </apex:selectList>
+          </td> -->
+         </tr>
+       
+         
+         
+          <!-- <apex:inputField value="{!csSearch.Status__c}"/>  -->
+      </table>
+      </apex:pageBlock>
+     </apex:form>
+
+  <apex:pageBlock title="Results" mode="edit">
+   <div id="tableContainer">
+    <table class="display" id="resultsTable">
+     <thead>
+       <tr>
+         
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Customer Advocacy Name</th>
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Account Name</th>
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Contact</th>
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Role</th>
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Industry</th>
+         <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">NPS Type</th>
+          <th id="followup" style="padding-left:1% !important;padding-right:1% !important;width:5%;" onclick="followup()">Following</th>
+          <!-- <th style="padding-left:1% !important;padding-right:1% !important;width:5%;">Share</th> -->
+         
+       </tr>
+     </thead>
+     <tbody>
+      <apex:repeat value="{!caHelperList}" var="csh" id="theRepeat">
+        <tr>
+          <td style="padding-left:2% !important;"><div id="{!csh.title}"></div><apex:outputLink value="{!csh.link}" id="theLink">{!csh.title}</apex:outputLink></td>  
+         <!--  <td>{!csh.link}{!csh.title}</td>
+          <td style="padding-left:2% !important;"><div id="{!csh.Link}"></div><apex:outputLink value="{!csh.link}" id="theLink">{!csh.Link}</apex:outputLink></td> -->
+          <td style="padding-left:1% !important;padding-right:1% !important;">{!csh.account}</td>
+          <td style="padding-left:1% !important;padding-right:1% !important;">{!csh.contact}</td>
+          <td style="padding-left:1% !important;padding-right:1% !important;">{!csh.role}</td>
+          <td style="padding-left:1% !important;padding-right:1% !important;">{!csh.industry}</td>          
+          <td style="padding-left:1% !important;padding-right:1% !important;">{!csh.npsType}</td>
+          <td style="padding-left:1% !important;padding-right:1% !important;"><chatter:follow entityId="{!csh.Id}"/></td>
+          <!-- <td style="padding-left:1% !important;padding-right:1% !important;"><input type = "button" onclick = "shareRecord('{!csh.id}')" value="Share" class="zenbutton" /> </td>  -->
+        </tr>
+      </apex:repeat>
+     </tbody> 
+    </table>
+   </div>
+  </apex:pageBlock> 
+</apex:page>

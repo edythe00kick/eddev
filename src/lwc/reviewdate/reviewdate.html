@@ -1,0 +1,38 @@
+<!--
+ - Created by ewong on 12/23/2019.
+ -->
+
+<!-- reviewDate -->
+<template>
+    <div class="slds-m-bottom_small slds-m-left_large">
+        <lightning-button label="Add/Edit" onclick={openModal}></lightning-button>
+    </div>
+    <!-- START MODAL -->
+    <template if:true={modalState}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Review Date</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-record-edit-form object-api-name="Custom_Knowledge_Article__c">
+                        <lightning-input-field field-name="Review_Date__c" value={reviewDate} onchange={dateOnChange}></lightning-input-field>
+                    </lightning-record-edit-form>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Save" variant="brand" onclick={saveMethod}></lightning-button>
+                    &nbsp;&nbsp;&nbsp;
+                    <lightning-button label="Remove Current Review date" variant="destructive" onclick={removeReviewDateButton}></lightning-button>
+                    &nbsp;&nbsp;
+                    <lightning-button label="Cancel" variant="neutral" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+
+        <!-- START BACKDROP -->
+        <div class="slds-backdrop slds-fade-in-open"></div>
+        <!-- END BACKDROP -->
+
+    </template>
+    <!-- END MODAL -->
+</template>

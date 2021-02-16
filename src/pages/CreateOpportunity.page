@@ -1,0 +1,52 @@
+<apex:page standardController="Opportunity" extensions="CreateOppController" lightningStylesheets="true" tabStyle="opportunity">
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme4u' || $User.UIThemeDisplayed == 'Theme4d'}"> <!-- Eddie Wong || 05/12/2020 || W-005360 -- New Theme for Service Console  -->
+        <apex:includeLightning />
+        <apex:slds />
+        <apex:includeScript value="{!$Site.BaseUrl}/lightning/lightning.out.js?v=2"/>
+        <script>
+            console.log('inside lightning version');
+            var myUserContext = "{!$User.UITheme}";
+            var url = new URL(window.location.href);
+            var accId = url.searchParams.get('accid');
+            var conId = url.searchParams.get('conid');
+            console.log(accId);
+            console.log(conId);
+            $Lightning.use("c:CreateOpportunityApp", function() { <!-- Eddie Wong || 05/12/2020 || W-005360 -- New App  -->
+                $Lightning.createComponent(
+                    "c:CreateOpportunity",
+                    { accid: accId,
+                        conid: conId},
+                    "myDivId",
+                    function(cmp) {
+                    });
+            });
+        </script>
+        <div id="myDivId"></div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3'}">
+        <script>
+            console.log('inside lightning version 2');
+        </script>
+        <style>
+            .bPageBlock .requiredInput .requiredBlock {
+                background-color: #c00;
+                position: absolute;
+                left: -3px;
+                width: 3px;
+                top: 0px;
+                bottom: 0px;
+            }
+            table .__web-inspector-hide-shortcut__ {
+                display: none;
+            }
+            table .detailList {
+                border-collapse: separate;
+                border-spacing: 10px;
+            }
+        </style>
+        <flow:interview name="CreateOpportunityNew" interview="{!myFlow}" finishLocation="{!retURL}">
+            <apex:param name="AccId" value="{!$CurrentPage.parameters.accId}"/>
+            <apex:param name="ContId" value="{!$CurrentPage.parameters.conId}"/>
+        </flow:interview>
+    </apex:outputPanel>
+</apex:page>

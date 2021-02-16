@@ -1,0 +1,32 @@
+<aura:component >
+    <aura:attribute name="tileHead" type="string" default=""/>
+    <aura:attribute name="tileDesc" type="string" default=""/>
+    <aura:attribute name="lightningIcon" type="string" default=""/>
+    <aura:attribute name="backImage" type="string" default=""/>
+    <aura:attribute name="PageLink" type="string" default=""/>
+    <aura:attribute name="color" type="string" default="#fff"/>
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12 mainTileDiv" style="{!'background-image: url(\''+$Resource.Alteryx_Community_Images+'/Alteryx_Community_Images/'+v.backImage+'\');'}">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--12-of-12">
+                    <div class="slds-grid slds-wrap" style="{!'color:' + v.color}">
+                        <a class="slds-col slds-size--12-of-12 headText" href="{!v.PageLink}" style="{!'color:' + v.color}">
+                            {!v.tileHead}
+                        </a>
+                        <div class="slds-col slds-size--12-of-12 tileDesc">
+                            {!v.tileDesc}
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size--3-of-12 lightIcon">
+                    <div class="slds-grid slds-wrap">                        
+                        <div class="slds-col slds-size--12-of-12 ImageDiv">
+                            <!--<lightning:icon iconName="{!v.lightningIcon}" size="large"/>-->
+                            <img src="{!$Resource.Alteryx_Community_Images+'/Alteryx_Community_Images/'+v.lightningIcon}" class="iconImage"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

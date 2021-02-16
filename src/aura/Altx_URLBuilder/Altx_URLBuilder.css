@@ -1,0 +1,35 @@
+.THIS #urlField{width:90%;border:0px;background-color: #f8fff0;outline:0px;}
+.THIS #urlField:focus{outline:0px;}
+.THIS #new{
+    color: #2AACDB;
+    font-size: 1.4em;
+    margin: 5px;
+}
+.THIS .urlbtn , .THIS .urlbtn:hover, .THIS .urlbtn:focus, .THIS .urlbtn:active{    border: 1px solid #0082b5;
+    border-radius: 5px;
+    box-shadow: 1px 1px 2px #999, inset 0 -15px 5px #0092ca, inset 0 1px 0 #71d3ff;
+    color: #fff;
+    font-size: .875em;
+    background-color: #0082b5;
+}
+.THIS div.status{
+    background-image: url(/resource/1495557266000/AlteryxCommunityGlobal/images/message-24-ok.png);
+    border-color: #be7 !important;    background-color: #f8fff0;}
+
+.THIS .messages{background-position: 8px 16px;
+    background-repeat: no-repeat;
+    border: 1px solid;
+    margin: 6px 0;
+    padding: 14px 10px 10px 50px;    
+}
+.THIS .profile_label{margin-top:20px;font-weight: bold;}
+.THIS.mainOuterDiv{
+    padding:40px 0px 50px 0px;
+}
+.THIS .errorDiv{padding: 5px 0px;
+    font-size: 12px;
+    color: red;}
+.THIS .profileid{
+    margin-bottom:30px;
+}
+.THIS .validError{font-size:12px;color:red;padding-left:10px;font-weight:normal}

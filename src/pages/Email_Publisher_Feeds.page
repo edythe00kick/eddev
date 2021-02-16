@@ -1,0 +1,18 @@
+<apex:page standardController="Case" >
+    <apex:emailPublisher entityId="{!case.id}" 
+        fromVisibility="selectable"
+        toVisibility="editableWithLookup"
+        bccVisibility="editableWithLookup"
+        ccvisibility="editableWithLookup"
+        enableQuickText="true"
+        subjectVisibility="editable" 
+        subject="RE: {!case.subject}"
+        toAddresses="{!case.contact.email}"
+        showAdditionalFields="true"
+        showAttachments="true"
+        showTemplates="true"
+        emailBodyFormat="HTML"
+        verticalResize="true"
+        expandableHeader="false"
+        autoCollapseBody="false"/> 
+</apex:page>

@@ -1,0 +1,20 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes">
+    <!--<ltng:require scripts="{!join(',',$Resource.Alteryx_Community+'/Alteryx_Community/js/jquery-2.2.4.min.js',
+                           $Resource.Alteryx_Community+'/Alteryx_Community/js/SearchDisplay.js')}"/>-->
+    <style>
+        .cHeaderTop{padding-top:0px;padding-bottom:0px;max-height:45px;}
+        .slds-global-header__item .forceSearchInputDesktop .contentWrapper{float:right;}
+    	.cHeaderTop{background-color:#f7f7f7 !important; !important;max-width:100% !important;}
+        .forceCommunityNavigationMenu{clear: both;display: flow-root;padding:0 65px !important;}
+        .forceCommunityNavigationMenu .navigationMenu{float:right;padding:0px !important;}
+        .siteforcePrmBody .cHeader .cBrandingLogo{position:absolute;top:50px;width: 200px;height:40px;}
+        .siteforcePrmBody .cHeaderTopInternalWrapper{padding: 0 65px !important;max-width: 100%;}
+        .slds-global-header__item .forceSearchInputDesktop .contentWrapper{background-color: #f7f7f7 !important;border: 1px solid #e5e5e5 !important;}
+        .siteforcePrmBody .cHeader .selfServiceProfileMenuTrigger .profileName{color:#333333 !important;}
+        .siteforcePrmBody .cHeader .forceCommunityNavigationMenu .menuItemLink{font-size:16px;}
+        .cCenterPanel {margin-top:0px;min-width:100%;width:100%;max-width:100% !important;padding-left:53px;padding-right:53px;}
+        .siteforcePrmBody .cHeader .forceCommunityNavigationMenu .menuItemLink, .siteforcePrmBody .cHeader .forceCommunityNavigationMenu .menuItemLink.triggerLink{padding: 1rem 0.75rem;}
+        .siteforcePrmBody .cHeader .forceCommunityNavigationMenu .menuItemLink{font-size:14px;}
+        .siteforcePrmBody .cHeader .forceCommunityNavigationMenu .navigationMenu{max-width:80% !important;}
+    </style>
+</aura:component>

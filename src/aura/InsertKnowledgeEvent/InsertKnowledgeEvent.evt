@@ -1,0 +1,7 @@
+<!--
+ - Created by csalgado on 12/18/2019.
+ -->
+
+<aura:event type="COMPONENT" description="InsertKnowledgeEvent">
+    <aura:attribute name="success" type="boolean"/>
+</aura:event>

@@ -1,0 +1,556 @@
+<apex:page title="Welcome to Alteryx Support" standardStylesheets="false" showHeader="false">
+
+    <head>
+        <style>
+            body {
+                background-color: #f0f0d4;
+                color: #000000;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .headingtitle {
+                color: #ffffff;
+                font-family: verdana;
+                font-size: 12px;
+                font-weight: bold;
+                padding-right: 12px;
+                padding-top: 12px;
+            }
+            
+            .headerTable {
+                background-color: #0090c8;
+                background-position: left top;
+                background-repeat: no-repeat;
+                border-bottom: 0 solid #0090c8;
+                height: 48px;
+            }
+            
+            body,
+            td,
+            input,
+            textarea,
+            select {
+                font-family: verdana, arial;
+                font-size: 11px;
+            }
+            
+            div {
+                border: 0 solid red;
+            }
+            
+            h1 {
+                font-family: verdana;
+                font-size: 12px;
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+            
+            img.border {
+                border: 3px solid #26476b;
+            }
+            
+            input.button {
+                background-color: #ffffff;
+                background-image: url("img/btn_bg.gif");
+                background-position: center bottom;
+                background-repeat: repeat-x;
+                border: 1px solid #0066cc;
+                color: #000000;
+                font-weight: bold;
+                height: 22px;
+            }
+            
+            .logo {
+                margin-bottom: -40px;
+                padding-right: 10px;
+                padding-top: 10px;
+                text-align: right;
+                z-index: 1;
+            }
+            
+            .asterisk {
+                color: #ad3bfb;
+                font-family: Arial;
+                font-size: 10px;
+                text-align: right;
+            }
+            
+            .requiredfield {
+                color: #ad3bfb;
+                font-family: verdana, arial;
+                font-size: 11px;
+                font-weight: bold;
+            }
+            
+            .statusmessage {
+                background-color: #eeeeee;
+                border-bottom: 1px solid #cccccc;
+                padding: 4px;
+            }
+            
+            .poweredby {}
+            
+            .requiredfields {
+                font-family: verdana, arial;
+                font-size: 10px;
+                margin-bottom: 3px;
+                text-align: right;
+            }
+            
+            .securitymessage {
+                border: 1px solid #666666;
+                padding: 10px;
+                width: 300px;
+            }
+            
+            .leavemessage {
+                background-color: #eeeeee;
+                border-bottom: 1px solid #cccccc;
+                padding: 4px;
+                width: 100%;
+            }
+            
+            .leavemessage2 {
+                background-color: #ffffcc;
+                border-bottom: 1px solid #cccccc;
+                padding: 4px;
+                width: 100%;
+            }
+            
+            .tdfirstrow {
+                padding: 12px;
+                text-align: center;
+            }
+            
+            .title1 {
+                padding: 18px 0 4px 4px;
+            }
+            
+            #bodycontent {
+                background-color: #ffffff;
+            }
+            
+            #footer {
+                background-color: #eeeeee;
+                bottom: 0;
+                font-family: verdana;
+                font-size: 10px;
+                padding: 4px;
+                width: 100%;
+            }
+            
+            #dhtmltooltip {
+                background-color: #ffffcc;
+                border: 1px solid black;
+                font-size: 12px;
+                max-width: 300px;
+                padding-left: 4px;
+                padding-right: 4px;
+                position: absolute;
+                visibility: hidden;
+                width: 300px;
+                z-index: 100;
+            }
+            
+            #faq {
+                display: block;
+                font-family: verdana, arial;
+                font-size: 11px;
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+            
+            a:link {
+                color: #0066cc;
+                text-decoration: none;
+            }
+            
+            a:visited {
+                color: #0066cc;
+                text-decoration: none;
+            }
+        </style>
+    <META HTTP-EQUIV="Content-type" CONTENT="text/html; charset=UTF-8"/>
+        <script type="text/javascript">
+            (function() {
+                function handlePageLoad() {
+                    var endpointMatcher = new RegExp("[\\?\\&]endpoint=([^&#]*)");
+                    document.getElementById('prechatForm').setAttribute('action',
+                        decodeURIComponent(endpointMatcher.exec(document.location.search)[1]));
+                }
+                if (window.addEventListener) {
+                    window.addEventListener('load', handlePageLoad, false);
+                } else {
+                    window.attachEvent('onload', handlePageLoad, false);
+                }
+            })();
+        </script>
+    </head>
+
+    <body>
+
+        <table class="headerTable" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td> </td>
+                    <td class="headingtitle" nowrap="" align="right"> Welcome to Alteryx Support - OFFLINE MODE </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+        <table width="100%" cellspacing="0" cellpadding="0" border="0" class="leavemessage">
+            <tbody>
+                <tr>
+                    <td align="left">Welcome to Alteryx Live Chat. We are right now Offline. To proceed submitting a case, please provide the requested information below:</td>
+                    <td align="right"></td>
+                </tr>
+            </tbody>
+        </table>
+        <form action="https://cs23.salesforce.com/servlet/servlet.WebToCase?encoding=UTF-8" method="POST">
+
+<input type="hidden" name="orgid" value="00D18000000Cn0e"/>
+<input type="hidden" name="retURL" value="http://"/>
+            <div id="content">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td width="6%">
+                                
+                                <input type="hidden" value="" name="action"/>
+                                <input type="hidden" value="125028" name="queueId"/>
+                                <input type="hidden" value="" name="csrId"/>
+                                <input type="hidden" value="122523" name="formId"/>
+                                <input type="hidden" value="656722" name="siteId"/>
+                                <input type="hidden" value="0" name="formStatus"/>
+                                <input type="hidden" value="0" name="userId"/>
+                                <input type="hidden" value="http://www.alteryx.com/support" name="refURL"/>
+                                <input type="hidden" value="0" name="styleId"/>
+                                <input type="hidden" value="false" name="isShowURL"/>
+                                <input type="hidden" value="" name="showURL"/>
+                                <input type="hidden" value="asterisk" name="requirecount"/>
+                                <input type="hidden" value="" name="RID"/>
+                                <input type="hidden" value="" name="parentBrowserTitle"/>
+                                <input type="hidden" value="" name="windowsId"/>
+                                <script language="javascript">
+                                    document.write("<input type='hidden' name='utf8BrowserTitle' value='" + unescape('') + "'>");
+                                </script>
+                                <input type="hidden" value="" name="utf8BrowserTitle"/>
+                            </td>
+                            <td width="94%">
+                                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                First name:
+                                                <input type="hidden" value="127043" name="fieldId127043"/>
+                                                <input type="hidden" value="true" name="required127043"/>
+                                                <input type="hidden" value="0" name="fieldItemCount127043"/>
+                                                <input type="hidden" value="32" name="customerlength127043"/>
+                                                <input type="hidden" value="0" name="multiLinewebacd127043"/>
+                                                <input type="hidden" value="0" name="fieldType127043"/>
+                                                <input type="hidden" value="First name" name="fieldLabel127043"/>
+                                                <input type="hidden" value="firstname" name="fieldName127043"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input type="hidden" value="0" name="multiLine127043"/>
+                                                
+                                                <input  id="00NE0000004yRMA" maxlength="80" name="00NE0000004yRMA" size="20" type="text" />
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Last name:
+                                                <input type="hidden" value="127048" name="fieldId127048"/>
+                                                <input type="hidden" value="true" name="required127048"/>
+                                                <input type="hidden" value="0" name="fieldItemCount127048"/>
+                                                <input type="hidden" value="32" name="customerlength127048"/>
+                                                <input type="hidden" value="0" name="multiLinewebacd127048"/>
+                                                <input type="hidden" value="0" name="fieldType127048"/>
+                                                <input type="hidden" value="Last name" name="fieldLabel127048"/>
+                                                <input type="hidden" value="lastname" name="fieldName127048"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input type="hidden" value="0" name="multiLine127048"/>
+                                               <input  id="00NE0000004yRMF" maxlength="80" name="00NE0000004yRMF" size="20" type="text" />
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Email address:
+                                                <input type="hidden" value="127053" name="fieldId127053"/>
+                                                <input type="hidden" value="true" name="required127053"/>
+                                                <input type="hidden" value="0" name="fieldItemCount127053"/>
+                                                <input type="hidden" value="32" name="customerlength127053"/>
+                                                <input type="hidden" value="0" name="multiLinewebacd127053"/>
+                                                <input type="hidden" value="0" name="fieldType127053"/>
+                                                <input type="hidden" value="Email address" name="fieldLabel127053"/>
+                                                <input type="hidden" value="emailaddress" name="fieldName127053"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input type="hidden" value="0" name="multiLine127053"/>
+                                                <input  id="email" maxlength="80" name="email" size="20" type="text" />
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Phone number:
+                                                <input type="hidden" value="127058" name="fieldId127058"/>
+                                                <input type="hidden" value="false" name="required127058"/>
+                                                <input type="hidden" value="0" name="fieldItemCount127058"/>
+                                                <input type="hidden" value="64" name="customerlength127058"/>
+                                                <input type="hidden" value="0" name="multiLinewebacd127058"/>
+                                                <input type="hidden" value="0" name="fieldType127058"/>
+                                                <input type="hidden" value="Phone number" name="fieldLabel127058"/>
+                                                <input type="hidden" value="phonenumber" name="fieldName127058"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input  id="phone" maxlength="40" name="phone" size="20" type="text" />
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Company:
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input type="hidden" value="0" name="multiLine127063"/>
+                                              <input  id="company" maxlength="80" name="company" size="20" type="text" />
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                What Alteryx Product are you using?:
+                                                <input type="hidden" value="127343" name="fieldId127343"/>
+                                                <input type="hidden" value="true" name="required127343"/>
+                                                <input type="hidden" value="5" name="fieldItemCount127343"/>
+                                                <input type="hidden" value="2" name="fieldType127343"/>
+                                                <input type="hidden" value="What Alteryx Product are you using?" name="fieldLabel127343"/>
+                                                <input type="hidden" value="field1250286" name="fieldName127343"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <select size="1" name="customerItemValue127343">
+                                                    <option selected="" value="1">(Please Select)</option>
+                                                    <option value="2">Alteryx Free Trial</option>
+                                                    <option value="3">Alteryx Designer</option>
+                                                    <option value="4">Gallery</option>
+                                                    <option value="5">Alteryx Server</option>
+                                                    <option value="6">Alteryx Connect</option>
+                                                    <option value="7">Alteryx Promote</option>
+                                                </select>
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                What version of Alteryx are you currently using?:
+                                                <input type="hidden" value="684537" name="fieldId684537"/>
+                                                <input type="hidden" value="true" name="required684537"/>
+                                                <input type="hidden" value="7" name="fieldItemCount684537"/>
+                                                <input type="hidden" value="2" name="fieldType684537"/>
+                                                <input type="hidden" value="What version of Alteryx are you currently using?" name="fieldLabel684537"/>
+                                                <input type="hidden" value="field1250287" name="fieldName684537"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <select size="1" name="customerItemValue684537">
+                                                    <option selected="" value="1">(Please Select)</option>
+                                                    <option value="2">2018.2</option>
+                                                    <option value="3">10.0 -- BETA</option>
+                                                    <option value="4">9.5</option>
+                                                    <option value="5">9.1</option>
+                                                    <option value="6">9.0</option>
+                                                    <option value="7">8.6</option>
+                                                    <option value="8">Other</option>
+                                                </select>
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Please select a topic:
+                                                <input type="hidden" value="684542" name="fieldId684542"/>
+                                                <input type="hidden" value="true" name="required684542"/>
+                                                <input type="hidden" value="10" name="fieldItemCount684542"/>
+                                                <input type="hidden" value="2" name="fieldType684542"/>
+                                                <input type="hidden" value="Please select a topic" name="fieldLabel684542"/>
+                                                <input type="hidden" value="field1250288" name="fieldName684542"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <select size="1" name="customerItemValue684542">
+                                                    <option selected="" value="1">(Please Select)</option>
+                                                    <option value="2">Licensing/Activation/Installation</option>
+                                                    <option value="3">Input/Output/DB Connections/Connectors</option>
+                                                    <option value="4">Data Prep (expressions, data manipulation, etc)</option>
+                                                    <option value="5">Reporting</option>
+                                                    <option value="6">Analytic Applications/Macros</option>
+                                                    <option value="7">Predictive</option>
+                                                    <option value="8">Demographic Analysis</option>
+                                                    <option value="9">Spatial</option>
+                                                    <option value="10">Other</option>
+                                                </select>
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Subject:
+                                               
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                               <input  id="subject" maxlength="80" name="subject" size="20" type="text" />
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+
+                                        <tr valign="top">
+                                            <td valign="top" align="left">
+                                                Please briefly describe your question:
+                                                <input type="hidden" value="684547" name="fieldId684547"/>
+                                                <input type="hidden" value="true" name="required684547"/>
+                                                <input type="hidden" value="0" name="fieldItemCount684547"/>
+                                                <input type="hidden" value="50" name="customerlength684547"/>
+                                                <input type="hidden" value="1" name="multiLinewebacd684547"/>
+                                                <input type="hidden" value="0" name="fieldType684547"/>
+                                                <input type="hidden" value="Please briefly describe your question" name="fieldLabel684547"/>
+                                                <input type="hidden" value="field1250289" name="fieldName684547"/>
+                                            </td>
+                                        </tr>
+                                        <tr valign="top">
+                                            <td valign="top">
+                                                <input type="hidden" value="1" name="multiLine684547"/>
+                                                <input type="hidden" name="textareaName684547"/>
+                                                <textarea name="description"></textarea>
+                                                <script type="text/javascript" language="javascript">
+                                                    function initTextarea() {
+                                                        var form = document.forms[0];
+                                                        setMaxLengthWarningMsg('The text you entered was trimmed because it exceeded the maximum length. Please review it.');
+                                                        setMaxLength4Object(form.customerItemValue684547, 256);
+                                                        GenCheckMaxLenEvent(form);
+                                                        //checkAllByType(form);
+                                                    }
+                                                    initTextarea();
+                                                </script>
+                                                <span class="asterisk">*</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="hidden"  id="external" name="external" value="1" /><br/>
+
+<input type="submit" name="submit" value="Submit Case" onclick="window.open('https://c.cs23.visual.force.com/apex/LiveAgentWebtoCase','_self')"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                               
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- Map the detail inputs to the Contact fields -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.map:Contact" value="FirstName,contactFirstName;LastName,contactLastName;Email,contactEmail;" />
+
+            <!-- Try to find the Contact by email (exact match) -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.map.doFind:Contact" value="Email,true;" />
+            <input type="hidden" name="liveagent.prechat.findorcreate.map.isExactMatch:Contact" value="Email,true;" />
+
+            <!-- If the Contact is not found, then create one with the following fields set -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Contact" value="FirstName,true;LastName,true;Email,true;" />
+
+            <!-- Save the Contact on the Live Chat Transcript's Contact Loookup -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Contact" value="Contact" />
+
+            <!-- Show the Contact when it is found or created -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Contact" value="true" />
+
+            <!-- Create a Case every time -->
+            <input type="hidden" name="liveagent.prechat:caseOrigin" value="Chat" />
+            <input type="hidden" name="liveagent.prechat.findorcreate.map:Case" value="Origin,caseOrigin;Subject,caseSubject;" />
+            <input type="hidden" name="liveagent.prechat.findorcreate.map.doCreate:Case" value="Origin,true;Subject,true;" />
+            <input type="hidden" name="liveagent.prechat.findorcreate.saveToTranscript:Case" value="Case" />
+            <input type="hidden" name="liveagent.prechat.findorcreate.showOnCreate:Case" value="true" />
+
+            <!-- Link the Contact to the Case -->
+            <input type="hidden" name="liveagent.prechat.findorcreate.linkToEntity:Contact" value="Case,ContactId" />
+
+            
+        </form>
+    </body>
+
+</apex:page>

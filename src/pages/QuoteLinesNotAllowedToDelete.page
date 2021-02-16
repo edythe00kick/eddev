@@ -1,0 +1,25 @@
+<!-- Author: Sharma Nemani | W-012607 | Case: 00289401
+	 Date: 07/24/2019
+	 Description: This Visualforce Page is to display the error message on the Quote Line's
+				  "Delete" button. We're preventing anyone from deleting Quote Lines using this VF Page and
+				  Controller.
+-->
+<apex:page standardController="SBQQ__QuoteLine__c" extensions="QuoteLineNotAllowedToDelete">
+    <script>
+    	var quoteLineId = "{!$CurrentPage.parameters.id}";
+    
+    // this is in case you want user back to child  quote Line. 
+    /*if(confirm('You can not delete this quote line')){
+            window.top.location.href = '/'+quoteLineId;
+        }else{
+            window.top.location.href = '/'+quoteLineId;
+        }*/
+    
+    if(confirm('You can not delete this quote line')){
+        window.top.location.href = '/'+'{!parentQuoteId}';
+    }else{
+        window.top.location.href = '/'+'{!parentQuoteId}';
+    }
+    
+    </script>
+</apex:page>

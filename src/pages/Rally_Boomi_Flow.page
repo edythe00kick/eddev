@@ -1,0 +1,18 @@
+<apex:page standardController="Case">
+<button onclick="onRallyClick()">Rally</button> <button class="btn btn-success" onclick=" window.open('https://flow.boomi.com/311796bb-da92-432e-af24-89ffb0b3db51/play/Rally/?flow-id=bed677a5-7783-4957-a2f3-8a634bc99f5e&SFCaseNum={!Case.CaseNumber}&FlowInputDefectID={!Case.Defect_Id__C}','_blank')"> Open in new tab</button>
+<script>
+    function onRallyClick() {
+        var container = document.getElementById("rally-container")
+
+        var iframe = document.createElement('iframe');
+        iframe.src="https://flow.boomi.com/311796bb-da92-432e-af24-89ffb0b3db51/play/Rally/?flow-id=bed677a5-7783-4957-a2f3-8a634bc99f5e&SFCaseNum={!Case.CaseNumber}&FlowInputDefectID={!Case.Defect_Id__C}"
+        iframe.style = "width: 100%; height: 600px;"
+        iframe.frameborder = "0";
+        container.innerHTML = "";
+
+        container.appendChild(iframe);
+    }
+</script>
+<div id="rally-container"></div>
+  
+</apex:page>

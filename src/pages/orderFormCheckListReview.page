@@ -1,0 +1,327 @@
+<!--
+ - Created by ewong on 4/23/2020.
+ -->
+
+<apex:page standardController="SBQQ__Quote__c"
+           sidebar="true" tabStyle="SBQQ__Quote__c" extensions="OrderFormCheckListReview" action="{!getAttachments}">
+
+
+    <apex:includeScript value="../../soap/ajax/30.0/connection.js"/>
+    <script>
+
+        //Eddie Wong
+        //04-22-2020
+        //W-005164
+        //To insert checklist page when order form button is clicked
+        sforce.connection.sessionId='{!GETSESSIONID()}';
+        var quoteId = '{!record.Id}';
+        var result = sforce.connection.query("SELECT Id,SBQQ__OrderGroupID__c,SBQQ__Account__c, Name, eSignature_CC__c,ApprovalStatus__c, MLA_Checked__c, No_Data_on_Account_Reviewed__c, Check_MLA__c, No_Data_on_Account__c FROM SBQQ__Quote__c Where Id = '{!SBQQ__Quote__c.Id}'LIMIT 1");
+        var records = result.getArray("records");
+        var approvalStatus = records[0].ApprovalStatus__c;
+        var mlaCheckBox = records[0].MLA_Checked__c;
+        var isAccountReviewed = records[0].No_Data_on_Account_Reviewed__c;
+        var checkMLA = records[0].Check_MLA__c;
+        var noDataOnAccount = records[0].No_Data_on_Account__c;
+
+        console.log(approvalStatus);
+        console.log(mlaCheckBox);
+        console.log(isAccountReviewed);
+        console.log(checkMLA);
+        console.log(noDataOnAccount);
+
+        if(approvalStatus == 'Pending'){
+            alert('Please make sure the Approval Status is not Pending before proceeding.');
+            window.history.back();
+        }else if(checkMLA == 'true' && noDataOnAccount == 'true' && (mlaCheckBox == 'false' || isAccountReviewed == 'false')){
+            alert('Please make sure the "MLA Checked" and "No Data on Account Reviewed checkboxes" are checked.');
+            window.history.back();
+        }else if(checkMLA == 'false' && noDataOnAccount == 'true' && isAccountReviewed == 'false'){
+            alert('Please make sure "No Data on Account Reviewed" checkboxes is checked.');
+            window.history.back();
+        }else if(checkMLA == 'true' && noDataOnAccount == 'false' && mlaCheckBox == 'false'){
+            alert('Please make sure the "MLA Checked" checkbox is checked.');
+            window.history.back();
+        }
+
+        jQuery(document).ready(function(){
+            jQuery('.cBox').on('click', function(){
+                jQuery('.cBox').removeAttr('checked');
+                jQuery(this).attr('checked', 'checked');
+            });
+        });
+
+
+
+
+        function checkList() {
+            var checkListBox = document.querySelector("[id*='checkListBox']");
+
+            if (!checkListBox.checked) {
+                alert("You should either navigate back to the proposal to finish the review, or select the checkbox.");
+            } else {
+                nextButton();
+            }
+        }
+
+        function selectbutton() {
+            var select = document.querySelector("[id*='looped']:checked");
+            if (select != null) {
+                doSelect();
+            } else {
+                alert('Please select the attachment.');
+            }
+        }
+
+        //Eddie Wong
+        //04-22-2020
+        //W-005164
+        //To insert checklist page when order form button is clicked
+        function returnCongaComposer(){
+
+            var returnCongaComposer = document.querySelector("[id*='cmdButtonDoSkipToCongaComposer']")
+
+            var quoteId= '{!SBQQ__Quote__c.Id}';
+            var ogId = '{!SBQQ__Quote__c.Id}'+'~pv1={!SBQQ__Quote__c.SBQQ__OrderGroupID__c}';
+            var quoteNme = '{!SBQQ__Quote__c.Name}';
+            var eSign= '{!SBQQ__Quote__c.eSignature_CC__c}';
+            var url = '/apex/APXTConga4__Conga_Composer?serverUrl=Partner_Server_URL_370'+'&id='+quoteId+'&TemplateId=aGS2R000000KyjM&QueryID=[SCHED]aGK2R0000008TM7,[POLISTED]aGK2R0000008TMC,[DESIGNER]aGK2R0000008TMH,[ADVSUPPORT]aGK2R0000008TMM,[PREMSUPPORT]aGK2R0000008TMR,[VAT]aGK2R0000008TMW,[RESELLER]aGK2R0000008TMb,[POREQ]aGK2R0000008TMg,[SOFTWARE]aGK2R0000008TMl,[ACCT]aGK2R0000008TMq,[PRIMARY]aGK2R0000008TMv,[ANNEX]aGK2R0000008TN0,[ALL]aGK2R0000008TN5,[MISC]aGK2R0000008TNA,[ENTERPRISE]aGK2R0000008TNF,[DEPT]aGK2R0000008TNK,[CONNECT]aGK2R0000008TNP,[SERVER]aGK2R0000008TNU,[PROMOTE]aGK2R0000008TNZ,[DMR]aGK2R0000008TNe,[SERVICES]aGK2R0000008TNj,[BILLTO]aGK2R0000008TNt,[ELADLA]aGK2R0000008TNo?pv0='+ogId+',[ADOPTSM]aGK2R0000008TNy,[ADOPTMD]aGK2R0000008TO3,[ADOPTLG]aGK2R0000008TO8?pv0='+ogId+'&OFN=Alteryx+Order+Form+'+quoteNme+'+'+'{!JSENCODE(SBQQ__Quote__c.SBQQ__Account__c)}'+'&SC0=1&SC1=Attachments&ESVisible=1&DefaultPDF=1&ESSignatureType=2&ESPreview=1&ESRemindRecipient=2&ESCustomfield=CPQ_Quote__c&ESCustomfieldvalue='+quoteId+'&ESCopyTo='+eSign;
+
+            if (returnCongaComposer.click) {
+                doSkipToCongaComposer();
+                window.top.location.href = url;
+            }
+        }
+    </script>
+
+    <style>
+        #warning {color:red;font-size: large;}
+        #warningdiv {background-color:yellow;}
+        p.title {
+            text-align: center;
+            font-size: 19px;
+            color: red;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-top: 25px;
+        }
+        p.subtitle {
+            text-align: left;
+            font-size: 17px;
+            color: blue;
+            font-weight: bold;
+            margin-top: 50px;
+            margin-left: 65px;
+        }
+        ol {
+            margin-top: 35px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        ol li {
+            padding-bottom: 15px;
+        }
+        span.red {
+            color: red;
+        }
+        span.blue {
+            color: #00b0f0;
+        }
+        p.selectBox {
+            padding-left: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            color: rgba(255, 0, 0, 0.78);
+            margin-top: 5px;
+            margin-bottom: 20px !important;
+        }
+        p.selectBox input{
+            height: 16px;
+            width: 16px;
+        }
+        p.selectBox span {
+            vertical-align: 3.0px;
+        }
+        div.box {
+            border: 2px black solid;
+            margin: 0px 40px;
+            padding: 20px 0px;
+            background-color: yellow;
+            text-align: center;
+        }
+        div.box p {
+            color: red;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0px;
+        }
+    </style>
+
+
+    <apex:form id="theForm">
+        <apex:pageBlock >
+            <apex:pageblockButtons location="bottom">
+                <apex:commandButton value="Next" onClick="checkList(); return false" rendered="{!showtext}" rerender="theForm"/>
+                <apex:actionFunction name="nextButton" action="{!nextbutton}" rerender="theForm"/>
+                <apex:commandButton action="{!doCancel}" value="{!$Label.apttus_echosign__cancel}" rendered="{!showtext}"/>
+            </apex:pageblockButtons>
+
+            <!--
+            //Eddie Wong
+            //06-04-2020
+            //W-005424
+            -->
+
+            <apex:outputPanel rendered="{!showtext}" id="panel">
+                <p class="title">CHECK LIST PRIOR TO SENDING TO CUSTOMER. PLS DO NOT SKIP</p>
+                <ol style="font-size:140%;">
+                    <p style="font-size:120%;color:indigo">QUOTE DETAIL</p>
+                    <ul style="list-style-type:disc" >
+                        <li>
+                        Confirm approvals have been obtained
+                        </li>
+                        <li>
+                        Review for approver comments (if any) and ensure deal is compliant with approver contingencies
+                        </li>
+                        <li>
+                        Check quote is marked as primary (if not, check box and save)
+                        </li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">CONTRACT &amp; BILLING /SHIPPING INFORMATION</p>
+                    <ul style="list-style-type:disc">
+                        <li>
+                        Verify Bill-to on the SFDC Account record
+                        </li>
+                        <li>
+                        Verify Ship-to on the Primary Contact (Entity Name, Addresses, Contact – matches records in SFDC)
+                        </li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">INTERNATIONAL ORDERS (OUTSIDE OF NORTH AMERICA)</p>
+                    <ul style="list-style-type:disc">
+                        <li>
+                        Perform AmberRoad export check
+                        </li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">UK and APAC orders ONLY<br/></p>
+                    <p style="font-size:100%;">Check OF reflects correct Subsidiary = Alteryx Inc or Alteryx UK (applies to EMEA and APAC)</p>
+                    <ul style="list-style-type:disc">
+                        <li>
+                        Check for VAT (if applicable)
+                        </li>
+                        <li>
+                        Check Reseller language reflects the appropriate contracting entity
+                        </li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">ORDER FORM<br/></p>
+                    <ul style="list-style-type:disc">
+                        <li>
+                        Verify OF has generated correctly with all required elements
+                            <ul style="list-style-type:circle">
+                                <li>Billing and Shipping Information</li>
+                                <li>Terms and Conditions</li>
+                                <li>Licensed Products and Invoice Schedule</li>
+                                <li>Governing language (EULA, MLA, Reseller, etc.)</li>
+                            </ul>
+                        </li>
+                        <li>
+                         PO required?
+                            <ul style="list-style-type:circle">
+                                <li>If PO Required, inform sales rep via chatter and include link to PO Policy (below)
+                                    <ul style="list-style-type:square">
+                                        <li>DIRECT: <a href="https://alteryx.showpad.biz/webapp2/results?query=purchase%20&scope=content,coaching&slug=d6418879-87ac-4112-8a22-8ddcfc585ceb" style="color:blue;">Link</a></li>
+                                        <li>DMR: <a href="https://alteryx.showpad.biz/webapp2/results?query=dmr&scope=content,coaching&slug=518238697d228ca443116d331620a1e1" style="color:blue;">Link</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </ol>
+
+                <p class="selectBox">
+                    <apex:inputcheckbox id="checkListBox" Title="Make sure this is checked"  value="{!isChecked}" />
+                    <span class="checkBoxText">Check List Prior Sending To Customer, Pls Do Not Skip, Refer to QUIP for any questions</span>
+                </p>
+
+                <div class="box">
+                    <p>
+                        PLEASE MAKE SURE YOU HAVE GONE THROUGH EACH LINE ITEM ABOVE BEFORE CONFIRMING AND SENDING TO CUSTOMER.
+                        MAKE ANY NOTES ON ACCOUNT TO HELP YOU REMEMBER DEAL LATER IS COMPLICATED DEAL.
+                    </p>
+                </div>
+            </apex:outputPanel>
+
+            <apex:outputpanel rendered="{!(!showtext)}">
+                <apex:sectionHeader title="Send for eSignature" />
+
+                <apex:outputPanel rendered="{!inCollection}">
+                    <!-- <div>
+                        <span id="warning"> Customer in collections, please contact Finance.</span>
+                    </div> -->
+                    <div class="message warningM3" role="alert">
+                        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+                            <tbody>
+                            <tr valign="top">
+                                <td>
+                                    <img alt="WARNING" class="msgIcon" src="/s.gif" title="WARNING"/>
+                                </td>
+                                <td class="messageCell">
+                                    <div class="messageText">
+                                            <span>
+                                                <h4>Warning:</h4>
+                                            </span>
+                                        <span style="color:red;font-size:medium;">
+                                                <b>Customer in collections, please contact Finance.</b>
+                                            </span><br/>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div><br/>
+                </apex:outputPanel>
+
+                <apex:pageblock >
+                    <apex:pageBlockButtons >
+                        <apex:outputPanel id="idButtonsTopPanel">
+                            <apex:actionStatus id="processing">
+                                <apex:facet name="start">
+                                    <apex:image url="/img/loading.gif"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            <apex:commandButton onclick="selectbutton()" value="Select" id="cmdButtonDoSelect" status="processing" rerender="theForm"  />
+                            <apex:actionFunction name="doSelect" action="{!doSelect}" rerender="theForm" status="processing"/>
+                            <apex:commandButton action="{!doCancel}" value="Cancel" id="cmdButtonDoCancel" />
+                            <apex:commandButton value="Previous" action="{!prevbutton}" rendered="{!(!showtext)}" rerender="theForm" />
+                            <apex:commandButton onclick="returnCongaComposer()" value="Skip To Conga Composer" id="cmdButtonDoSkipToCongaComposer" status="processing" rerender="theForm"/> <!--Eddie Wong || 04-22-2020 || W-005164 || To insert checklist page when order form button is clicked -->
+                            <apex:actionFunction name="doSkipToCongaComposer" action="{!doSkipToCongaComposer}" reRender="theForm" status="processing"/> <!--Eddie Wong || 04-22-2020 || W-005164 || To insert checklist page when order form button is clicked-->
+                        </apex:outputPanel>
+                        <b><apex:actionStatus startText="Temp Label"
+                                              id="waitStatus" /></b>
+                    </apex:pageBlockButtons>
+
+                    <apex:pageBlockSection title="Select Attachments" columns="1"
+                                           collapsible="false" rendered="{!attachments.size > 0}">
+                        <apex:pageBlockTable value="{!attachments}" var="attachData"
+                                             width="100%">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                <apex:inputCheckbox selected="{!attachData.selected}"
+                                                    value="{!attachData.selected}" id="looped" styleClass="cBox"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.apttus_echosign__filename}</apex:facet>
+                                <apex:outputLink value="/{!attachData.attachment.Id}">{!attachData.attachment.Name}</apex:outputLink>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageblock>
+                <apex:pageMessages />
+            </apex:outputpanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

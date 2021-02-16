@@ -1,0 +1,20 @@
+<aura:component >
+    <aura:attribute name="VideoTitle" type="string" default=""/>
+    <aura:attribute name="VideoShortDesc" type="string" default=""/>
+    <aura:attribute name="VideoURL" type="string" default=""/>
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12 VideoHead">
+            {!v.VideoTitle}
+        </div>
+    </div>
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12 VideoDesc">
+            {!v.VideoShortDesc}
+        </div>
+    </div>
+    <div class="slds-grid">
+        <div class="slds-col slds-size--12-of-12 videoIframe">
+            <iframe id="frame" src="{!v.VideoURL}"/>
+        </div>
+    </div>
+</aura:component>

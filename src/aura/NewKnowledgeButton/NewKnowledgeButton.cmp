@@ -1,0 +1,46 @@
+<!--
+ - Created by csalgado on 12/17/2019.
+ -->
+
+<aura:component description="New Knowledge Article Button" implements="lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <!-- ATTRIBUTES -->
+    <aura:attribute name="modalState" type="boolean" default="false"/>
+
+    <!-- HANDLER -->
+    <aura:handler name="insertKnowledgeSuccess" event="c:InsertKnowledgeEvent" action="{!c.closeModal}"/>
+
+    <!-- BUTTON -->
+    <lightning:card title="Case-to-Knowledge" iconName="standard:case_transcript">
+        <lightning:button label="New Knowledge Article" onclick="{!c.openModal}" class="slds-m-left_large slds-m-bottom_x-small"/>
+    </lightning:card>
+
+    <!-- START MODAL -->
+    <aura:if isTrue="{!v.modalState}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium"> New Knowledge Article </h2>
+                </header>
+                <div>
+                    <c:NewKnowledgeForm aura:id="knowledgeForm" parentRecordId="{!v.recordId}"></c:NewKnowledgeForm>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button variant="brand"
+                                      label="Save"
+                                      title="Save"
+                                      onclick="{!c.saveKnowledge}"/>
+                    <lightning:button variant="neutral"
+                                      label="Cancel"
+                                      title="Cancel"
+                                      onclick="{!c.closeModal}"/>
+                </footer>
+            </div>
+        </section>
+    </aura:if>
+    <!-- END MODAL -->
+
+    <!-- START BACKDROP -->
+    <div class="slds-backdrop" aura:id="knowledgeModal-back"></div>
+    <!-- END BACKDROP -->
+
+</aura:component>

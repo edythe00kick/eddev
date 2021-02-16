@@ -1,0 +1,74 @@
+<aura:component >
+    <aura:attribute name="EventsHead" type="string" default=""/>
+    <aura:attribute name="EventsImgIcon" type="string" default=""/>
+    <aura:attribute name="EventsTitle1" type="string" default=""/>
+    <aura:attribute name="EventsTitle2" type="string" default=""/>
+    <aura:attribute name="EventsTitle3" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink1" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink2" type="string" default=""/>
+    <aura:attribute name="EventsTitleLink3" type="string" default=""/>
+    <aura:attribute name="EventsDate1" type="string" default=""/>
+    <aura:attribute name="EventsDate2" type="string" default=""/>
+    <aura:attribute name="EventsDate3" type="string" default=""/>
+    <aura:attribute name="EventsButtonText" type="string" default=""/>
+    <aura:attribute name="EventsButtonLink" type="string" default=""/>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size--12-of-12 EventsHead">
+            {!v.EventsHead}
+        </div>
+        <div class="slds-col slds-size--12-of-12 EventsContent">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--1-of-12">
+                    <lightning:icon iconName="{!v.EventsImgIcon}"/>
+                </div>
+                <div class="slds-col slds-size--11-of-12">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size--12-of-12 EventTitle">
+                            <a href="{!v.EventsTitleLink1}">{!v.EventsTitle1}</a>
+                        </div>
+                        <div class="slds-col slds-size--12-of-12 EventDate">
+                            {!v.EventsDate1}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size--12-of-12 EventsContent">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--1-of-12">
+                    <lightning:icon iconName="{!v.EventsImgIcon}"/>
+                </div>
+                <div class="slds-col slds-size--11-of-12 EventTitle">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size--12-of-12 EventTitle">
+                            <a href="{!v.EventsTitleLink2}">{!v.EventsTitle2}</a>
+                        </div>
+                        <div class="slds-col slds-size--12-of-12 EventDate">
+                            {!v.EventsDate2}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size--12-of-12 EventsContent">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--1-of-12">
+                    <lightning:icon iconName="{!v.EventsImgIcon}"/>
+                </div>
+                <div class="slds-col slds-size--11-of-12 EventTitle">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size--12-of-12 EventTitle">
+                            <a href="{!v.EventsTitleLink3}">{!v.EventsTitle3}</a>
+                        </div>
+                        <div class="slds-col slds-size--12-of-12 EventDate">
+                            {!v.EventsDate3}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size--12-of-12 btnText">
+            <a href="{!v.EventsButtonLink}">{!v.EventsButtonText}</a>            
+        </div>
+    </div>
+</aura:component>

@@ -1,0 +1,445 @@
+<apex:page standardController="Sales_Numbers__c" extensions="QuotaCommitController" showHeader="false"  sidebar="false">
+    
+    <apex:form >
+       <div style="height:10px;">
+       </div>
+       <div style="height:30px;background-color:#CCEEFF;text-align:center;padding-top:5px;">
+         <span style="font-size:18px; color:#000066;"><b>Quarterly Commit Information</b></span>
+       </div>
+        <div style="margin:20px 0 0 100px;">
+            <span style="font-weight:bold"> Class of Business </span>
+            <apex:selectList value="{!oppType}" multiselect="false" size="1"  style="margin-left:5px;">
+                <apex:selectOptions value="{!classOfBusiness}"/>
+                   <apex:actionSupport event="onchange" action="{!fetchRecords}"  reRender="thePageBlockTable"/>
+            </apex:selectList>
+            <!-- <apex:outputLink value="https://www.salesforce.com" id="theLink" style="margin-left:500px;">Choose Dates</apex:outputLink> -->
+            <apex:commandlink value="Change Quarter" action="{!showPopup}" rerender="popup" style="margin-left:803px;"/>
+       
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <apex:outputPanel id="popup">
+            <apex:outputPanel styleClass="customPopup" layout="block" rendered="{!displayPopUp}">
+                <apex:outputPanel rendered="{!LEN(errStr)!=0}">                        
+                    <span style="color:red;"><strong>Error:</strong>&nbsp;{!errStr}</span>
+                </apex:outputPanel> 
+                <div style="height:10px;"/>
+                    
+                <div>
+                    <span style="font-weight:bold">Enter Quarter</span>
+                    <apex:selectList value="{!currMonth}" multiselect="false" size="1"  style="margin-left:5px;">
+                        <apex:selectOptions value="{!startmonth}"/>
+                           <!--<apex:actionSupport event="onchange" action="{!}" reRender="thePageBlockTable"/> -->
+                    </apex:selectList>
+                </div>
+                <br/>
+                <br/>
+                <div>
+                    <!--<span style="font-weight:bold">Enter End Month</span>-->
+                    <apex:selectList value="{!currMonth1}" multiselect="false" size="1"  style="margin-left:84px;padding-right:-20px;">
+                        <apex:selectOptions value="{!endmonth}"/>
+                        <!-- <apex:actionSupport event="onchange" reRender="xyz"/> -->
+                    </apex:selectList>
+                </div>  
+                <br/>   
+                <br/> 
+                <div>
+                    <apex:commandButton value="Save" action="{!closePopup}" rerender="popup,thePageBlockTable,quarterdiv" style="margin-left:84px;"/>           
+                    <apex:commandButton value="Cancel" action="{!cancelPopup}" rerender="popup" style="margin-left:25px;"/>
+                </div>
+            </apex:outputPanel>
+        </apex:outputPanel>
+       
+     
+           <br/>
+           <apex:outputPanel id="quarterdiv">
+               <table width="100%">
+                   <tr>
+                       <td width="24%"></td>
+                       <td width="23%" align="center"><span style="padding-left: 40px"><b>{!FirstMonthName}</b></span></td>
+                       <td width="23%" align="center"><b>{!SecondMonthName}</b></td>
+                       <td width="23%" align="center"><b>{!ThirdMonthName}</b></td>
+                   </tr>
+               </table>
+               <!--<div  style="background-color:#F2F3F3;height:15px;width:auto;padding-top:5px;padding-bottom:5px;">
+               <div style="margin-left:570px;display:inline;">
+               <span style="font-weight:bold;color:red;">{!FirstMonthName}</span>
+               </div>
+               <div style="margin-left:270px;display:inline;">
+               <span style="font-weight:bold;color:#006000;">{!SecondMonthName}</span>
+               </div>
+               <div style="margin-left:208px;display:inline;">
+               <span style="font-weight:bold;color:#6058D0;">{!ThirdMonthName}</span>
+               </div>
+               </div>-->
+           </apex:outputPanel>
+
+            <apex:pageBlock id="thePageBlockTable" >           
+            <apex:pageBlockTable value="{!salesNumbersList}" var="salesrec"  >
+            
+            <apex:column headerValue="Team Members" style="background-color:#CCEEFF;" headerClass="ct">
+                <apex:outputText style="font-weight:bold;" value="{!salesrec.Owner_Name__c}"  />
+                &nbsp;
+                <apex:outputText value="({!salesrec.Opportunity_Name__c})"  />
+            </apex:column>
+            <apex:column headerValue="Quota" headerClass="ct">
+              <!--  <apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Quota__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Quota__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_QUOTA__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_QUOTA__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_QUOTA__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_Quota__c,'')))),''))))))}"  /> -->
+                <apex:outputText value="{!salesrec.Jan_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Jan_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Jan_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            </apex:column>
+            <apex:column id="testId"  headerValue="Commit" headerClass="ct" >
+                <!-- <apex:outputText  value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),'')}"/>  -->
+                <apex:inputfield value="{!salesrec.Jan_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Apr_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Jul_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Oct_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" /> 
+               
+                <apex:inputfield value="{!salesrec.Jan_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Apr_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Jul_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Oct_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.JAN_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.APR_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.JUL_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.OCT_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.JAN_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.APR_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.JUL_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.OCT_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.JAN_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.APR_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.JUL_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.OCT_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.Jan_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Apr_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Jul_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Oct_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+                <!--        <input  type = "text" value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_Commit__c,'')))),''))))))}"  />
+                -->      
+                <!--<apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'January',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'January',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'January',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'January',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'April',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'July',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'October',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'January',salesrec.Jan_Commit__c,IF(currMonthName == 'April',salesrec.Apr_Commit__c,IF(currMonthName == 'July',salesrec.Jul_Commit__c,IF(currMonthName == 'October',salesrec.Oct_Commit__c,'')))),''))))))}"  /> -->
+            </apex:column>   
+             <apex:column headerValue="Delta" headerClass="ct" >
+                
+             <!--   <apex:outputText   value="{! IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Quota__c-salesrec.Jan_NB_Commit__c,''),'')}" /> -->
+                <apex:outputText value="{!salesrec.Jan_NB_Quota__c - salesrec.Jan_NB_Commit__c }" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_NB_Quota__c - salesrec.Apr_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_NB_Quota__c - salesrec.Jul_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_NB_Quota__c - salesrec.Oct_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Jan_NBEC_Quota__c - salesrec.Jan_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_NBEC_Quota__c - salesrec.Apr_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_NBEC_Quota__c - salesrec.Jul_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_NBEC_Quota__c - salesrec.Oct_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_ECR_QUOTA__c - salesrec.JAN_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_ECR_QUOTA__c - salesrec.APR_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_ECR_QUOTA__c - salesrec.JUL_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_ECR_QUOTA__c - salesrec.OCT_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_ECUR_QUOTA__c - salesrec.JAN_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_ECUR_QUOTA__c - salesrec.APR_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_ECUR_QUOTA__c - salesrec.JUL_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_ECUR_QUOTA__c - salesrec.OCT_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.JAN_OEM_QUOTA__c - salesrec.JAN_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.APR_OEM_QUOTA__c - salesrec.APR_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.JUL_OEM_QUOTA__c - salesrec.JUL_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.OCT_OEM_QUOTA__c - salesrec.OCT_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Jan_Quota__c - salesrec.Jan_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Apr_Quota__c - salesrec.Apr_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Jul_Quota__c - salesrec.Jul_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Oct_Quota__c - salesrec.Oct_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            
+            </apex:column>
+            
+            
+            
+            
+            
+            <apex:column headerValue="Quota" headerClass="ct" >
+              <!--  <apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Quota__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Quota__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_QUOTA__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_QUOTA__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_QUOTA__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_Quota__c,'')))),''))))))}"  /> -->
+                <apex:outputText value="{!salesrec.Feb_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Feb_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Feb_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            </apex:column>
+            <apex:column headerValue="Commit" headerClass="ct" >
+                <!-- <apex:outputText  value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),'')}"/>  -->
+                <apex:inputfield value="{!salesrec.Feb_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.May_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Aug_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Nov_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" /> 
+               
+                <apex:inputfield value="{!salesrec.Feb_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.May_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Aug_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Nov_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.FEB_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.MAY_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.AUG_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.NOV_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.FEB_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.MAY_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.AUG_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.NOV_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.FEB_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.MAY_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.AUG_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.NOV_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.Feb_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.May_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Aug_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Nov_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+                <!--        <input  type = "text" value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_Commit__c,'')))),''))))))}"  />
+                -->      
+                <!--<apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'January',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'January',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'January',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'January',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'April',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'July',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'October',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'January',salesrec.Jan_Commit__c,IF(currMonthName == 'April',salesrec.Apr_Commit__c,IF(currMonthName == 'July',salesrec.Jul_Commit__c,IF(currMonthName == 'October',salesrec.Oct_Commit__c,'')))),''))))))}"  /> -->
+            </apex:column>   
+             <apex:column headerValue="Delta" headerClass="ct" >
+                
+             <!--   <apex:outputText   value="{! IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Quota__c-salesrec.Jan_NB_Commit__c,''),'')}" /> -->
+                <apex:outputText value="{!salesrec.Feb_NB_Quota__c - salesrec.Feb_NB_Commit__c }" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_NB_Quota__c - salesrec.May_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_NB_Quota__c - salesrec.Aug_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_NB_Quota__c - salesrec.Nov_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Feb_NBEC_Quota__c - salesrec.Feb_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_NBEC_Quota__c - salesrec.May_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_NBEC_Quota__c - salesrec.Aug_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_NBEC_Quota__c - salesrec.Nov_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_ECR_QUOTA__c - salesrec.FEB_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_ECR_QUOTA__c - salesrec.MAY_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_ECR_QUOTA__c - salesrec.AUG_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_ECR_QUOTA__c - salesrec.NOV_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_ECUR_QUOTA__c - salesrec.FEB_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_ECUR_QUOTA__c - salesrec.MAY_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_ECUR_QUOTA__c - salesrec.AUG_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_ECUR_QUOTA__c - salesrec.NOV_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.FEB_OEM_QUOTA__c - salesrec.FEB_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.MAY_OEM_QUOTA__c - salesrec.MAY_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.AUG_OEM_QUOTA__c - salesrec.AUG_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.NOV_OEM_QUOTA__c - salesrec.NOV_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Feb_Quota__c - salesrec.Feb_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.May_Quota__c - salesrec.May_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Aug_Quota__c - salesrec.Aug_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Nov_Quota__c - salesrec.Nov_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            
+            </apex:column>
+            
+            
+             <apex:column headerValue="Quota" headerClass="ct" >
+              <!--  <apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Quota__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Quota__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_QUOTA__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_QUOTA__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_QUOTA__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_QUOTA__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_QUOTA__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_QUOTA__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Quota__c,IF(currMonthName == 'Q2',salesrec.Apr_Quota__c,IF(currMonthName == 'Q3',salesrec.Jul_Quota__c,IF(currMonthName == 'Q4',salesrec.Oct_Quota__c,'')))),''))))))}"  /> -->
+                <apex:outputText value="{!salesrec.Mar_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_NB_Quota__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Mar_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_NBEC_Quota__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_ECR_QUOTA__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_ECUR_QUOTA__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_OEM_QUOTA__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Mar_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_Quota__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            </apex:column>
+            <apex:column headerValue="Commit" headerClass="ct" >
+                <!-- <apex:outputText  value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),'')}"/>  -->
+                <apex:inputfield value="{!salesrec.Mar_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Jun_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Sep_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Dec_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" /> 
+               
+                <apex:inputfield value="{!salesrec.Mar_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Jun_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Sep_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Dec_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.MAR_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.JUN_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.SEP_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.DEC_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.MAR_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.JUN_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.SEP_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.DEC_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.MAR_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.JUN_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.SEP_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.DEC_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" /> 
+                
+                <apex:inputfield value="{!salesrec.Mar_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:inputfield value="{!salesrec.Jun_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:inputfield value="{!salesrec.Sep_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:inputfield value="{!salesrec.Dec_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+                <!--        <input  type = "text" value="{!IF(oppType =='NB',IF(currMonthName == 'Q1',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'Q1',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'Q1',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'Q1',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'Q1',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'Q2',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'Q3',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'Q4',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'Q1',salesrec.Jan_Commit__c,IF(currMonthName == 'Q2',salesrec.Apr_Commit__c,IF(currMonthName == 'Q3',salesrec.Jul_Commit__c,IF(currMonthName == 'Q4',salesrec.Oct_Commit__c,'')))),''))))))}"  />
+                -->      
+                <!--<apex:outputText value="{!IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NB_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NB_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NB_Commit__c,'')))),IF(oppType =='NBEC',IF(currMonthName == 'January',salesrec.Jan_NBEC_Commit__c,IF(currMonthName == 'April',salesrec.Apr_NBEC_Commit__c,IF(currMonthName == 'July',salesrec.Jul_NBEC_Commit__c,IF(currMonthName == 'October',salesrec.Oct_NBEC_Commit__c,'')))),IF(oppType =='ECR',IF(currMonthName == 'January',salesrec.JAN_ECR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECR_Commit__c,'')))),IF(oppType =='ECUR',IF(currMonthName == 'January',salesrec.JAN_ECUR_Commit__c,IF(currMonthName == 'April',salesrec.APR_ECUR_Commit__c,IF(currMonthName == 'July',salesrec.JUL_ECUR_Commit__c,IF(currMonthName == 'October',salesrec.OCT_ECUR_Commit__c,'')))),IF(oppType =='OEM',IF(currMonthName == 'January',salesrec.JAN_OEM_Commit__c,IF(currMonthName == 'April',salesrec.APR_OEM_Commit__c,IF(currMonthName == 'July',salesrec.JUL_OEM_Commit__c,IF(currMonthName == 'October',salesrec.OCT_OEM_Commit__c,'')))),IF(oppType =='All',IF(currMonthName == 'January',salesrec.Jan_Commit__c,IF(currMonthName == 'April',salesrec.Apr_Commit__c,IF(currMonthName == 'July',salesrec.Jul_Commit__c,IF(currMonthName == 'October',salesrec.Oct_Commit__c,'')))),''))))))}"  /> -->
+            </apex:column>   
+             <apex:column headerValue="Delta" headerClass="ct" >
+                
+             <!--   <apex:outputText   value="{! IF(oppType =='NB',IF(currMonthName == 'January',salesrec.Jan_NB_Quota__c-salesrec.Jan_NB_Commit__c,''),'')}" /> -->
+                <apex:outputText value="{!salesrec.Mar_NB_Quota__c - salesrec.Mar_NB_Commit__c }" rendered="{!AND(oppType =='NB',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_NB_Quota__c - salesrec.Jun_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_NB_Quota__c - salesrec.Sep_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_NB_Quota__c - salesrec.Dec_NB_Commit__c}" rendered="{!AND(oppType =='NB',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Mar_NBEC_Quota__c - salesrec.Mar_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_NBEC_Quota__c - salesrec.Jun_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_NBEC_Quota__c - salesrec.Sep_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_NBEC_Quota__c - salesrec.Dec_NBEC_Commit__c}" rendered="{!AND(oppType =='NBEC',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_ECR_QUOTA__c - salesrec.MAR_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_ECR_QUOTA__c - salesrec.JUN_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_ECR_QUOTA__c - salesrec.SEP_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_ECR_QUOTA__c - salesrec.DEC_ECR_Commit__c}" rendered="{!AND(oppType =='ECR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_ECUR_QUOTA__c - salesrec.MAR_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_ECUR_QUOTA__c - salesrec.JUN_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_ECUR_QUOTA__c - salesrec.SEP_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_ECUR_QUOTA__c - salesrec.DEC_ECUR_Commit__c}" rendered="{!AND(oppType =='ECUR',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.MAR_OEM_QUOTA__c - salesrec.MAR_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.JUN_OEM_QUOTA__c - salesrec.JUN_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.SEP_OEM_QUOTA__c - salesrec.SEP_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.DEC_OEM_QUOTA__c - salesrec.DEC_OEM_Commit__c}" rendered="{!AND(oppType =='OEM',currMonthName == 'Q4')}" />
+                
+                <apex:outputText value="{!salesrec.Mar_Quota__c - salesrec.Mar_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q1')}" />
+                <apex:outputText value="{!salesrec.Jun_Quota__c - salesrec.Jun_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q2')}" />
+                <apex:outputText value="{!salesrec.Sep_Quota__c - salesrec.Sep_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q3')}" />
+                <apex:outputText value="{!salesrec.Dec_Quota__c - salesrec.Dec_Commit__c}" rendered="{!AND(oppType =='All',currMonthName == 'Q4')}" />
+            
+            </apex:column>
+            
+            
+            </apex:pageBlockTable>
+            <div style="text-align:center;">
+                <apex:commandButton value="Update" style="text-align:center;" status="status" action="{!updatesalesRecords}" reRender="thePageBlockTable"/>
+                <apex:commandButton value="Cancel" style="margin-left:10px;" action="{!doCancel}" />
+            </div>
+            </apex:pageBlock>   
+            <div style="text-align:center;">
+            <apex:actionStatus id="status" startText="Please Wait........"  > 
+              <apex:facet name="start"  >
+                  <img src="/img/loading.gif" />                    
+              </apex:facet>
+           </apex:actionStatus>
+           </div>
+    </apex:form>
+
+    <style type="text/css">
+        tr.dataRow td {
+        text-align:center;
+        }
+        .ct{
+        text-align:center;
+        }
+       .customPopup{
+            background-color: white;
+            border-style: solid;
+            border-width: 2px;
+            left: 50%;
+            padding:10px 10px 10px 100px;
+            position: absolute;
+            z-index: 9999;
+            /* These are the 3 css properties you will need to tweak so the pop 
+            up displays in the center of the screen. First set the width. Then set 
+            margin-left to negative half of what the width is. You can also add 
+            the height property for a fixed size pop up.*/
+            width: 358px;
+            margin-left: -250px;
+            top:100px;
+        }
+    </style>
+</apex:page>

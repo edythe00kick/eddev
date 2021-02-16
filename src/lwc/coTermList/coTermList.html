@@ -1,0 +1,44 @@
+<!--
+ - Created by csalgado on 6/7/2020.
+ -->
+
+<!-- Co Term List -->
+<template>
+
+    <!-- Step 1 - Table -->
+    <div if:false={selected} class="slds-card__body_inner">
+
+        <lightning-tabset>
+            <!-- Step 1A - Table -->
+            <lightning-tab label="Related Active Contracts">
+                <c-co-term-table contract-list={activeContracts} error={getError} oncontractselect={contractSelected}></c-co-term-table>
+            </lightning-tab>
+            <!-- End Step 1A -->
+
+            <!-- Step 1B - Search -->
+            <lightning-tab label="Contract Search">
+                <!-- Search -->
+                <lightning-input type="text"
+                                 value={contractNumber}
+                                 label="Contract Number"
+                                 onchange={updateContractNumber}></lightning-input>
+                <br/>
+                <lightning-button label="Search"
+                                  onclick={searchContracts}
+                                  variant="brand"
+                                  class="slds-p-bottom_large"></lightning-button>
+                <br/>
+                <!-- Results -->
+                <c-co-term-table contract-list={queryContracts} error={searchError} oncontractselect={contractSelected}></c-co-term-table>
+            </lightning-tab>
+            <!-- End Step 1B -->
+        </lightning-tabset>
+    </div>
+    <!-- End Step 1 -->
+
+    <!-- Step 2 - Confirm Button -->
+    <div if:true={selected} class="slds-grid_vertical">
+        <c-co-term-form parent-record-id={parentRecordId} selected-contract-id= {selectedContractId} onupdatecomplete={closeParentModal}></c-co-term-form>
+    </div>
+    <!-- End Step 2 -->
+</template>

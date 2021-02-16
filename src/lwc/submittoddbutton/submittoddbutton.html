@@ -1,0 +1,20 @@
+<!--
+ - Created by ewong on 04/02/2020.
+ -->
+
+<!-- Submit To Deal Desk Button -->
+<template>
+    <lightning-card title="Submit To Deal Desk" icon-name="standard:datadotcom">
+        <div class="slds-m-bottom_small slds-m-left_large">
+            <lightning-button label="Submit To Deal Desk" onclick={handleSubmitToDD}></lightning-button>
+        </div>
+        <div class="slds-m-around_large">
+            <div if:false={isLoaded}></div>
+            <div if:true={isLoaded} class="slds-is-relative">
+                <lightning-spinner
+                        alternative-text="Loading..." size="small">
+                </lightning-spinner>
+            </div>
+        </div>
+    </lightning-card>
+</template>

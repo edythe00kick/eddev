@@ -1,0 +1,94 @@
+<apex:page showHeader="false" sidebar="false" title="Alteryx Support Live Agent">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxEmpCommunityGlobal, 'AlteryxEmpCommunityGlobal/css/Bootstrap.min.css')}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.footer.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/css/cloud.header.css')}"/>
+    
+    <Style>
+        .body{padding:0px;width:100%;}
+        .header{padding:0px;}
+        .header > img {width:100%;}
+        div.BigBlockSupport:a, div.SmallBlockSupport:a {color:000;}
+        div.SmallBlockSupport {margin-top:30px;margin-bottom:30px; border:1px solid #ddd; border-radius: 15px; padding:0 2%; text-align:center;vertical-align: middle ;overflow:auto;} 
+        div.BigBlockSupport img {margin:10px auto;vertical-align: middle ;-moz-transition: all 0.3s;-webkit-transition: all 0.3s;transition: all 0.3s;}
+        div.SmallBlockSupport img {margin: 10px auto;vertical-align: middle ; -moz-transition: all 0.3s; -webkit-transition: all 0.3s; transition: all 0.3s; }    
+        .titleOfServices {font-size: 2rem;font-weight: 100;}
+        div.BigBlockSupport, div.SmallBlockSupport {color:black;}
+        .title-green {color: #00a99d;font-weight: bold;}
+        .site-footer{padding:50px 0 50px 50px;;background-color:#DFDFDF;width:100%;}
+    </Style>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 header">
+            <img alt="INFO" class="msgIcon" src="{!$Resource.AlteryxliveAgentHeader}" title="Header_logo"/>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    
+            <div class="col-lg-6 col-md-6 col-sm-8 col-xs-12 col-lg-offset-3 col-md-offset-3 col-sm-offset-2 SmallBlockSupport">
+                <span class="titleOfServices">Chat</span><br/>   
+                <!-- Stage 
+                    <img id="liveagent_button_online_573V0000000CacA" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('573V0000000CacA')" src="https://stage-alteryx.cs12.force.com/lasupport/resource/1486812682000/LiveAgentsupportchaticon" />
+                    <img id="liveagent_button_offline_573V0000000CacA" style="display: none; border: 0px none; " src="https://stage-alteryx.cs12.force.com/lasupport/resource/1486812682000/LiveAgentsupportchaticon_Inactive" />
+                    <script type="text/javascript">
+                        if (!window._laq) { window._laq = []; }
+                        window._laq.push(function(){liveagent.showWhenOnline('573V0000000CacA', document.getElementById('liveagent_button_online_573V0000000CacA'));
+                        liveagent.showWhenOffline('573V0000000CacA', document.getElementById('liveagent_button_offline_573V0000000CacA'));
+                        });
+                    </script>
+                    <script type='text/javascript' src='https://c.la1-c2cs-phx.salesforceliveagent.com/content/g/js/39.0/deployment.js'>
+                    </script>
+                    <script type='text/javascript'>
+                        liveagent.init('https://d.la1-c2cs-phx.salesforceliveagent.com/chat', '572V0000000CaVY', '00DV0000006tGhn');
+                       
+                    </script>
+                Stage -->
+                <img id="liveagent_button_online_573E0000000PTsf" style="display: none; border: 0px none; cursor: pointer" onclick="liveagent.startChat('573E0000000PTsf')" src="https://alteryx.secure.force.com/LiveAgentDemo/resource/1441834824000/LiveAgentsupportchaticon" />
+                <img id="liveagent_button_offline_573E0000000PTsf" style="display: none; border: 0px none; " src="https://alteryx.secure.force.com/LiveAgentDemo/resource/1489068589000/LiveAgentsupportchaticon_Inactive" />
+                <script type="text/javascript">
+                    if (!window._laq) { window._laq = []; }
+                    window._laq.push(function(){liveagent.showWhenOnline('573E0000000PTsf', document.getElementById('liveagent_button_online_573E0000000PTsf'));
+                    liveagent.showWhenOffline('573E0000000PTsf', document.getElementById('liveagent_button_offline_573E0000000PTsf'));
+                    });
+                </script>
+                                        
+                <script type='text/javascript' src='https://c.la2-c2-phx.salesforceliveagent.com/content/g/js/39.0/deployment.js'></script>
+                <script type='text/javascript'>
+                    liveagent.init('https://d.la2-c2-phx.salesforceliveagent.com/chat', '57244000000k9bw', '00DE0000000JJZ4');
+                </script>
+
+                <br/>
+                <strong class="title-green">SIMPLE QUESTIONS</strong><br/>                                                           
+                Have a quick &amp; simple question that can be solved in a brief, text-only exchange? Ask your question here.
+                Deployment Script
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 site-footer">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 col-lg-offset-1 col-ms-offset-1 col-sm-offset-1 col-xs-offset-1 column1">
+                <p>                
+                    <strong>© <script>document.write(new Date().getFullYear())</script> Alteryx, Inc.</strong>
+                    <a href="http://www.alteryx.com/terms-and-conditions">Terms and conditions</a>
+                    <a href="http://www.alteryx.com/privacy-policy">Privacy policy</a>
+                </p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 column2">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 col-ms-offset-2 col-sm-offset-2 col-xs-offset-2 social-links">
+                    <a href="//www.facebook.com/alteryx">
+                        <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_facebook.jpg"/>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 social-links">   
+                    <a href="//twitter.com/alteryx">
+
+                        <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_twitter.jpg"/>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 social-links">   
+                    <a href="//www.linkedin.com/company/alteryx">
+
+                         <apex:image url="http://pages.alteryx.com/rs/alteryx/images/SBUX-24-Offer_linkedin.jpg"/>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>  
+    
+</apex:page>

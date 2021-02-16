@@ -1,0 +1,8 @@
+<!--PLEASE READ: If you override the automatically generated CSS, your Chatter Answers community might not function correctly.-->
+<apex:page showHeader="false" sidebar="false">
+        <apex:composition template="comm_template">
+        <apex:define name="body">
+        <chatteranswers:login />
+    </apex:define> 
+    </apex:composition>
+</apex:page>

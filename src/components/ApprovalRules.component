@@ -1,0 +1,34 @@
+<apex:component controller="returnApprovals" access="global">
+    <apex:attribute name="ToID" type="ID" description="The Id of the Quote" assignTo="{!quoteID}"/>
+    
+    <!-- <apex:dataTable value="{!ApprovalRuleList}" var="item" border="1" >
+        
+        <apex:column headervalue=" Approval Rule " headerClass="background-color:aqua;">
+            <apex:outputText value="{!item.Name}"/> 
+        </apex:column>
+        <apex:column headervalue=" Approval Reason " headerClass="background-color:aqua;">
+            <apex:outputText value="{!item.Rule_Criteria__c}"/>
+        </apex:column>
+        
+    </apex:dataTable>-->
+    
+    <table class='list' border="1" cellpadding="10">
+    <thead>
+    <tr style="background-color:#0d2345; color: #79E9D7;">
+        <th >Approval Rule</th>
+        <th >Approval Reason</th>
+        <th> Assigned To</th>
+    </tr>
+    </thead>
+    <tbody>
+        <apex:repeat value="{!ApprovalRuleList}" var="item">
+            <tr>
+                <td>{!item.sbaa__Rule__r.Name}</td>
+                <td>{!item.sbaa__Rule__r.Rule_Criteria__c}</td> 
+                <td>{!item.sbaa__AssignedTo__r.Name}</td>
+            </tr>
+        </apex:repeat>
+    </tbody>
+</table>
+    
+</apex:component>

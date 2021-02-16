@@ -1,0 +1,24 @@
+<apex:page showHeader="false">
+    <apex:composition template="comm_template">
+        <apex:define name="body">
+        <div align="center">
+          <a href="http://alteryx.force.com/community/community_menu"><img src="{!$Resource.forums_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://alteryx.force.com/community/UserGroup_menu"><img src="{!$Resource.usergroups_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://www.alteryx.com/community/customer-portal"><img src="{!$Resource.support_icon_off}" /></a><img src="{!$Resource.divide_dotted}" />
+          <a href="http://alteryx.force.com/community/moduleexchange_menu"><img src="{!$Resource.module_icon_on}" /></a>
+        </div>
+        <div class="nav-spacer"></div>
+        <div class="comm_line"></div>
+        <br />
+        <div class="comm_margin">
+          <h3 class="hdr_dg">Module Exchange</h3>
+          <h3 class="hdr_lg">Upload and share Analytic Apps, Modules and Macros with other Data Artisans.  Download Certified Modules to help solve business challenges.</h3>
+        </div>  
+        <div class="comm_margin_right"> 
+          <h3 class="hdr_lg">Share an Analytic App, Module, or Macro: <a href="http://www.alteryx.com/module-exchange-submission-form"><img style="vertical-align:middle" src="{!$Resource.upload_btn}" /></a></h3>
+        </div>
+        <br />
+          <apex:include pageName="Module_Exchange_main"/>
+        </apex:define> 
+    </apex:composition>
+ </apex:page>

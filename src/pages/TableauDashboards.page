@@ -1,0 +1,25 @@
+<apex:page sidebar="false" >
+ <!--<apex:iframe src="https://10ay.online.tableau.com/t/alteryxsalesoperations/views/SFDCReportingDashboard/Snapshot?:embed=y&:display_count=no#2" scrolling="true" 
+ id="theIframe"/>-->
+
+ 
+ <!--<iframe id="theIframe" name="theIframe" scrolling="False" src="https://10ay.online.tableau.com/t/alteryxkpidashboards/workbooks?project=3838" style="
+    width: 100%;
+    min-height: 1080px;
+    /* overflow: hidden; */
+    overflow-x: hi;
+"></iframe>-->
+ 
+ <div style="width: 100%;min-height:200px">
+ <p style="width: 100%;Font-size:25px;text-align:centre;color:#480000;font-weight:bold"> Tableau Online Server disabled the capability to embed an iFrame window. Please click this link to be reverted directly to the <a style="color:Blue" href="https://10ay.online.tableau.com/#/site/alteryxkpidashboards/projects/3838/workbooks">Tableau Online Server</a>. Let SalesOps know if you have any questions.</p>
+  </div>
+ <!--iframe id="theIframe" name="theIframe" scrolling="False" src="https://10ay.online.tableau.com/#/site/alteryxkpidashboards/projects/3838/workbooks" style="
+    width: 100%;
+    min-height: 1080px;
+    /* overflow: hidden; */
+     overflow-x: hi;
+"></iframe>-->
+
+
+
+</apex:page>

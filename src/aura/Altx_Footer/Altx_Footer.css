@@ -1,0 +1,30 @@
+.THIS {
+    background-color:#ddd;
+    border-top:1px solid #bbb;
+    padding: 15px;
+}
+.THIS .footerText{padding:0 10px;color:#000;font-size:12px;}
+.THIS .languageDiv ul li{margin: 0 10px 0 0;
+    font-size: 14px;
+    color: #000;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0;
+}
+.THIS .languageDiv ul li a{color: #000;}
+.THIS .fbImageDiv{    width: 15px;
+    height: 23px;
+    background-repeat: no-repeat;
+    display:block;}
+.THIS .fbImageDiv:hover{background-position: 0px -23px;}
+.THIS .linkImageDiv{width: 25px;
+    height: 23px;
+    background-repeat: no-repeat;
+    display:block;}
+.THIS .linkImageDiv:hover{background-position: 0px -23px;}
+.THIS .twitterImageDiv{margin-top:3px;
+    width: 28px;
+    height: 23px;
+    background-repeat: no-repeat;
+    display:block;}
+.THIS .twitterImageDiv:hover{background-position: 0px -23px;}

@@ -1,0 +1,25 @@
+<apex:component controller="FetchCaseCommentsController" access="global" >       
+<apex:attribute assignTo="{!CaseId}"  name="givecaseId" type="String" description="The Case Id"/>  
+       <table border="0" >    
+            <apex:repeat var="cx" value="{!Comment}">
+               <tr style="font-weight:bold;">
+                   <td><i>{!cx.createdbyname} &nbsp; &nbsp; {!cx.lastmodifieddate}</i></td>
+               </tr>
+                <!--<tr id="comment">Comment: {!cx.CommentBody} </tr>-->
+                <tr class="commmentbody">
+                    <td>Comment &nbsp; : &nbsp; <apex:outputText value="{!cx.commentBody}" escape="false" style="color:blue"/> </td>
+                </tr>
+                <!--<tr>
+                    <td>
+                     Link of the Case Record: 
+                       <a href = 
+                            "https://{!$Label.instance}.salesforce.com/{!cx.parentid}">Case Link
+                        </a>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td><hr/></td>
+                </tr>
+            </apex:repeat>          
+        </table>
+</apex:component>

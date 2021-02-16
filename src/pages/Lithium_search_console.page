@@ -1,0 +1,205 @@
+<apex:page id="thePage" standardcontroller="case" extensions="Lithium_search_controller" showHeader="false" sidebar="false" >
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/jquery-1.10.2.min.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/bootstrap.min.js')}"/> 
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/jquery-ui.min.js')}"/>       
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/jquery.blockUI.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/publisher.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/integration.js')}"/>
+<apex:includeScript value="{!URLFOR($Resource.LithiumResource, '/script/lithiumscript.js')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.LithiumResource, '/style/bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.LithiumResource, '/style/salesforce-lightning-design-system.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.LithiumResource, '/style/console_styling.css')}"/>
+                  
+    <apex:form id="theForm" rendered="{!NOT(ISNULL(ldata))}" html-autocomplete="off" >                    
+        <apex:actionFunction action="{!searchKnowledgeRecords}" name="reSearchArticles" rerender="tab1,tab2,tab3" status="actionSt1" immediate="true">            
+            <apex:param name="searchText" assignTo="{!searchText}" value=""/>
+            <apex:param name="channelType" assignTo="{!channelType}" value=""/>
+            <apex:param name="Index" value="" assignTo="{!Index}"/>
+            <apex:param name="Counter" value="" assignTo="{!Counter}"/>            
+            <apex:param name="showPrev" value="" assignTo="{!showPrev}"/>
+            <apex:param name="showNext" value="" assignTo="{!showNext}"/>
+            <apex:param name="showPrevCase" value="" assignTo="{!showPrevCase}"/>
+            <apex:param name="showNextCase" value="" assignTo="{!showNextCase}"/>
+        </apex:actionFunction>     
+      <!--Filter Section Starts-->  
+        <apex:outputPanel id="tab1" layout="block">
+            <div class="col-xs-12 col-sm-12 nopad">
+                <div style="padding-left:4px;font-size:15px;">
+                  <span class="maintitle"><b>Support console Lithium search</b></span>   
+                </div>
+                <div style="padding-left:15px;font-size:15px;">                            
+                 <div class="col-xs-12 col-sm-12 nopad ">
+                    <div class="col-xs-9 col-sm-9 nopad inputbox">                                
+                        <apex:inputtext styleclass="searchbox"  maxlength="100" value="{!searchText}" html-placeholder="Search" id="searchStr">
+                            <script type="text/javascript"> 
+                                jQuery(document).ready(function(){
+                                    jQuery(".searchbox").keypress(function(e) {
+                                        if(e.which == 13) {
+                                            e.preventDefault();
+                                            var srchTxt = jQuery(document.activeElement).val();
+                                            if(srchTxt && srchTxt !== null && srchTxt !== '' && srchTxt.length >=3){
+                                              jQuery(".searchbtn").click();
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+                          </apex:inputtext>       
+                    </div>           
+                    <div class="col-xs-3 col-sm-3 inputbutton">
+                        <apex:commandButton styleclass="searchbtn" value="Search" action="{!searchKnowledgeRecords}" status="actionSt1" reRender="{!$Component.tab3},{!$Component.tab2}" style=" padding: 5px 9px; border-radius: 5px; background:white;">
+                             <apex:param name="page" value="0" assignTo="{!currentPage}"/>
+                        </apex:CommandButton> <br/>
+                    </div>
+                </div>                
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-5 filter_control">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filtertxt">         
+                   <label class="filt">Filters</label>&nbsp;&nbsp;<span class="arrow-sign glyphicon glyphicon-menu-down" id="caret_category"></span>
+                  </div>
+                </div>
+                  <div class="my_filters col-xs-12 col-sm-12">
+                  <script type="text/javascript"> 
+                            jQuery(document).ready(function(){
+                                 jQuery('.filter_control').bind('click', function(){
+                                    jQuery('.my_filters').toggle();
+                                    jQuery('#caret_category').toggleClass('glyphicon-menu-down glyphicon-menu-up');
+                                    });
+                                  });
+                          </script>     
+                    <div  class="col-xs-5 col-sm-5 nopad apexradio" style="margin-top:10px;">
+                        <apex:selectRadio layout="pageDirection" onchange="reSearchArticles(document.getElementById('{!$Component.searchStr}').value,this.value,0,false,false,false,false,false);" value="{!channelType}" id="selecRd1">                         
+                            <apex:selectOption itemValue="All" itemlabel="All" id="rd2"/>
+                            <apex:selectOption itemValue="DayAgo" itemlabel="A day ago" id="rd3" /> 
+                            <apex:selectOption itemValue="WeekAgo" itemlabel="A week ago" id="rd4"/>
+                            <apex:selectOption itemValue="MonthAgo" itemlabel="A month ago" id="rd5"/>
+                            <apex:selectOption itemValue="YearAgo" itemlabel="An year ago" id="rd6"/>
+                        </apex:selectRadio>
+                    </div>
+                    <div class="col-xs-5 col-sm-5 nopad apexcheckbox" style="margin-top:10px;">
+                        <apex:inputCheckbox value="{!Forums}" label="Forums" id="forum"/>&nbsp;&nbsp; Forums <br/>               
+                        <apex:inputCheckbox value="{!Blogs}" label="Blogs" id="blog"/>&nbsp;&nbsp; Blogs<br/>
+                        <apex:inputCheckbox value="{!Ideas}" label="Ideas" id="idea"/>&nbsp;&nbsp; Ideas<br/>
+                        <apex:inputCheckbox value="{!KnowledgeBase}" label="Knowledge Base" id="tkb"/>&nbsp;&nbsp; Knowledge Base<br/> 
+                        <apex:inputCheckbox value="{!Contests}" label="Contests" id="contest"/>&nbsp;&nbsp; Contests<br/>
+                        <apex:inputCheckbox value="{!Groups}" label="Groups" id="group"/>&nbsp;&nbsp; Groups<br/>
+                    </div>
+                    <div class="col-xs-2 col-sm-2 nopad apexcase" style="margin-top:10px;" title="View Salesforce Cases">
+                        <apex:inputCheckbox value="{!showCaseResult}" label="Case" id="cas"/>&nbsp;Cases
+                    </div> 
+                </div>   
+             </div>
+          </div>                                                             
+            <apex:actionStatus id="actionSt1">
+                <apex:facet name="start">                                                 
+                    <div class="apexactionstatus" style="width:100%;height:100%;background-color:#000001;z-index:999999;opacity:0.70;text-align:center;position:fixed;">
+                     <img style="text-align:center;padding-top:300px;width:40px;" src="{!URLFOR($Resource.LithiumResource, '/style/slds_spinner_brand.gif')}"  />
+                    </div>
+                </apex:facet>
+                <apex:facet name="stop"/>                
+            </apex:actionStatus>                            
+        </apex:outputPanel>   
+  <!--Filter Section End-->      
+        
+  <!--Lithium Section Starts Here-->
+<apex:outputPanel id="tab2">    
+    <div class="col-sm-12 col-xs-12" style="{!IF(lithiumresults==false&&enableCaseSearch==false,'display:block','display:none')}">
+            <div class="col-sm-12 col-xs-12 case-info">
+            <span class="glyphicon glyphicon-info-sign"></span><span>&nbsp;Case Results Disabled in Custom Settings</span> 
+            </div>
+    </div>
+     <apex:outputPanel style="width:100%;overflow:hidden;" rendered="{!IF(lithiumresults,true,false)}" layout="block" >   
+       <span class="mainHeadings"><strong>Lithium Platform Results</strong></span> 
+            <apex:outputPanel rendered="{!If(ldata == null || ldata.size == 0,true,false)}" layout="block">
+                <div style="padding-left:20px;float:left;">
+                    <strong>No Results Found</strong>
+                </div>   
+            </apex:outputPanel> 
+            
+            <apex:outputPanel rendered="{!If(ldata !=null && ldata.size > 0,true,false)}" style="overflow: hidden;" layout="block">                                                      
+                <apex:repeat value="{!ldata}" var="lResult">                              
+                    <div class="custom-margin searchResult">
+                        <div class="custom-margin searchResultTitle">
+                            <a href="{!lResult.art_endpoint}" target="_blank">
+                            <h4 style="font-size:15px !important;"><strong >{!lResult.title}</strong></h4>
+                            </a>
+                           <span class="searchResultAuthor" style="padding-left:4px; font-size:13px; color:#666666;">by
+                            <span>
+                            <a href="{!lResult.view_author}" target="_blank" style="color:#666666;"><strong>{!lResult.author}</strong></a>
+                            </span>
+                            in
+                            <span>
+                            <a href="{!lResult.board_endpoint}" target="_blank" style="color:#666666;">{!lResult.board_id}</a>
+                            </span> 
+                           </span> 
+                        </div>
+                        <div class="custom-margin searchResultDate" style="font-size: 12px;">
+                            <strong>Date:</strong> {!lResult.created_date} &nbsp;&nbsp; <strong>Type:</strong>
+                            {!UPPER(LEFT(lResult.category, 1))}{!MID(lResult.category, 2, LEN(lResult.category))}
+                        </div>    
+                        <div class="custom-margin searchResultBody">                                                                                                
+                            <apex:outputText value="{!LEFT(SUBSTITUTE(lResult.description,'<br/>',''),180) + if(Len(lResult.description)>180,'...','')}" escape="false"/>
+                        </div>
+                       <div class="custom-margin attachcase" style="font-size: 12px; cursor:pointer">
+                        <span>
+                        <strong><a onclick="javascript:emailArticle('{!VF_txt2}', '{!lResult.art_endpoint}', '{!lResult.title}');" >{!VF_txt}</a></strong>
+                        </span>
+                        <span title="Copy the Article URL" style="padding-left:35px;"><strong><a onclick="copytext('{!lResult.art_endpoint}')">Copy To Clipboard</a></strong></span>
+                        </div>   
+                    </div>
+                </apex:repeat>                       
+             </apex:outputPanel>   
+                     <div style="{!If(ldata!=null && ldata.size > 0,'text-align:center;','display:none;')}" class="col-xs-12 col-sm-12">
+                         <div style="margin:5px 0px;font-weight:bold;font-size:15px;" class="col-xs-12 col-sm-12">        
+                                <apex:commandLink value="Prev" rerender="tab2" status="actionSt1" action="{!gotoPrevious}" rendered="{!currentPage > 1}"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <apex:commandLink value="Next" rerender="tab2" status="actionSt1" action="{!gotoNext}" rendered="{!ldata.size>=pageSize}"/>                                                                
+                        </div>
+                    </div>
+                    <div style="{!If(showprev&&ldata.size=0,'text-align:center;','display:none;')}" class="col-xs-12 col-sm-12">
+                       <div style="margin:5px 0px;font-weight:bold;font-size:15px;" class="col-xs-12 col-sm-12">
+                                <apex:commandLink value="Prev" rerender="tab2" status="actionSt1" action="{!gotoPrevious}" rendered="{!currentPage > 1}"/>
+                        </div>
+                    </div>
+            </apex:outputPanel>
+          </apex:outputPanel>     
+         <!--Lithium Section Ends Here-->     
+                  
+         <!--Salesforce Case Section Starts Here -->
+          <apex:outputPanel id="tab3" rendered="{!IF(enableCaseSearch,true,false)}">
+           <apex:outputPanel style="width:100%;overflow: hidden;" rendered="{!IF(caseresults||showCaseResult,true,false)}" layout="block">
+            <span class="mainHeadings"><strong>Salesforce Results (Total results {!totalRecs})</strong></span>
+                <div style="{!If(caseSearchResults!=null && caseSearchResults.size== 0,'padding-left:20px;float:left;','display:none;')}">
+                    <strong>No Results Found</strong>
+                </div>                                                       
+            <apex:repeat value="{!caseSearchResults }" var="singleCaseResult">                
+                <div class="custom-margin searchResult">
+                    <div class="custom-margin searchResultTitle">
+                       <a href="/{!singleCaseResult.id}" target="_blank"> <h4 style="font-size:15px !important;"><strong >{!singleCaseResult.subject}</strong></h4></a>
+                    </div>
+                    <div class="custom-margin searchResultBody">                                                                  
+                        <apex:outputText value="{!LEFT(SUBSTITUTE(singleCaseResult.Description,'<br/>',''),100) + if(Len(singleCaseResult.Description)>80,'...','')}" escape="false"/>
+                    </div>
+                    <div class="custom-margin searchResultDate" style="font-size: 12px;">
+                        <span><strong>Date:</strong>
+                        <apex:outputText value="{0,date,MM-dd-yyyy}"> <apex:param value="{!singleCaseResult.lastmodifieddate}" /> </apex:outputText></span>
+                        <span style="padding-left: 6px;padding-right: 6px;"><strong>Type:</strong>Case</span>
+                    </div>
+                   <div class="custom-margin" style="font-size: 12px;">
+                     <span>
+                      <a href="javascript:void();" onclick="javacript:openPrimaryTab('{!singleCaseResult.Id}','{!singleCaseResult.CaseNumber}')"> <strong >View Case</strong></a>
+                     </span>
+                   </div>                     
+                </div>
+            </apex:repeat>
+            <div style="margin:5px 0px;font-weight:bold;font-size:15px;" class="col-xs-12 col-sm-12">           
+                <div style="{!If(totalrecs !=null || totalrecs>3,'text-align:center;','display:none;')}" class="col-xs-12 col-sm-12">                                                 
+                    <apex:commandLink value="Prev" status="actionSt1" rerender="tab3" action="{!previous}" rendered="{!showPrevCase}"/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:commandLink value="Next" status="actionSt1" rerender="tab3" action="{!next}" rendered="{!showNextCase}"/>                                                                              
+                </div>
+            </div> 
+        </apex:outputPanel> 
+      </apex:outputPanel>
+    <!--Salesforce Case Section Ends Here -->
+</apex:form>
+</apex:page>

@@ -1,0 +1,9 @@
+<aura:component controller="AltxLeadConversionController" implements="force:lightningQuickAction,flexipage:availableForAllPageTypes,force:hasRecordId" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size--1-of-1">
+            We have successfully submitted your request for Lead conversion.
+        </div>
+    </div>
+</aura:component>

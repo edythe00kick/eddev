@@ -1,0 +1,20 @@
+<!-- Author: Sharma Nemani | W-012560 | Case: 00288352
+	 Date: 07/11/2019
+	 Description: This Visualforce Page is used as part of the "Submit to Deal Desk" formula field (button) in Quote.
+-->
+<apex:page StandardController="SBQQ__Quote__c" extensions="SubmitToDealDesk" action="{!submitToDD}">
+    <script>
+    if('{!error}'!=undefined && '{!error}'!=null && '{!error}'!=''){
+        
+        if(confirm('{!error}')){
+            	window.top.location.href = '{!baseUrl}'+'/'+'{!sbq.Id}';
+        }else{
+            window.top.location.href = '{!baseUrl}'+'/'+'{!sbq.Id}';
+        }
+    }else{
+        alert('{!baseUrl}'+'/'+'{!sbq.Id}');
+        window.top.location.href = '{!baseUrl}'+'/'+'{!sbq.Id}';
+    }
+    	
+    </script>
+</apex:page>

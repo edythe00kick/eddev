@@ -1,0 +1,172 @@
+<apex:page StandardController="Lead" recordSetVar="leads" extensions="MassLeadConverterController" >
+<apex:includeScript value="{!URLFOR($Resource.AlteryxCommunityGlobal, '/js/jquery.js')}"/>
+<style>
+    .checkRadio{margin-top:0px;}
+    .exisClass{float:left;display:block;border-left:3px solid red; margin-left:6px;}
+    .showError{color:red;display:none;}
+</style>
+<apex:outputPanel rendered="{!AND($Profile.Name != 'System Administrator', $Profile.Name != 'Alteryx - Sales - Sales Ops', NOT(CONTAINS($User.Username, 'rsmith@alteryx.com')), NOT(CONTAINS($User.Username, 'dgotelli@alteryx.com')), NOT(CONTAINS($User.Username, 'tneatherlin@alteryx.com')))}">
+    <apex:pageMessage summary="Mass Convert Process is reserved for System Administrators only. Please contact your System Administrator for this functionality." severity="warning" strength="3" />
+</apex:outputPanel>
+
+<apex:outputPanel rendered="{!OR($Profile.Name == 'System Administrator', $Profile.Name == 'Alteryx - Sales - Sales Ops', CONTAINS($User.Username, 'rsmith@alteryx.com'), CONTAINS($User.Username, 'dgotelli@alteryx.com'), CONTAINS($User.Username, 'tneatherlin@alteryx.com'))}">
+
+
+
+<div>
+ <apex:sectionHeader title="Mass Convert Leads" subtitle="" />
+<apex:pageBlock >
+
+           <apex:pageBlockTable value="{!selected}" var="selectedLead">
+                <apex:column value="{!selectedLead.Name}"/>  
+                <apex:column value="{!selectedLead.Company}"/>
+                <apex:column value="{!selectedLead.Phone}"/>
+            </apex:pageBlockTable>
+</apex:pageBlock>
+<apex:form id="form" >
+
+<apex:pageBlock title="Mass Convert Leads" mode="edit" id="pblock" >
+<apex:pageBlockSection title="Mass Convert Leads" columns="1" id="mcBox" rendered="{!isEditable}" >
+    
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel for="recordOwner" value="Record Owner" />
+        <apex:inputField value="{!acc.OwnerId}" id="recordOwner" />
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel for="sendEmailBox" value="Send Email to Owner" />
+        <apex:inputCheckbox value="{!sendEmailBox}" id="sendEmailBox" /> 
+    </apex:pageBlockSectionItem>
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            checkRadioFun();
+        });
+        function getcheckedRadio(){
+            checkedRadio ='';
+            jQuery(".checkRadio:checked").each(function(){
+                var typeName = jQuery(this).val();
+                typeName = jQuery.trim(typeName);
+                checkedDate = typeName;
+            });
+            return checkedRadio;
+        }
+        
+        function convertLead(){
+            var checkRadio = jQuery("input[name='AccOption']:checked").val();
+            //console.log(checkRadio);
+            if(checkRadio == 'Add to existing account'){
+                var accountName = jQuery('.AccountClass').val();
+                if(accountName == ''){
+                    //console.log('testing');
+                    jQuery('.showError').css('display','block');
+                }else{
+                    jQuery('#mydiv').css('display','block');
+                    document.getElementById("{!$Component.form.pblock.thebuttons.myBtn}").disabled = true;
+                    converLeadAction();   
+                }
+            }else{
+                jQuery('#mydiv').css('display','block');
+                document.getElementById("{!$Component.form.pblock.thebuttons.myBtn}").disabled = true;
+                converLeadAction();
+                
+            }
+            
+        }
+        
+    </script>
+    
+    <apex:actionFunction name="converLeadAction" reRender="form" action="{!convertLeads}"/>  
+    <apex:actionFunction name="accountSelect" reRender="accName,existingAcc" oncomplete="checkRadioFun();" action="{!accountSwitch}">
+        <apex:param value="" name="accOpt"/>
+    </apex:actionFunction>
+    <apex:actionRegion >
+    <div>
+        <input type="radio" name="AccOption" class="checkRadio" value="Create new account" onclick="accountSelect('Create new account');return false;"> Create new account</input>
+        <apex:outputPanel id="accName">
+            <script type="text/javascript">
+            function checkRadioFun(){
+                var defaultRadio = "{!accOption}";
+                //console.log('defaultRadio-->'+defaultRadio);
+                jQuery(".checkRadio").each(function(){
+                    var typeName = jQuery(this).val();
+                    typeName = jQuery.trim(typeName);
+                    //console.log('typeName-->'+typeName);
+                    if(typeName == defaultRadio){
+                        jQuery(this).prop( "checked", true);
+                    }
+                });
+            
+            }
+        </script>   
+        <apex:inputText value="{!accountName}"  disabled="{!accOption != 'Create new account'}" style="margin-left:20px;"/>
+        </apex:outputPanel>
+    </div>
+    
+   <div>
+        <input type="radio" style="float:left;" name="AccOption" class="checkRadio" value="Add to existing account" onclick="accountSelect('Add to existing account');return false;"><span style="float:left;">Add to existing account</span></input>
+        <apex:outputPanel id="existingAcc" styleclass="{!if(accOption != 'Create new account','exisClass','')}" >
+            <apex:inputField value="{!con.AccountId}" id="existingAccName"  style="{!if(accOption != 'Create new account','margin-left:0px','margin-left:10px;')}" styleClass="AccountClass"/>
+            <script>document.getElementById('{!$Component.existingAccName}').disabled = {!JSENCODE(accOption) == 'Create new account'}; </script>
+            <div class="showError">Error: Please add value</div>
+        </apex:outputPanel>
+   </div>
+      
+    
+       <!--
+        <apex:selectRadio value="{!accOption}" layout="pageDirection">
+            <apex:selectOptions value="{!accOptions}"/>
+            test
+            <apex:actionSupport event="onclick" reRender="accName,existingAcc" status="..." />
+        </apex:selectRadio>-->
+    
+    
+   </apex:actionRegion>
+
+</apex:pageBlockSection>
+<!--
+<apex:pageBlockSection title="Opportunity Information" columns="1" rendered="{!isEditable}">
+        <apex:actionRegion >
+        <apex:selectRadio value="{!oppOption}" layout="pageDirection">
+            <apex:selectOptions value="{!oppOptions}"/>
+             <apex:actionSupport event="onclick" reRender="oppName" status="..." />
+            </apex:selectRadio>
+    <apex:pageBlockSectionItem >
+        <apex:outputLabel for="oppName" value="Opportunity Name" />
+        <apex:inputText value="{!opportunityName}" id="oppName" disabled="{!oppOption == 'Do not create new opportunity'}" /> 
+    </apex:pageBlockSectionItem>
+    </apex:actionRegion>
+</apex:pageBlockSection>
+
+<apex:pageBlockSection title="Task Information" columns="1" rendered="{!isEditable}">
+        <apex:selectRadio value="{!taskOption}" layout="pageDirection">
+            <apex:selectOptions value="{!taskOptions}"/>
+            </apex:selectRadio>
+    <apex:inputField value="{!leadTask.ActivityDate}" />
+    <apex:inputField value="{!leadTask.Subject}" />
+    <apex:inputField value="{!leadTask.Status}" />
+    <apex:inputField value="{!leadTask.Description}" />
+    <apex:inputField value="{!leadTask.Priority}" />
+    <apex:inputField value="{!leadTask.ReminderDateTime}" />
+    <apex:inputField value="{!leadTask.isReminderSet}" />
+    
+</apex:pageBlockSection>-->
+    <apex:pageMessages />
+    <BR />  
+           <apex:pageBlockButtons id="thebuttons" location="bottom">
+               <!--<input type="Button" class="btn" value="Save" onclick="convertLead();return false;"/>  --> 
+                <!--<apex:commandButton value="Save" rerender="form" action="{!convertLeads}" rendered="{!isEditable}" />-->
+                
+                <apex:commandButton id="myBtn" value="Save" onclick="convertLead();" rerender="mystatus"  />
+                <apex:commandButton value="Cancel" action="{!cancel}"/> 
+            </apex:pageBlockButtons>
+</apex:pageBlock>
+          <div id="mydiv" style="text-align:center;display:none;">
+              <!-- <img src="/img/loading.gif" />   -->
+              <img src="{!$Resource.LoadingImage}"/>
+                 
+           </div>
+          <apex:outputPanel id="mystatus" ></apex:outputPanel> 
+           
+</apex:form>
+</div>
+</apex:outputPanel>
+</apex:page>

@@ -1,0 +1,10 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>
+  
+  <analytics:reportChart > reportId="00O44000002yaUE" filter="{column:'Apttus_Approval__Approval_Request__c.Apttus_QPApprov__ProposalOwnerId__c',operator:'equals', value:'005E0000007uUEP'}" </analytics:reportChart>
+  
+  
+  </h1>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

@@ -1,0 +1,15 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:attribute name="bannertitle"  type="String" default="Alteryx Community" />
+    <aura:attribute name="bannerbody" type="string" default="Maec Denasos non Curus EST Elentum Amet"/>
+    <aura:attribute name="bannerImage"  type="String" default="alteryx-banner.jpg" />
+    <div>
+        <div class="item" style="{!'background-image: url(\''+$Resource.Alteryx_Community_Images+'/Alteryx_Community_Images/'+v.bannerImage+'\');'}">
+            <div class="BannerContentDiv">
+                <div class="textoverimagdiv">
+                    <div class="textTitle">{!v.bannertitle}</div>
+                    <div class="textbody">{!v.bannerbody}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

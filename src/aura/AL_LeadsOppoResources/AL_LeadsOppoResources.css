@@ -1,0 +1,18 @@
+.THIS .mainTileDiv{
+    background: #eee;
+    box-shadow: 1px 1px 3px #ddd;
+    padding: 20px;
+    background-repeat:no-repeat;
+    background-size: cover;
+    min-height: 150px;
+}
+.THIS .mainTileDiv div{align-items:center;}
+.THIS .headText{
+    font-size: 24px;
+    font-weight: bold;
+}
+.THIS .tileDesc{font-size: 16px;}
+.THIS .slds-icon_container--circle{background:transparent;border: 1px solid #fff;}
+.THIS .ImageDiv{text-align:right;}
+.THIS .ImageDiv img{width:60px;height:60px;}
+.THIS .lightIcon{display:none;}

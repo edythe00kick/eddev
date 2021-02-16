@@ -1,0 +1,33 @@
+<apex:component controller="returnQuoteLines" access="global">
+    <apex:attribute name="ToID" type="ID" description="The Id of the Quote" assignTo="{!quoteID}"/>
+    
+    <table class='list' border="1" cellpadding="10">
+    <thead>
+    <tr style="background-color:#0d2345; color: #79E9D7;">
+        <th >Product Family</th>
+        <th >Product Name</th>
+        <th >Effective Start Date</th>
+        <th >Effective End Date</th>
+        <th >List Price</th>
+        <th >Net Price</th>
+        <th >Effective Quantity</th>
+        <th >Discount %</th>
+    </tr>
+    </thead>
+    <tbody>
+        <apex:repeat value="{!QuoteLinesList}" var="item">
+            <tr>
+                <td>{!item.SBQQ__ProductFamily__c}</td>
+                <td style="text-align:center;">{!item.SBQQ__ProductName__c}</td> 
+                <td style="text-align:center;"><apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!item.SBQQ__EffectiveStartDate__c}" /> </apex:outputText></td>
+                <td style="text-align:center;"><apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!item.SBQQ__EffectiveEndDate__c}" /> </apex:outputText></td>
+                <td style="text-align:center;"><apex:outputText value="{0, number, currency}"><apex:param value="{!item.SBQQ__ListPrice__c}" /></apex:outputText></td>
+                <td style="text-align:center;"><apex:outputText value="{0, number, currency}"><apex:param value="{!item.SBQQ__NetPrice__c}" /></apex:outputText></td> 
+                <td style="text-align:center;">{!item.SBQQ__EffectiveQuantity__c}</td>
+                <td style="text-align:center;"><apex:outputtext value="{!IF(item.SBQQ__Discount__c == null, item.SBQQ__TotalDiscountRate__c, item.SBQQ__Discount__c)}"/></td>
+            </tr>
+        </apex:repeat>
+    </tbody>
+</table>
+    
+</apex:component>

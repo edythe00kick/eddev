@@ -1,0 +1,34 @@
+<apex:page standardController="lead" Extensions="ConvertToPartner" recordSetVar="lead">
+    <apex:form >
+    
+        <apex:pageBlock rendered="{!isEditable}">
+            <apex:pagemessages escape="False" />
+            <apex:pageblockButtons >
+                <apex:commandButton action="{!Convert}" Value="Save" />
+                <apex:commandButton action="{!Cancel}" Value="Cancel" />
+            </apex:pageblockButtons>
+            <apex:pageblockSection >
+                <apex:pageblockSectionItem >
+                    <apex:outputLabel >Partner Representative</apex:outputLabel>
+                    <apex:inputField value="{!ld.Partner_Representative__c}" required="True"/>
+                </apex:pageblockSectionItem>
+                <apex:pageblockSectionItem >    
+                    <apex:outputLabel >Partner Lead Type</apex:outputLabel>
+                    <apex:inputField value="{!ld.Partner_Lead_Type__c}" required="True"/>
+                </apex:pageblockSectionItem> 
+            </apex:pageblockSection>
+        </apex:pageBlock>
+      
+        <Apex:pageblock rendered="{!!isEditable}">
+             <apex:pagemessages escape="false" />
+             <Apex:pageblockButtons location="Bottom">
+                 <apex:commandButton value="Return" Action="{!Cancel}" />
+             </Apex:pageblockButtons>
+             <Apex:pageblockSection >
+                 <apex:pageblockSectionItem >
+                 </apex:pageblockSectionItem>
+             </Apex:pageblockSection>
+        </Apex:pageblock>
+    
+    </apex:form> 
+</apex:page>

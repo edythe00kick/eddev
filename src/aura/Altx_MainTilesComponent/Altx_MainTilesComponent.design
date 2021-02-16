@@ -1,0 +1,22 @@
+<design:component Label="Home Page Tiles (Leads,Opportunity,Resources)">
+    <design:attribute name="heading1" Label="Provide Head Text For Tile 1" default="Leads"/>
+    <design:attribute name="description1" Label="Provide Description Text For Tile 1" default="Vivamus non justo nulla etiam aliquet fermentum"/>
+    <design:attribute name="lightningIcon1" Label="Provide Icon For Tile 1" default="action:new_lead"/>
+    <design:attribute name="Tile1Backgroundimage" Label="Provide Background-image For Tile 1" default="alteryx-leads-bg.jpg"/>
+    <design:attribute name="PageLink1" Label="Provide page link For Tile 1" />
+    <design:attribute name="Color1" Label="Provide text color Tile 1" />
+    
+    <design:attribute name="heading2" Label="Provide Head Text For Tile 2" default="Opportunities"/>
+    <design:attribute name="description2" Label="Provide Description Text For Tile 2" default="Duis lobortis euod ultricies suspensse tempusos"/>
+    <design:attribute name="lightningIcon2" Label="Provide Icon For Tile 2" default="action:new_lead"/>
+    <design:attribute name="Tile2Backgroundimage" Label="Provide Background-image For Tile 2" default="alteryx-opportunities-bg.jpg"/>
+    <design:attribute name="PageLink2" Label="Provide page link For Tile 2" />
+    <design:attribute name="Color2" Label="Provide text color Tile 2" />
+    
+    <design:attribute name="heading3" Label="Provide Head Text For Tile 3" default="Resources"/>
+    <design:attribute name="description3" Label="Provide Description Text For Tile 3" default="Fusce ultricies ultrices exid mollis auris varius"/>
+    <design:attribute name="lightningIcon3" Label="Provide Icon For Tile 3" default="action:new_lead"/>
+	<design:attribute name="Tile3Backgroundimage" Label="Provide Background-image For Tile 3" default="alteryx-resources-bg.jpg"/>
+	<design:attribute name="PageLink3" Label="Provide page link For Tile 3" />
+    <design:attribute name="Color3" Label="Provide text color Tile 3" />
+</design:component>

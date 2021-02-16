@@ -1,0 +1,20 @@
+<apex:page standardController="SBQQ__Quote__c" standardStylesheets="false" sidebar="false" applyBodyTag="false">
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    
+    <div id="lightning" />
+
+    <script>
+    var recordId = '{!SBQQ__Quote__c.Id}';
+        $Lightning.use("c:UnequalPaymentsApp", function() {
+          $Lightning.createComponent(
+            "c:UnequalPayments",
+            {recordId: recordId},
+            "lightning",
+            function(cmp) {
+                // do some stuff
+                console.log("Component created!");
+                console.log(cmp);
+            });
+        });
+    </script>
+</apex:page>

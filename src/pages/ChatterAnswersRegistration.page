@@ -1,0 +1,9 @@
+<!--PLEASE READ: If you override the automatically generated CSS, your Chatter Answers community might not function correctly.-->
+<apex:page showHeader="false" sidebar="false">
+<apex:composition template="comm_template">
+    <apex:define name="body">
+        <chatteranswers:registration />
+        <center>The Terms and Conditions can be found <a href="http://alteryx.force.com/community/?id=kACE0000000000V" target="_blank">here</a>.</center>
+    </apex:define> 
+</apex:composition>
+</apex:page>

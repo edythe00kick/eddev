@@ -1,0 +1,25 @@
+<apex:component controller="returnSubscriptionSchedules" access="global">
+    <apex:attribute name="ToID" type="ID" description="The Id of the Quote" assignTo="{!quoteID}"/>
+    
+    <table class='list' border="1" cellpadding="10">
+    <thead>
+    <tr style="background-color:#0d2345; color: #79E9D7;">
+        <th >Year</th>
+        <th >Start Date</th>
+        <th >End Date</th>
+        <th >Net Total</th>
+    </tr>
+    </thead>
+    <tbody>
+        <apex:repeat value="{!SubScheduleList}" var="item">
+            <tr>
+                <td>{!item.Year__c}</td>
+                <td><apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!item.Subscription_Start_Date__c}" /> </apex:outputText></td>
+                <td><apex:outputText value="{0,date,MM/dd/yy}"> <apex:param value="{!item.Subscription_End_Date__c}" /> </apex:outputText></td>
+                <td><apex:outputText value="{0, number, currency}"><apex:param value="{!item.Net_Total__c}" /></apex:outputText></td>
+            </tr>
+        </apex:repeat>
+    </tbody>
+</table>
+    
+</apex:component>

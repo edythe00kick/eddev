@@ -1,0 +1,26 @@
+.THIS .body {
+	padding: 10px 20px;    
+}
+
+.THIS .actionButtonBar {
+    margin: 0px 30px 20px 30px;
+    padding: 0px 30px 10px 30px;
+}
+
+.THIS .uiButton--default .label {
+ 	color: #FFF;   
+}
+
+.THIS .uiInput {
+    width: 100%;
+}
+
+.THIS .flowruntimeInputWrapper {
+    line-height: 1em;
+    padding-bottom: 1rem;
+    width: 20%;
+}
+
+.THIS .uiInputDate input {
+    width: 95% !important;
+}

@@ -1,0 +1,45 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false">
+      <div id="header">
+      <div id="header-wrapper">
+        <div class="section clearfix">
+        <a href="http://www.alteryx.com/" title="Home" rel="home" id="logo"><img src="http://www.alteryx.com/sites/default/files/logo.png" alt="Home" /></a>
+          <div class="region region-header">
+            <div id="block-search-form" class="block block-search first last odd">
+            <div class="content">
+            </div>
+            </div><!-- /.block -->
+          </div><!-- /.region -->
+        </div>
+      </div><!-- /.header-wrapper -->
+      </div><!-- /.section, /#header -->
+<!-- begin nav bar -->
+    <div id="navigation"><div class="section clearfix">
+      <div class="region region-navigation">
+        <div id="header-wrapper">
+        <div id="block-nice-menus-2" class="block block-nice-menus first odd">
+        <div class="content">
+             <img src="{!$Resource.phone_img}" /><a href="http://www.twitter.com/alteryx" target="_new">
+             <img src="{!$Resource.twitter_img}" /></a> <a href="http://www.facebook.com/alteryx" target="_new">
+             <img src="{!$Resource.fbook_img}" /></a>
+        </div>
+        </div><!-- /.block -->
+        <div id="block-nice-menus-1" class="block block-nice-menus last even">
+        <div class="content">
+          <ul class="nice-menu nice-menu-down" id="nice-menu-1">
+            <li class="menu-1576 menuparent menu-path-node-639 first odd "><a href="http://www.alteryx.com/products">Products</a></li>
+            <li class="menu-975 menuparent menu-path-node-35 even "><a href="http://www.alteryx.com/solutions">Solutions</a></li>
+            <li class="menu-976 menuparent menu-path-node-36 odd "><a href="http://www.alteryx.com/partners">Partners</a></li>
+            <li class="menu-456 menuparent menu-path-events even "><a href="http://www.alteryx.com/events">Events</a></li>
+            <li class="menu-979 menuparent menu-path-node-37 active-trail odd "><a href="http://www.alteryx.com/learning">Resources</a></li>
+            <li class="menu-509 menuparent menu-path-node-24 even "><a href="http://www.alteryx.com/about-us">About</a></li>
+            <li class="menu-509 menuparent menu-path-node-24 even "><a href="http://www.alteryx.com/about-us">Blogs</a></li>
+          </ul>
+        </div>
+        </div><!-- /.header-wrapper -->
+        </div><!-- /.block -->
+      </div><!-- /.region -->
+    </div></div><!-- /.section, /#navigation -->
+<!-- end nav bar -->
+<div class="nav-spacer">
+</div>
+</apex:page>

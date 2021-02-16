@@ -1,0 +1,23 @@
+<!--
+ - Created by Ed on 12/27/19.
+ -->
+
+<!-- Review Date List -->
+<template>
+    <lightning-card title="Review Date" icon-name="standard:case_milestone">
+        <c-reviewdate parent-record-id={recordId} onreviewdateinserted={handleReviewDateInserted}></c-reviewdate>
+        <!-- Table -->
+        <div class="slds-card__body_inner">
+            <template if:true={reviewDate}>
+                <lightning-datatable key-field="Id"
+                                     data={reviewDate}
+                                     columns={columns}
+                                     hide-checkbox-column="true">
+                </lightning-datatable>
+            </template>
+            <template if:true={error}>
+                <h1>An error occurred while loading the Review Date list!</h1>
+            </template>
+        </div>
+    </lightning-card>
+</template>

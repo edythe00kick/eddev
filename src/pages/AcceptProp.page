@@ -1,0 +1,230 @@
+<apex:page title="Accept Proposal" standardController="SBQQ__Quote__c" extensions="AcceptPropController" sidebar="false" lightningStylesheets="true">
+    
+    <style>
+        span.errorMsg {
+            color: #F00;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .pbButton, .pbButtonb {
+            float: right;
+        }
+        
+        #warning {
+            color: red;
+            font-size: large;
+        }
+        
+        #warningdiv {
+            background-color: yellow;
+        }
+        
+        p.title {
+            text-align: center;
+            font-size: 19px;
+            color: red;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-top: 25px;
+        }
+        
+        p.subtitle {
+            text-align: center;
+            font-size: 19px;
+            color: #0070c0;
+            font-weight: bold;
+            margin: 10px 0px 25px 0px !important;
+        }
+        
+        ol {
+            margin-top: 35px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        
+        ol.second {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+        
+        ol li {
+            padding-bottom: 15px;
+        }
+        
+        ol.second li {
+            padding-bottom: 0;
+        }
+        
+        span.red {
+            color: red;
+        }
+        
+        span.blue {
+            color: #00b0f0;
+        }
+        
+        p.selectBox {
+            padding-left: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 20px !important;
+        }
+        
+        p.selectBox input {
+            height: 16px;
+            width: 16px;
+        }
+        
+        p.selectBox span {
+            vertical-align: 3.0px;
+        }
+        
+        div.box {
+            border: 2px black solid;
+            margin: 0px 40px;
+            padding: 20px 0px;
+            background-color: yellow;
+            text-align: center;
+        }
+        
+        div.box p {
+            color: red;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0px;
+        }
+    </style>
+    
+    <script>
+    function checkAlert(){
+        var check = confirm('Please confirm if you want to accept this proposal');
+        if (!check) {
+            returnToProposal();
+        } else {
+            finish();
+        }
+    }
+
+    function nextCall() {
+        var checkbox = document.getElementById('checkListBox');
+        if (checkbox != null && checkbox.checked) {
+            next();
+        } else {
+            alert('Please review the checklist and select the checkbox prior to accepting the Proposal');
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var showCheckList = document.querySelector("[id*='isPurchased']").value;
+        if (showCheckList != null && showCheckList == 'false') {
+            checkAlert();
+        }
+    });
+                              
+    function finishCall() {
+        finish();
+    }
+                              
+    </script>
+    
+    <apex:form id="mainform">
+        <apex:actionFunction action="{!acceptProposal}" name="finish" reRender="mainform"/>
+        <apex:actionFunction action="{!returnToProposal}" name="returnToProposal" status="processing01"/>
+        <apex:actionFunction action="{!nextButton}" name="next" rerender="mainform" oncomplete="finishCall(); return false;" />
+        <apex:inputHidden id="isPurchased" value="{!isPurchased}" />
+        
+        <apex:outputPanel rendered="{!showCheckList}">
+            <apex:pageBlock >
+                <apex:pageBlockButtons location="bottom" id="docButton">
+                        <apex:commandButton value="Finish" onclick="nextCall(); return false;"/>
+                        <apex:commandButton value="Cancel" action="{!returnToProposal}" />
+                </apex:pageBlockButtons>
+      <!--
+      //Eddie Wong
+      //06-04-2020
+      //W-005424
+      -->
+                <p class="title">CHECK LIST PRIOR TO ACTIVATING THE ORDER. PLS DO NOT SKIP</p>
+                <ol style="font-size:140%;">
+                    <p style="font-size:120%;color:indigo">OF AND PO REVIEW</p>
+                    <ul style="list-style-type:disc" >
+                        <li>Confirm signature boxes completed</li>
+                        <li>If PO required, confirm the PO is in compliance with PO Policy</li>
+                        <li>If PO is in compliance, enter the number in the PO number field
+                            <ul style="list-style-type:circle">
+                                <li>If duplicate, quotes with same PO will be identified and DD to investigate
+                                    <ul style="list-style-type:square">
+                                        <li>If allowed, check the ‘Allow Duplicates PO’ field</li>
+                                    </ul>
+                                </li>
+                                <li>Not a duplicate, attach PO to Notes and Attachments and Check the ‘PO attached’ checkbox</li>
+                            </ul>
+                        </li>
+                        <li>If PO is not in compliance, reach out to leadership for guidance</li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">PRICING AND DISCOUNTS</p>
+                    <ul style="list-style-type:disc" >
+                        <li>Amounts are correct. Pricing (ACV &amp; TCV) and Discount is calculated correctly (AFTER CLOSE WON)</li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">QUOTE DETAIL</p>
+                    <ul style="list-style-type:disc" >
+                        <li>Quote status updated to “Fully Signed”</li>
+                        <li>Click “Activate” button after the above checks are completed</li>
+                        <li>Once activated, quote status updates to “Accepted”</li>
+                    </ul>
+                    <p style="font-size:120%;color:indigo">EMEA and APAC ORDERS ONLY</p>
+                    <ul style="list-style-type:disc" >
+                        <li>Check quote reflects correct Subsidiary = <u>Alteryx Inc</u> or <u>Alteryx UK</u> matching the fully signed order form</li>
+                        <li>Check for VAT (if applicable)
+                            <ul style="list-style-type:circle">
+                                <li>If applicable, input VAT number on <a href="http://ec.europa.eu/taxation_customs/vies/" style="color:blue;">VIES</a> website and verify the VAT number is valid</li>
+                                <li>If report returns valid VAT number, ensure the VAT number is populated in the Tax Reg. Number field on the account</li>
+                                <li>If report returns invalid VAT number, please work with Sales to gain valid VAT number</li>
+                                <li>If not applicable (No VAT# required), check Tax Reg. Number Not Required on the account</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </ol>
+                <p class="selectBox">
+                    <input type="checkbox" id="checkListBox" />
+                    <!--<apex:inputcheckbox id="checkListBox" Title="Make sure this is checked"  value="{!isChecked}" />-->
+                    <span class="checkBoxText"> Check List Prior to Activating the Order, Pls Do Not Skip, Refer to QUIP for any questions
+                    </span>
+                </p>
+                <div class="box">
+                    <p>
+                        PLEASE MAKE SURE YOU HAVE GONE THROUGH EACH LINE ITEM ABOVE BEFORE CONFIRMING AND SENDING TO THE CUSTOMER.
+                    </p>
+                </div>                
+            </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!!showCheckList}">
+            <apex:outputPanel style="text-align: center;display: block; margin: 0px auto;" rendered="{!LEN(errorMsg)==0}">
+                <apex:image url="/img/loading.gif" height="32px"/>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="errorPanel" rendered="{!LEN(errorMsg)>0}">
+                <apex:pageBlock >
+                    <apex:pageBlockButtons >
+                        <apex:actionStatus id="processing1">
+                            <apex:facet name="start">
+                                <apex:image url="/img/loading.gif"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                        <apex:commandButton value="Finish" action="{!errorFinish}" status="processing1" reRender="errorPanel"/>
+                    </apex:pageBlockButtons>
+                    
+                    <apex:outputText styleClass="errorMsg" value="{!errorMsg}" escape="false"/>
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

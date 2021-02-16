@@ -1,0 +1,5 @@
+<design:component Label="Community Banner">
+    <design:attribute name="bannertitle" label="Provide Text for Title" default="Alteryx Community"/>
+    <design:attribute name="bannerImage" label="Provide url of image for background" default="alteryx-banner.jpg" />
+    <design:attribute name="bannerbody" label="Provide description text for the page" default="lorem ipsum"/>
+</design:component>

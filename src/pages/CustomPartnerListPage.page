@@ -1,0 +1,147 @@
+<!---
+Grazitti Interactive
+Feb 27, 2015
+-->
+<apex:page standardController="Opportunity" extensions="CustomPartnerStdController">
+    <style>
+        /* Override the border of pageBlock tag */
+        body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock {
+            border: none;
+        }
+    </style>
+    <apex:form id="theForm">             
+        <apex:pageBlock id="partnerList">
+            <!-- Create hidden input fields to pass values to controller extension -->
+            <apex:inputHidden value="{!Opportunity.AccountId}"/>     
+            <apex:inputHidden value="{!Opportunity.PartnerAccountId}"/> 
+            
+            <apex:pageBlockTable value="{!opportunityPartners}" var="partner">
+                <apex:column headerValue="Action">
+                    <apex:commandLink value="Del" action="{!delPartner}">
+                        <apex:param value="{!partner.id}" name="cid"/>
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headerValue="Partner">
+                    <apex:outputField value="{!prtnrAccListMap[partner.AccountToId].Name}"/>
+                </apex:column>
+                <apex:column headerValue="Role">
+                    <apex:outputField value="{!partner.Role}"/>
+                </apex:column>
+                <apex:column headerValue="IsPrimary">
+                    <apex:image value="/img/checkbox_checked.gif" rendered="{!partner.isprimary}"/>
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>                                       
+    </apex:form> 
+</apex:page>
+
+
+
+<!-- BELOW IS THE PREVIOUS VERSION OF THE PAGE -->
+
+
+<!---
+Grazitti Interactive
+April 12 2013
+-->
+<!--
+<apex:page standardController="Opportunity" extensions="CustomPartnerStdController" >
+<style>
+body .bPageBlock, body #bodyCell .bResource .secondaryPalette, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock, body .bodyDiv .genericTable, body .genericPageBlockTable, body .bodyDiv .bSubBlock, body .bComponentBlock .bPageBlock, body .bMyDashboard .bPageBlock, body.rlHoverFrame .bPageBlock, body.subjectSelectionPopup div.choicesBox, body.lookupTab .secondaryPalette.bPageBlock, body.popupTab .secondaryPalette.bPageBlock, body.UserTagStatsPage .secondaryPalette.bPageBlock{background:none;border:none;}
+table{border-top:1px solid #e6e6e6;border-bottom:1px solid #e6e6e6;}
+body .bPageBlock .pbBody .labelCol{width:5%;}
+</style>
+    <div class="customPrtnrRelatedlist">
+            <apex:form id="theForm">             
+                <apex:pageBlock >
+                <apex:inputHidden value="{!Opportunity.AccountId}"/>     
+                <apex:inputHidden value="{!Opportunity.PartnerAccountId}"/> 
+                
+                <apex:pageBlockSection columns="4" >
+                    <apex:repeat value="{!opportunityPartners}" var="c"  >
+                        <apex:pageBlockSectionItem dataStyle="width:5%;" >
+                            <apex:outputLabel value="Action"></apex:outputLabel>
+                            <apex:commandLink value="Del" action="{!delPartner}">
+                                <apex:param value="{!c.AccountToId}" name="accToId"/>
+                                <apex:param value="{!c.id}" name="cid"/>
+                            </apex:commandLink>
+                        </apex:pageBlockSectionItem> 
+                        <apex:pageBlockSectionItem dataStyle="width:10%;" >
+                            <apex:outputLabel value="Partner"></apex:outputLabel>
+                            <apex:outputLabel value="{!prtnrAccListMap[c.AccountToId].Name}"></apex:outputLabel>
+                        </apex:pageBlockSectionItem> 
+                        <apex:pageBlockSectionItem dataStyle="width:10%;"  >
+                            <apex:outputLabel value="Role"></apex:outputLabel>
+                            <apex:outputLabel value="{!c.role}"></apex:outputLabel>
+                        </apex:pageBlockSectionItem> 
+                        <apex:pageBlockSectionItem dataStyle="width:10%;" >
+                            <apex:outputLabel value="IsPrimary"></apex:outputLabel>
+                            <apex:image value="/img/checkbox_checked.gif" rendered="{!c.isprimary}"/>
+                        </apex:pageBlockSectionItem>                         
+                    </apex:repeat>               
+                </apex:pageBlockSection>
+                </apex:pageBlock> -->
+                
+                
+                <!--    THIS BELOW SECTION WAS ALREADY COMMENTED
+                
+                
+                 <table cellspacing="0" cellspadding="0" border="0" class="detailList" width="100%">
+                     <apex:repeat  value="{!opportunityPartners}" var="c" >
+                        <tr>
+                        <td class="labelCol">
+                            Action
+                        </td>
+                        <td class="dataCol">
+                            <apex:commandLink value="Del" action="{!delPartner}">
+                                <apex:param value="{!c.AccountToId}" name="accToId"/>
+                                <apex:param value="{!c.id}" name="cid"/>
+                            </apex:commandLink>
+                        </td>
+                        <td class="labelCol">
+                            Partner
+                        </td>
+                        <td class="dataCol">
+                            <apex:outputLabel value="{!prtnrAccListMap[c.AccountToId].Name}"></apex:outputLabel>
+                        </td>
+                        <td class="labelCol">
+                           Role
+                        </td>
+                        <td class="dataCol"> 
+                            <apex:outputLabel value="{!c.role}"></apex:outputLabel>
+                        </td>
+                        <td class="labelCol">
+                            IsPrimary
+                        </td>
+                        <td class="dataCol">
+                            <apex:image value="/img/checkbox_checked.gif" rendered="{!c.isprimary}"/>
+                        </td>
+                        </tr>                         
+                     </apex:repeat>
+                 </table>
+                 -->
+                 <!--
+                 <apex:pageBlockSection value="{!opportunityPartners}" var="c" style="width:100%;"> 
+                     <apex:column headerValue="Action">                 
+                        <apex:commandLink value="Del" action="{!delPartner}">
+                            <apex:param value="{!c.AccountToId}" name="accToId"/>
+                            <apex:param value="{!c.id}" name="cid"/>
+                        </apex:commandLink>
+                    </apex:column>                                             
+                     <apex:column headerValue="Partner">
+                        <apex:outputLabel value="{!prtnrAccListMap[c.AccountToId].Name}"></apex:outputLabel>
+                    </apex:column>
+                    <apex:column headerValue="Role">
+                        <apex:outputLabel value="{!c.role}"></apex:outputLabel>
+                    </apex:column> 
+                    <apex:column headerValue="Primary">
+                        <apex:image value="/img/checkbox_checked.gif" rendered="{!c.isprimary}"/>
+                    </apex:column>
+                </apex:pageBlockSection> 
+                -->                                       
+
+                <!-- THE ABOVE SECTION WAS ALREADY COMMENTED -->
+
+<!--            </apex:form> 
+    </div>
+</apex:page> -->

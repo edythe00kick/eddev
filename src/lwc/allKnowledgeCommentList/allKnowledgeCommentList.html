@@ -1,0 +1,23 @@
+<!--
+ - Created by csalgado on 12/16/2019.
+ -->
+
+<!-- All Knowledge Comment List -->
+<template>
+    <lightning-card title="Knowledge Comments" icon-name="standard:case_comment">
+        <c-new-knowledge-comment-button parent-record-id={recordId} onkcinserted={handleKCInserted}></c-new-knowledge-comment-button>
+        <!-- Table -->
+        <div class="slds-card__body_inner">
+            <template if:true={knowledgeComments}>
+                <lightning-datatable key-field="Id"
+                                     data={knowledgeComments}
+                                     columns={columns}
+                                     hide-checkbox-column="true">
+                </lightning-datatable>
+            </template>
+            <template if:true={error}>
+                <h1>An error occurred while loading the Knowledge Comments list!</h1>
+            </template>
+        </div>
+    </lightning-card>
+</template>

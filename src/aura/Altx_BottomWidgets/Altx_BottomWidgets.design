@@ -1,0 +1,33 @@
+<design:component Label="Main Tiles (Leads,Opportunity,Resources)">
+    <design:attribute name="VideoTitle" Label="Provide Head Text For Widget 1" default="Let's Get Started"/>
+    <design:attribute name="VideoShortDesc" Label="Provide Description Text For Widget 1" default="Vivamus non justo nulla etiam aliquet fermentum"/>
+    <design:attribute name="VideoURL" Label="Provide Video URL" default="https://www.youtube.com/embed/QzLSfWMti70"/>
+    
+    <design:attribute name="NewsHead" Label="Provide Head Text For Second Block" default="News &amp; Update"/>
+    <design:attribute name="NewsImgIcon" Label="Provide Image Icon For Second Block" default="utility:news"/>
+    <design:attribute name="NewsTitle1" Label="Provide Title of First News" default="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium..."/>
+    <design:attribute name="NewsTitleLink1" Label="Provide Detail page Link of First News" default=""/>
+    <design:attribute name="NewsTitle2" Label="Provide Title of Second News" default="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium..."/>
+    <design:attribute name="NewsTitleLink2" Label="Provide Detail page Link of Second News" default=""/>
+    <design:attribute name="NewsTitle3" Label="Provide Title of Third News" default="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium..."/>
+    <design:attribute name="NewsTitleLink3" Label="Provide Detail page Link of Third News" default=""/>    
+    <design:attribute name="NewsButtonText" Label="Provide Button Text For Second Block" default="READ MORE"/>
+    <design:attribute name="NewsButtonLink" Label="Provide Redirect Link for Button In Second Block"  default=""/>
+    
+    
+    <design:attribute name="EventsHead" Label="Provide Head Text For Third Block" default="Events"/>
+    <design:attribute name="EventsImgIcon" Label="Provide Image Icon For Third Block" default="utility:event"/>
+    <design:attribute name="EventsTitle1" Label="Provide Title of First Event" default="Magna Pelientes Suspend 2017"/>
+    <design:attribute name="EventsTitleLink1" Label="Provide Detail page Link of First Event" default=""/>
+    <design:attribute name="EventsDate1" Label="Provide Date of First Event" default="June 16, 2017 / 11:30 AM To 01:30 PM"/>
+    <design:attribute name="EventsTitle2" Label="Provide Title of Second Event" default="Magna Pelientes Suspend 2017"/>
+    <design:attribute name="EventsTitleLink2" Label="Provide Detail page Link of Second Event" default=""/>
+    <design:attribute name="EventsDate2" Label="Provide Date of Second Event" default="June 16, 2017 / 11:30 AM To 01:30 PM"/>
+    <design:attribute name="EventsTitle3" Label="Provide Title of Third Event" default="Magna Pelientes Suspend 2017"/>
+    <design:attribute name="EventsTitleLink3" Label="Provide Detail page Link of Third Event" default=""/>
+    <design:attribute name="EventsDate3" Label="Provide Date of Third Event" default="June 16, 2017 / 11:30 AM To 01:30 PM"/>
+    
+    <design:attribute name="EventsButtonText" Label="Provide Button Text For Third Block" default="READ MORE"/>
+    <design:attribute name="EventsButtonLink" Label="Provide Redirect Link for Button In Third Block"  default=""/>
+    
+</design:component>

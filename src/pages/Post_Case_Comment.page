@@ -1,0 +1,25 @@
+<apex:page standardcontroller="Case"
+    extensions="CaseCommentExtension" showHeader="false">
+    <apex:includeScript value="/support/api/26.0/interaction.js"/>
+    <div>
+        <apex:form >
+            <!-- Creates a case comment and on complete notifies the Case Feed page
+               that a elated list and the feed have been updated -->
+            <apex:actionFunction action="{!addComment}" name="addComment" rerender="out" 
+            oncomplete="sforce.interaction.entityFeed.refreshObject('{!case.id}', 
+            false, true, true);"/>   
+            <apex:outputPanel id="out" >
+                <apex:inputField value="{!comment.commentbody}" style="width:98%;
+                height:160px;" />
+            </apex:outputPanel>
+            <apex:pageBlock >
+            <apex:pageBlockSection title="Case Comment Options">
+                    <apex:inputCheckbox value="{!comment.IsPublished}" Label="Make Comment Public"/>
+                 </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form><br />
+        <button type="button" onclick="addComment();" style="position:fixed; bottom:0px; 
+        right:2px; padding: 5px 10px; font-size:13px;" id="cpbutton" >Post Case Comment
+        </button>
+    </div>              
+</apex:page>

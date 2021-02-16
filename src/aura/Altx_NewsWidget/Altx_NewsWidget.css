@@ -1,0 +1,20 @@
+.THIS .NewsTitle a{font-size: 16px;
+    color: #333333;
+}
+.THIS .btnText a{font-size: 14px;
+    color: #1691c6;
+    font-weight: bold;
+}
+.THIS .NewsTitle a:hover{font-size: 16px;
+    color: #333333;
+    text-decoration: underline;
+}
+.THIS .NewsHead{font-size: 20px;
+    color: #999999;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ccc;
+    padding: 0px 0px 15px 0px;}
+
+.THIS .NewsContent{ border-bottom: 1px solid #cccccc; padding:10px 0px;min-height:70px;}
+.THIS .slds-icon-utility-news .slds-icon{fill:#00a99d;width:24px;height:18px;}
+.THIS .btnText{padding:10px 0px 0px 0px;}

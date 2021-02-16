@@ -1,0 +1,7 @@
+<apex:page standardController="Lead" extensions="LeadMQLAcceptProcessController">
+
+    <flow:interview name="AcceptMQLFlow" interview="{!myflow}" finishlocation="{!OID}" >
+     <apex:param name="LeadID" value="{!$CurrentPage.parameters.id}"/>
+   </flow:interview>
+
+</apex:page>

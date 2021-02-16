@@ -1,0 +1,88 @@
+<aura:component controller="Altx_URLBuilderController" implements="forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="partnerId" type="string"/>
+    <aura:attribute name="finalUrl" type="string"/>
+    <aura:attribute name="pageUrl" type="string" default=""/>
+    <aura:attribute name="currentUser" type="User" default=""/>
+    <aura:attribute name="partnerName" type="string" default=""/>
+    <aura:attribute name="requiredUrl" type="string"/>
+    <aura:attribute name="validUrl" type="string"/>
+    <div class="slds-grid slds-wrap mainOuterDiv">
+        <div class="slds-col slds-size--1-of-12">
+            <img src="{! $Resource.AlteryxCommunityGlobal+'/images/partner/UrlGenerator.png'}"/>
+        </div>
+        <div class="slds-col slds-size--11-of-12">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size--12-of-12 grpname">
+                    <h2 id="new">URL Builder</h2>
+                </div>
+                <div class="slds-col slds-size--12-of-12" style="margin:5px;">
+                    Our URL Builder allows you to leverage any gated asset on the Alteryx website by creating a personalized link you can use in your marketing efforts. Responders who follow the link and complete the form on the Alteryx website will show up as leads assigned to you in your My Leads queue.
+                    <br></br>
+                    <br></br>
+                    <b>Instructions:</b> Copy the link to any of the asset download forms on the Alteryx website and paste it into the URL Builder below. Enter a lead source that explains how you will be sharing the link(ex. web, email).For more detailed instructions, download the 
+                    <a href="https://alteryx-community.force.com/sfc/servlet.shepherd/version/download/068E0000002JilCIAS">Alteryx URL Builder Guide</a>.
+                    
+                    <br></br>
+                    <br></br>
+                    Please note that leads remaining in the "Open" status for more than 180 days will be systematically closed. You must change the status of the leads in your queue to indicate your engagement. Please refer to the Lead Registration and Management Guide for complete details.   
+                    
+                </div>
+                <aura:if isTrue="{!v.finalUrl}">
+                    <div class="slds-col slds-size--12-of-12 messages status">                       
+                        <input type="text" id="urlField" value="{!v.finalUrl}"/>
+                        <lightning:button class="urlbtn" label="Copy" onclick="{!c.copyText}"/>
+                    </div>                    
+                </aura:if>
+                
+                <div class="slds-col slds-size--12-of-12 profile_label">
+                    Landing Page URL
+                    <span style="color:Red">*</span>:
+                    <aura:if isTrue="{!v.validUrl}">                    
+                        <span class="validError">{!v.validUrl}</span>
+                    </aura:if>
+                </div>
+                
+                <div class="slds-col slds-size--12-of-12 profile_input">
+                    <ui:inputText label="" value="{!v.pageUrl}" aura:id="websiteurl"/>
+                </div>
+                <div class="slds-col slds-size--12-of-12 profile_example">(e.g. http://www.urchin.com/download.html)</div>
+                
+                <!--<div class="slds-col slds-size-12-of-12 profile_label">
+                    Partner Lead Source<span style="color:Red">*</span>:</div>
+                
+                <div class="slds-col slds-size-12-of-12 profile_input">
+                    <ui:inputText label=""  value="{!v.partnerName}" aura:id="partnersource"/>
+                </div>
+                <div class=" slds-col slds-size-12-of-12 profile_example">(enter partner lead source)</div>
+                -->
+                <div class="profile_label">
+                    <div class="slds-col slds-size--12-of-12">
+                        utm_source: partner_generated                   
+                    </div>
+                    <div class="slds-col slds-size--12-of-12">
+                        utm_medium: 
+                            <ui:outputText value="{!v.partnerName}"></ui:outputText>
+                    </div>
+                    <div class="slds-col slds-size--12-of-12 profileid">
+                        Partner ID: 
+                            <ui:outputText value="{!v.partnerId}"></ui:outputText>
+                    </div>
+                </div>
+                
+                <!-- <input type="label" name="PartnerId" value="{!partnerId}" readonly="true" /></div> 
+                                 <div class="profile_input"><apex:inputText label="" value="{!partnerId}" id="partnerid" /></div>   
+                                 <div class="profile_example">(enter partner ID)</div>-->
+                <aura:if isTrue="{!v.requiredUrl}">
+                    <div class="slds-col slds-size--12-of-12 errorDiv">
+                        {!v.requiredUrl}
+                    </div>
+                </aura:if>
+                <div class=" slds-col slds-size--12-of-12">
+                    <lightning:button class="urlbtn" label="Generate URL" onclick="{!c.generateUrl}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</aura:component>

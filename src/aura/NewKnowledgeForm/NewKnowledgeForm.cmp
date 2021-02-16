@@ -1,0 +1,96 @@
+<!--
+ - Created by csalgado on 12/17/2019.
+ -->
+
+<aura:component description="NewKnowledgeForm" controller="CaseToKnowledgeController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName,force:lightningQuickAction" >
+    <!-- HANDLER -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+
+    <!-- EVENTS -->
+    <aura:registerEvent name="insertKnowledgeSuccess" type="c:InsertKnowledgeEvent"/>
+
+    <!-- METHODS -->
+    <aura:method name="createKnowledge" action="{!c.createKnowledge}"></aura:method>
+
+    <!-- ATTRIBUTES -->
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="parentRecordId" type="Id"/>
+    <aura:attribute name="currentCase" type="Case"/>
+    <aura:attribute name="newKnowledge" type="Knowledge__kav"/>
+    <aura:attribute name="labelOptions" type="List" default="[
+            {label: 'First select Community Board..', value: ''}
+            ]"/>
+    <aura:attribute name="controllingFieldAPI" type="string" default="Community_Board__c"/>
+    <aura:attribute name="dependentFieldAPI" type="string" default="Community_Labels__c"/>
+    <aura:attribute name="disableDualListBox" type="boolean" default="true"/>
+    <aura:attribute name="currentLabels" type="List"/>
+
+    <!-- MARKUP -->
+    <lightning:card class="slds-modal__content">
+        <div class="slds-scrollable" style="height:26rem;width:38rem">
+            <lightning:input type="text"
+                             label="Title"
+                             aura:id = "titleInput"
+                             name="knowledgeTitle"
+                             value="{!v.newKnowledge.Title}"
+                             onblur="{!c.getTitle}"
+                             required="true"
+                             class="slds-m-left_xx-large slds-m-right_xx-large"/>
+
+            <lightning:input type="text"
+                             label="URL Name"
+                             aura:id = "urlInput"
+                             name="knowledgeURLName"
+                             value="{!v.newKnowledge.UrlName}"
+                             required="true"
+                             class="slds-m-left_xx-large slds-m-right_xx-large"/>
+            <lightning:select label="Community Board"
+                              aura:id = "khorosBoard"
+                              name="communityBoard"
+                              value="{!v.newKnowledge.Community_Board__c}"
+                              required="true"
+                              onchange="{!c.setDependentPicklist}"
+                              class="slds-m-left_xx-large slds-m-right_xx-large">
+                <option value="">Select a Community KB...</option>
+                <option value="Designer">Designer</option>
+                <option value="Server">Server</option>
+                <option value="Connect">Connect</option>
+                <option value="Promote">Promote</option>
+                <option value="Location Data">Location Data</option>
+                <option value="Internal Knowledge">Internal Knowledge</option>
+            </lightning:select>
+           <lightning:dualListbox name="communityLabels"
+                                  label="Select Community Labels"
+                                  sourceLabel="Available"
+                                  selectedLabel="Selected"
+                                  fieldLevelHelp="Select the labels/ tags to categorize this article"
+                                  options="{!v.labelOptions}"
+                                  value="{!v.currentLabels}"
+                                  class="slds-m-left_xx-large slds-m-right_xx-large"
+                                  disabled="{!v.disableDualListBox}"
+                                  required="true"
+                                  />
+            <lightning:textarea maxlength="300"
+                                label="Summary"
+                                name="knowledgeSummary"
+                                required="true"
+                                value="{!v.newKnowledge.Summary}"
+                                class="slds-m-left_xx-large slds-m-right_xx-large"/>
+
+            <h1 class="slds-m-top_x-small slds-m-left_xx-large">Environment Details</h1>
+            <lightning:inputRichText label="Environment Details"
+                                     value="{!v.newKnowledge.Environment_Details__c}"
+                                     class="slds-m-left_xx-large slds-m-right_xx-large"/>
+
+            <h1 class="slds-m-top_x-small slds-m-left_xx-large">Cause</h1>
+            <lightning:inputRichText label="Cause"
+                                     value="{!v.newKnowledge.Cause__c}"
+                                     class="slds-m-left_xx-large slds-m-right_xx-large"/>
+
+            <h1 class="slds-m-top_x-small slds-m-left_xx-large">Resolution</h1>
+            <lightning:inputRichText label="Resolution"
+                                     value="{!v.newKnowledge.Resolution__c}"
+                                     class="slds-m-left_xx-large slds-m-right_xx-large"/>
+        </div>
+    </lightning:card>
+</aura:component>
