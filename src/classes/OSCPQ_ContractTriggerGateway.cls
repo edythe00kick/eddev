@@ -343,7 +343,6 @@ public with sharing class OSCPQ_ContractTriggerGateway {
         System.debug('inside updateRollUpNeededFieldInGTMAccountForNewContract = ' + masterAcctIds);
 
         List<Account> updateAccountsList = new List<Account>();
-        Map<Id, Account> accsToUpdate = new Map<Id, Account>();
         Map<Id, Account> accIdToAccMap = new Map<Id, Account>([SELECT Id,Go_To_Market_Account__c,Ultimate_Parent_Account__c FROM Account WHERE Id IN :masterAcctIds
                                                                 AND (Go_To_Market_Account__c != null OR Ultimate_Parent_Account__c != null)
                                                                 AND Go_To_Market_Account__r.Roll_Up_Update_Needed__c = false]);
@@ -358,19 +357,17 @@ public with sharing class OSCPQ_ContractTriggerGateway {
                     a.Id = accIdToAccMap.get(acc.Id).Ultimate_Parent_Account__c;
                 }
                 a.Roll_Up_Update_Needed__c = true;
+                updateAccountsList.add(a);
 
-                if(!accsToUpdate.containsKey(a.Id)){
-                    accsToUpdate.put(a.Id, a);
-                }
             }
         }
 
-        if(!accsToUpdate.isEmpty()) {
+        if(!updateAccountsList.isEmpty()) {
             try {
-                System.debug('inside try accsToUpdate');
-                update accsToUpdate.values();
+                System.debug('inside try updateAccountsList');
+                update updateAccountsList;
             } catch (Exception e) {
-                System.debug('inside accsToUpdate catch exception');
+                System.debug('inside updateAccountsList catch exception');
                 trigger.new[0].addError(e.getMessage());
             }
         }
