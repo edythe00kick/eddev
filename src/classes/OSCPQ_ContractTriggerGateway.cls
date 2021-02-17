@@ -333,7 +333,7 @@ public with sharing class OSCPQ_ContractTriggerGateway {
     /* @Name Eddie Wong
     ** @Work W-007098
     ** @Date 2/5/2021
-    ** @Desc Flagging Roll Up Update Needed in GTM Accounts during new contract creation
+    ** @Desc Flagging Roll Up Update Needed in GTM Accounts or ultimate parent account during new contract creation or contract update
      */
     public static void updateRollUpNeededFieldInGTMAccountForNewContract(Set<Id> masterAcctIds) {
         System.debug('ed check RecursionHandler.IsGTMAccUpdateRollUpExecuted ' + RecursionHandler.IsGTMAccUpdateRollUpExecuted);
@@ -343,9 +343,10 @@ public with sharing class OSCPQ_ContractTriggerGateway {
         System.debug('inside updateRollUpNeededFieldInGTMAccountForNewContract = ' + masterAcctIds);
 
         List<Account> updateAccountsList = new List<Account>();
+
+        //To retrieve accounts that either have GTM lookup or Ultimate Parent Account populated
         Map<Id, Account> accIdToAccMap = new Map<Id, Account>([SELECT Id,Go_To_Market_Account__c,Ultimate_Parent_Account__c FROM Account WHERE Id IN :masterAcctIds
-                                                                AND (Go_To_Market_Account__c != null OR Ultimate_Parent_Account__c != null)
-                                                                AND Go_To_Market_Account__r.Roll_Up_Update_Needed__c = false]);
+                                                                AND (Go_To_Market_Account__c != null OR Ultimate_Parent_Account__c != null)]);
 
         if(accIdToAccMap != null) {
             for (Account acc : accIdToAccMap.values()) {
@@ -353,7 +354,7 @@ public with sharing class OSCPQ_ContractTriggerGateway {
                 if(acc.Go_To_Market_Account__c != null) {  //Scenario where account has GTM lookup
                     a.Id = accIdToAccMap.get(acc.Id).Go_To_Market_Account__c;
                 }
-                else if(acc.Go_To_Market_Account__c == null && acc.Ultimate_Parent_Account__c != null) { //Scenario where account doesn't have GTM lookup
+                else if(acc.Go_To_Market_Account__c == null && acc.Ultimate_Parent_Account__c != null) { //Scenario where account doesn't have GTM lookup but has ultimate parent account
                     a.Id = accIdToAccMap.get(acc.Id).Ultimate_Parent_Account__c;
                 }
                 a.Roll_Up_Update_Needed__c = true;
