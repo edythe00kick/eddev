@@ -215,7 +215,7 @@ public class OSCPQ_ContractTriggerHandler {
                 gtmAccountIdSet.add(mapNew.get(con.Id).GTM_Account__c);
             } else if(mapNew.get(con.Id).SubscriptionACV__c != mapOld.get(con.Id).SubscriptionACV__c && mapNew.get(con.Id).GTM_Account__c == null && mapOld.get(con.Id).GTM_Account__c == null) { //Change of subACV & no GTM lookup
                 masterAccountIdSet.add(mapNew.get(con.Id).AccountId);
-            } else if(mapNew.get(con.Id).GTM_Account__c == null && mapNew.get(con.Id).Ultimate_Parent_Account__c != null
+            } else if(mapNew.get(con.Id).Ultimate_Parent_Account__c != null
                     && mapNew.get(con.Id).Ultimate_Parent_Account__c != mapOld.get(con.Id).Ultimate_Parent_Account__c) { //Change of ultimate parent and contract doesn't have GTM lookup
                 masterAccountIdSet.add(mapNew.get(con.Id).AccountId);
             }
